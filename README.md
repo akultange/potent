@@ -2,7 +2,7 @@
 
 Investor page for Potent: what we're working with. Three parts, told mostly in pictures:
 
-1. **Founders**: the two of us, our work and a few numbers.
+1. **Managing partners**: the two of us who run it, our work and a few numbers.
 2. **Network**: our potential team of senior specialists, grouped into engineering, product design,
    and brand & motion.
 3. **Services**: everything digital we can make together, and who does what.

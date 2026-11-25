@@ -46,7 +46,7 @@ const EN_NOUNS = {
   people: 'People',
   services: 'Services',
   projects: 'Projects',
-  founders: 'Founders',
+  partners: 'Managing partners',
   specialists: 'Specialists',
 } as const;
 

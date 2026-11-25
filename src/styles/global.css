@@ -268,9 +268,15 @@ html[lang='ru'] h2 em {
 
 .hero h1 {
   margin-top: 18px;
-  font-size: clamp(46px, 8.2vw, 116px);
+  font-size: clamp(42px, 7.2vw, 100px);
   line-height: 0.94;
   letter-spacing: -0.05em;
+  text-wrap: balance;
+}
+
+/* Russian lines run longer: a slightly smaller size keeps each one on a single line on desktop */
+:lang(ru) .hero h1 {
+  font-size: clamp(38px, 6.2vw, 86px);
 }
 
 .hero h1 span,

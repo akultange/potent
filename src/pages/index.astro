@@ -58,10 +58,10 @@ const clients = [
   .sort((a, b) => rank(a) - rank(b))
   .slice(0, 8);
 
-// Who does what: the founders, then the network in team order.
+// Who does what: the managing partners, then the network in team order.
 const services = localServices(lang).filter((s) => people.some((p) => (p.data.services as string[]).includes(s.id)));
 const coverage = [
-  { name: t('Founders'), people: founders },
+  { name: t('Managing partners'), people: founders },
   { name: t('Network'), people: teams.flatMap((team) => team.people) },
 ]
   .map((g) => ({ ...g, people: g.people.filter((p) => p.data.services.length > 0) }))
@@ -69,7 +69,7 @@ const coverage = [
 
 const stills = SCOPE.slice(0, 4).map((s) => asset(`/scope/${s.id}-${SCOPE_WIDTHS[s.size][0]}.webp`));
 const stats = [
-  { href: '#founders', num: '01', count: founders.length, unit: counted(lang, founders.length, 'founders'), faces: founders },
+  { href: '#founders', num: '01', count: founders.length, unit: counted(lang, founders.length, 'partners'), faces: founders },
   { href: '#network', num: '02', count: network.length, unit: counted(lang, network.length, 'specialists'), faces: network },
   { href: '#scope', num: '03', count: SCOPE.length, unit: counted(lang, SCOPE.length, 'services'), faces: [] as LocalPerson[] },
 ];
@@ -80,7 +80,7 @@ const stats = [
     <div class="container">
       <a class="wordmark" href="#top"><i aria-hidden="true"></i>{site.name}</a>
       <nav class="nav" aria-label={t('Sections')}>
-        <a href="#founders">{t('Founders')}</a>
+        <a href="#founders">{t('Partners')}</a>
         <a href="#network">{t('Network')}</a>
         <a href="#scope">{t('Services')}</a>
       </nav>
@@ -107,7 +107,7 @@ const stats = [
       <div class="container">
         <p class="eyebrow">{t('Investor brief · {city}', { city: site.city })}</p>
         <h1>
-          <span>{t('Two founders.')}</span>
+          <span>{t('Two managing partners.')}</span>
           <span>{t('A senior network.')}</span>
           <em>{t('Everything digital.')}</em>
         </h1>
@@ -153,7 +153,7 @@ const stats = [
     <section class="section" id="founders" aria-labelledby="founders-title">
       <div class="container">
         <header class="chapter-head">
-          <p class="chapter"><span>01</span>{t('Founders')}</p>
+          <p class="chapter"><span>01</span>{t('Managing partners')}</p>
           <h2 id="founders-title" set:html={t("Managers who've done <em>every part</em> of the work")} />
         </header>
         <div class="founders">
