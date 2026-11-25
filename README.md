@@ -3,11 +3,14 @@
 Investor page for Potent: the services we offer and the network of specialists who deliver them.
 Static [Astro](https://astro.build) site, no backend.
 
+Live: https://akultange.github.io/potent/ (every push to `main` is published by
+`.github/workflows/deploy.yml`, about a minute later).
+
 ## Run it
 
 ```bash
 npm install
-npm run dev       # http://localhost:4321
+npm run dev       # http://localhost:4321/potent
 npm run build     # static site in dist/ (also validates all data)
 ```
 

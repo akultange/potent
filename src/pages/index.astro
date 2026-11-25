@@ -4,7 +4,7 @@ import Base from '../layouts/Base.astro';
 import PersonCard from '../components/PersonCard.astro';
 import { SERVICES } from '../data/services';
 import { SITE } from '../data/site';
-import { hue, initials } from '../lib/util';
+import { asset, hue, initials } from '../lib/util';
 
 const people = (await getCollection('people')).sort(
   (a, b) => a.data.order - b.data.order || a.data.name.localeCompare(b.data.name),
@@ -209,7 +209,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
                   hidden={!p.featured}
                 >
                   <div class="work__thumb" style={`--hue:${hue(tile)}`}>
-                    {p.image ? <img src={p.image} alt="" loading="lazy" /> : <span class="work__mono">{tile}</span>}
+                    {p.image ? <img src={asset(p.image)} alt="" loading="lazy" /> : <span class="work__mono">{tile}</span>}
                   </div>
                   <div class="work__body">
                     <p class="work__meta">{[p.type, p.sector].filter(Boolean).join(' · ')}</p>
