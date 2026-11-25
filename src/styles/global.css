@@ -15,7 +15,8 @@
   --gutter: clamp(16px, 4vw, 40px);
   --maxw: 1200px;
   --font-sans: 'Inter Tight', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --font-serif: 'Instrument Serif', ui-serif, Georgia, serif;
+  /* Cormorant Garamond only draws the Russian letters (see fonts.css); Latin stays Instrument Serif */
+  --font-serif: 'Instrument Serif', 'Cormorant Garamond', ui-serif, Georgia, serif;
   color-scheme: light;
 }
 

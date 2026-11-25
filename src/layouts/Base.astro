@@ -1,4 +1,5 @@
 ---
+import '../styles/fonts.css';
 import '../styles/global.css';
 import { SITE } from '../data/site';
 import { asset } from '../lib/util';
@@ -23,12 +24,6 @@ const { title = `${SITE.name} | ${SITE.tagline}`, description = SITE.description
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <link rel="icon" type="image/svg+xml" href={asset('/favicon.svg')} />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap"
-    />
   </head>
   <body>
     <slot />
