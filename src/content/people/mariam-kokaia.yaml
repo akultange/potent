@@ -12,6 +12,7 @@ links:
 services: [motion]
 projects:
   - name: Showreel
+    image: /work/showreel.jpg
     url: https://mariamkokaia.framer.website/
     type: Motion reel
     summary: Explainer videos, logo animations, UI animations and social content.

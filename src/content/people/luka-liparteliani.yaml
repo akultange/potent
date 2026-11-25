@@ -11,6 +11,7 @@ links:
 services: [engineering, web, ecommerce]
 projects:
   - name: Kärcher Georgia online store
+    image: /work/karcher.jpg
     client: Kärcher Georgia
     url: https://karchershop.ge/en
     type: E-commerce
@@ -21,6 +22,7 @@ projects:
     services: [ecommerce]
     featured: true
   - name: Homeland of Wine Magazine
+    image: /work/homeland-of-wine.jpg
     client: Homeland of Wine
     url: https://homelandofwinemagazine.com
     type: Magazine website
@@ -32,6 +34,7 @@ projects:
     services: [web, engineering]
     featured: true
   - name: MushCore
+    image: /work/mushcore.jpg
     url: https://mushcore.com
     type: Digital product studio
     sector: Technology

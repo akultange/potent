@@ -12,6 +12,7 @@ links:
 services: [product-design]
 projects:
   - name: Ads Manager
+    image: /work/ads-manager.jpg
     client: Bank of Georgia
     url: https://businessmanager.bog.ge/en
     caseStudy: https://kheladze.framer.website/ads-manager
@@ -26,6 +27,7 @@ projects:
     services: [product-design]
     featured: true
   - name: FINA
+    image: /work/fina.jpg
     client: FINA
     url: https://fina2.net/
     type: SupTech / RegTech platform
@@ -36,6 +38,7 @@ projects:
     services: [product-design]
     featured: true
   - name: Webiz talent platform
+    image: /work/webiz.jpg
     client: Webiz
     url: https://webiz.com/
     caseStudy: https://kheladze.framer.website/webizerp
@@ -49,6 +52,7 @@ projects:
     services: [product-design]
     featured: true
   - name: Cyngular
+    image: /work/cyngular.jpg
     client: Cyngular
     caseStudy: https://kheladze.framer.website/cyngular
     type: Web app
@@ -60,6 +64,7 @@ projects:
     services: [product-design]
     featured: true
   - name: Guma
+    image: /work/guma.jpg
     client: Guma
     caseStudy: https://kheladze.framer.website/guma
     type: Web app prototype
@@ -70,6 +75,7 @@ projects:
     role: Prototype and visual design with one other designer (via Webiz)
     services: [product-design]
   - name: 101SPOT
+    image: /work/101spot.jpg
     url: https://great-hand-274711.framer.app/
     type: Design education
     sector: Education

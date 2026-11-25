@@ -13,6 +13,7 @@ projects:
     services: [product-design]
     featured: true
   - name: Sachemo
+    image: /work/sachemo.jpg
     url: https://www.sachemo.store/en
     type: Marketplace
     sector: Retail & crafts

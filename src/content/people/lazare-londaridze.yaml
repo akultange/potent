@@ -12,6 +12,7 @@ links:
 services: [product-design, branding, web]
 projects:
   - name: Yamaha Motor Europe CRM
+    image: /work/yamaha.jpg
     client: Yamaha Motor Europe
     caseStudy: https://www.figma.com/proto/YL1RlptRMBMwXhUmb1wHpv/Lazare?page-id=5000%3A9657&node-id=6204-255040&starting-point-node-id=6204%3A254858&scaling=scale-down&content-scaling=fixed
     type: Enterprise CRM
@@ -23,6 +24,7 @@ projects:
     services: [product-design]
     featured: true
   - name: Egofy
+    image: /work/egofy.jpg
     client: Egofy
     caseStudy: https://www.figma.com/proto/YL1RlptRMBMwXhUmb1wHpv/Lazare?page-id=5000%3A9657&node-id=6204-257252&starting-point-node-id=6204%3A254858&scaling=scale-down&content-scaling=fixed
     type: Workforce management platform
@@ -30,9 +32,13 @@ projects:
     summary: >-
       Workforce-management platform that brings forecasting, scheduling, capacity
       planning, requests and coverage into one system across countries and time zones.
+    role: >-
+      Full-cycle product design across scheduling, forecasting, user management and
+      permissions, through to specs and handoff
     services: [product-design]
     featured: true
   - name: Seensme
+    image: /work/seensme.jpg
     client: Seensme
     caseStudy: https://www.figma.com/proto/YL1RlptRMBMwXhUmb1wHpv/Lazare?page-id=5000%3A9657&node-id=6204-258572&starting-point-node-id=6204%3A254858&scaling=scale-down&content-scaling=fixed
     type: Creator platform (mobile)
@@ -40,9 +46,11 @@ projects:
     summary: >-
       Creator monetisation app with subscriptions, pay-per-view and messaging. Results:
       onboarding completion up ~40%, subscription setup time down 70%, PPV conversion up 25%.
-    services: [product-design]
+    role: Full-cycle product design, plus the platform's branding and visual direction
+    services: [product-design, branding]
     featured: true
   - name: Landing pages
+    image: /work/landing-pages.jpg
     caseStudy: https://www.figma.com/proto/YL1RlptRMBMwXhUmb1wHpv/Lazare?page-id=5000%3A9657&node-id=6204-258527&starting-point-node-id=6204%3A254858&scaling=scale-down&content-scaling=fixed
     type: Landing pages
     summary: >-

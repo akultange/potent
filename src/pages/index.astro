@@ -13,8 +13,20 @@ const founders = people.filter((p) => p.data.group === 'founder');
 const network = people.filter((p) => p.data.group === 'network');
 
 const projects = people.flatMap((person) => person.data.projects.map((project) => ({ ...project, person })));
-// Featured first, then everything else (shown when a service filter is active).
-const work = [...projects.filter((p) => p.featured), ...projects.filter((p) => !p.featured)];
+// Selected work: featured projects with a screenshot, interleaved person by person so the
+// grid reads as a network; then featured ones without a screenshot; then the rest (only shown
+// when a service filter is active).
+const featured = projects.filter((p) => p.featured);
+const byPerson = new Map<string, typeof projects>();
+for (const p of featured.filter((p) => p.image)) {
+  byPerson.set(p.person.id, [...(byPerson.get(p.person.id) ?? []), p]);
+}
+const interleaved: typeof projects = [];
+const longest = Math.max(0, ...[...byPerson.values()].map((l) => l.length));
+for (let i = 0; i < longest; i++) {
+  for (const list of byPerson.values()) if (list[i]) interleaved.push(list[i]);
+}
+const work = [...interleaved, ...featured.filter((p) => !p.image), ...projects.filter((p) => !p.featured)];
 
 const services = SERVICES.map((s) => ({
   ...s,
