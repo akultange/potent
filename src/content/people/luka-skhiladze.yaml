@@ -1,10 +1,142 @@
 name: Luka Skhiladze
-title: Co-founder
+title: Co-founder · Motion designer & product engineer
 group: founder
 order: 2
+location: Tbilisi, Georgia
+bio: >-
+  Makes films and builds what has to exist around them: the site, the app, the system.
+  Started in film in 2019 as a colorist and post-production supervisor, moved into
+  development and took his own B2B construction-safety app from idea to the App Store.
+  His portfolio holds 31 films and 7 sites and apps.
 links:
+  linkedin: https://www.linkedin.com/in/lukaskhiladze
+  portfolio: https://skhiladze.com
   github: https://github.com/akultange
-services: []
-projects: []
+services: [motion, web, engineering]
+projects:
+  - name: B2B safety app
+    url: https://apps.apple.com/app/id6769320930
+    type: iOS app
+    sector: Construction safety
+    summary: >-
+      App for safety experts on construction sites: inspection checklists with photos,
+      safety briefings, incident logs and PDF reports, organised by site. Live on the
+      App Store.
+    role: Built end to end, from the idea and design to the code and the release
+    services: [engineering]
+    featured: true
+  - name: Logicor Park 08
+    url: https://skhiladze.com/media/film/logicor.mp4
+    type: Video banner campaign
+    sector: Logistics real estate
+    summary: >-
+      Client campaign for a logistics park: video banners with AI-generated footage,
+      delivered as MP4 and HTML5 sets in every format.
+    role: Motion design, AI footage and the HTML5 banner builds
+    services: [motion]
+    featured: true
+    image: /work/luka-logicor.webp
+  - name: skhiladze.com
+    url: https://skhiladze.com
+    type: Portfolio website
+    summary: >-
+      His own portfolio: one page that plays 31 films with sound and motion, in English
+      and Russian. Awwwards nominee, November 2026.
+    role: Design and build, with Giorgi Kheladze
+    services: [web]
+    featured: true
+    image: /work/luka-skhiladze.webp
+  - name: Showreel 2026
+    url: https://vimeo.com/1236859193
+    type: Motion reel
+    summary: >-
+      One minute of motion design, 3D, AI film and stage visuals, cut to his own score.
+    services: [motion]
+    featured: true
+    image: /work/luka-reel.webp
+  - name: Urban Industry
+    url: https://akultange.github.io/urbanindustry/
+    type: Concept website
+    sector: Retail
+    summary: >-
+      Concept site for a sneaker store in Tbilisi: a lit 3D wall of ten pairs with sound,
+      in Georgian and English, with ordering through the store's messenger.
+    role: Design and build
+    services: [web]
+    featured: true
+    image: /work/luka-urban.webp
+  - name: gogagomareli.com
+    client: Goga Gomareli
+    url: https://gogagomareli.com
+    type: Artist website
+    sector: Art
+    summary: Website for the Georgian artist Goga Gomareli.
+    role: Design and build
+    services: [web]
+  - name: Nichiyomu
+    client: Nichiyomu
+    url: https://vimeo.com/1231701695
+    type: Social video ad
+    sector: Education
+    summary: Reels ad for a Japanese reading-practice app.
+    services: [motion]
+  - name: Milestone reveal animation
+    url: https://vimeo.com/1236721859
+    type: In-app animation
+    summary: >-
+      Client work for an app: a wax-sealed envelope opens to show the reward when a user
+      reaches a milestone.
+    services: [motion]
+  - name: Kresty
+    client: Memorandum
+    type: Documentary film
+    summary: Colour grading for a documentary film.
+    role: Colorist
+    services: [motion]
+  - name: Stage Visuals Pack
+    url: https://vimeo.com/1234375913
+    type: Concept visuals
+    sector: Live events
+    summary: Characters and seamless loops for concert LED screens.
+    services: [motion]
+    image: /work/luka-stage.webp
+  - name: Fuse 2
+    url: https://vimeo.com/1233689711
+    type: Concept film
+    sector: AI software
+    summary: 3D product film for an AI-agent platform.
+    services: [motion]
+    image: /work/luka-fuse3d.webp
+  - name: Coffee prices
+    url: https://vimeo.com/1236838621
+    type: Concept film
+    summary: Hand-drawn explainer for YouTube about coffee prices.
+    services: [motion]
+    image: /work/luka-coffee.webp
+  - name: The Cozzi
+    url: https://akultange.github.io/the-cozzi/
+    type: Concept website
+    sector: Retail
+    summary: Product site for a travel-pillow brand.
+    role: Design and build
+    services: [web]
+    image: /work/luka-cozzi.webp
+  - name: MAX chat on GREEN-API
+    url: https://max-chat-green-api-mu.vercel.app
+    type: Concept web app
+    sector: Messaging
+    summary: >-
+      Web chat in the interface of the MAX messenger that sends and receives messages
+      through the GREEN-API service.
+    services: [engineering]
+    image: /work/luka-maxchat.webp
+  - name: Trading journal
+    url: https://vimeo.com/1232736019
+    type: Concept web app
+    sector: Trading
+    summary: Web app for traders with CSV import and an analytics dashboard.
+    services: [engineering]
 toConfirm:
-  - Title, short bio, LinkedIn, services and projects (Luka, fill this in)
+  - Screenshots for the safety app, gogagomareli.com, Nichiyomu and trading journal tiles
+  - List Logicor in the hero's "Work for" line? Needs client set on that project
+  - Link for the Kresty film
