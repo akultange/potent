@@ -8,6 +8,13 @@ bio: >-
   Started in film in 2019 as a colorist and post-production supervisor, moved into
   development and took his own B2B construction-safety app from idea to the App Store.
   His portfolio holds 31 films and 7 sites and apps.
+facts:
+  - value: Since 2019
+    label: in film and post-production
+  - value: '31'
+    label: films in the portfolio
+  - value: '7'
+    label: sites and apps built
 links:
   linkedin: https://www.linkedin.com/in/lukaskhiladze
   portfolio: https://skhiladze.com
@@ -16,6 +23,7 @@ services: [motion, web, engineering]
 projects:
   - name: B2B safety app
     url: https://apps.apple.com/app/id6769320930
+    image: /work/luka-hubble.jpg
     type: iOS app
     sector: Construction safety
     summary: >-

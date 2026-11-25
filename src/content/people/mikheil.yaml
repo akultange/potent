@@ -5,6 +5,8 @@ bio: Product designer on mBank, Bank of Georgia's mobile banking app.
 services: [product-design]
 projects:
   - name: mBank
+    url: https://apps.apple.com/ge/app/bank-of-georgia/id1159368231
+    image: /work/mbank.jpg
     client: Bank of Georgia
     type: Mobile banking app
     sector: Banking & fintech

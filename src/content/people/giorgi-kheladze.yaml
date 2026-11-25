@@ -6,6 +6,13 @@ bio: >-
   Designs complex web apps for fintech and B2B SaaS. Four years at Bank of Georgia
   designing merchant tools and design-system components used across 14 digital
   products; before that, product design for Israeli startups at Webiz.
+facts:
+  - value: 4 yrs
+    label: at Bank of Georgia
+  - value: '14'
+    label: products use the design-system components
+  - value: 5×
+    label: faster design work after the Webiz design system
 links:
   linkedin: https://www.linkedin.com/in/giorgi-kheladze/
   portfolio: https://kheladze.framer.website/
@@ -85,6 +92,7 @@ projects:
       with Beka Giorgadze.
     role: Co-founder and mentor
     services: [product-design]
+    featured: true
 toConfirm:
   - What was Giorgi's role on FINA (fina2.net)?
   - Location line (Tbilisi?)

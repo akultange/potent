@@ -1,0 +1,76 @@
+name: Dimitri Beradze
+title: Engineering lead at Bank of Georgia · Co-founder & CTO of EV Store
+order: 12
+location: Tbilisi, Georgia
+bio: >-
+  Full-stack engineer (Node.js, MongoDB) and system architect. At Bank of Georgia since
+  2020, rising from junior developer to engineering lead of a 10-person team whose
+  platforms serve hundreds of thousands of people. Co-founder and CTO of EV Store; has
+  taught web development at Caucasus University.
+facts:
+  - value: Since 2020
+    label: at Bank of Georgia
+  - value: '10'
+    label: developers led
+  - value: 100,000s
+    label: of users on the team's platforms
+links:
+  linkedin: https://www.linkedin.com/in/dimitri-beradze/
+services: [engineering, web, ecommerce]
+projects:
+  - name: EV Store
+    url: https://evstore.ge
+    type: E-commerce platform
+    sector: Electric mobility
+    summary: >-
+      Online store for EV chargers, cables and adapters in Georgia, with a map of charging
+      stations, charging guides and pay-later checkout. Growing into EV Group, a set of
+      connected platforms for electric transport.
+    role: Co-founder and CTO, leading development
+    services: [engineering, ecommerce]
+    featured: true
+    image: /work/evstore.jpg
+  - name: Central CMS
+    client: Bank of Georgia
+    type: Content platform
+    sector: Banking & fintech
+    summary: >-
+      The bank's first centralised CMS, now behind all of its public-facing web
+      applications.
+    role: Created it and led its development
+    services: [engineering, web]
+    featured: true
+  - name: Microfrontend architecture
+    client: Bank of Georgia
+    type: Web architecture
+    sector: Banking & fintech
+    summary: >-
+      The bank's first microfrontend architecture, making its web systems more modular,
+      easier to maintain and ready to scale.
+    role: Engineered it
+    services: [engineering]
+    featured: true
+  - name: In-app gamification platform
+    client: Bank of Georgia
+    type: High-load platform
+    sector: Banking & fintech
+    summary: Gamification platform inside the bank's mobile app, used by thousands of clients.
+    role: Led and contributed to the build
+    services: [engineering]
+  - name: Ads management platform
+    client: Bank of Georgia
+    type: Web platform
+    sector: Banking & fintech
+    summary: B2B and B2C ads management platform for running campaigns across customer segments.
+    role: Built and maintained it
+    services: [engineering]
+  - name: API documentation platform
+    client: Bank of Georgia
+    type: Developer platform
+    sector: Banking & fintech
+    summary: The bank's API documentation platform, for clearer integration standards.
+    role: Designed and maintained it
+    services: [engineering, web]
+toConfirm:
+  - Is his ads management platform the same product as Giorgi's Ads Manager? If so, show it as one project, designed by Giorgi and built by Dimitri
+  - Public links or screenshots for any of the Bank of Georgia work

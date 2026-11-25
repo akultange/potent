@@ -10,6 +10,8 @@ links:
 services: [graphic-design, motion]
 projects:
   - name: SOCAR Instagram feed
+    url: https://www.behance.net/gallery/194573085/SOCAR-INSTAGRAM-FEED
+    image: /work/maggie-socar.jpg
     client: SOCAR
     type: Social media design
     sector: Energy
@@ -17,28 +19,41 @@ projects:
     services: [graphic-design]
     featured: true
   - name: GAMO social media
+    url: https://www.behance.net/gallery/190534433/GAMO-Social-media
+    image: /work/maggie-gamo.jpg
     client: GAMO
     type: Social media design
     summary: Social-media creative for GAMO.
     services: [graphic-design]
   - name: MZESUMZIRA posters
+    url: https://www.behance.net/gallery/190494119/MZESUMZIRA-Posters
+    image: /work/maggie-mzesumzira.jpg
     client: MZESUMZIRA
     type: Poster series
     summary: Poster series for MZESUMZIRA.
     services: [graphic-design]
+    featured: true
   - name: Laline video designs
+    url: https://www.behance.net/gallery/194574459/Designs-For-Laline-Video
+    image: /work/maggie-laline.jpg
     client: Laline
     type: Design for video
     summary: Designs for a Laline video, made with other designers.
     services: [graphic-design, motion]
   - name: FIGUREBI illustrations
+    url: https://www.behance.net/gallery/190497021/Illustrations-for-FIGUREBI-animation
+    image: /work/maggie-figurebi.jpg
     client: FIGUREBI
     type: Illustration for animation
     summary: Illustrations for the FIGUREBI animation.
     services: [graphic-design, motion]
+    featured: true
   - name: Women's Day motion video
+    url: https://www.behance.net/gallery/194550491/Motion-Video-For-Womens-Day
+    image: /work/maggie-womens-day.jpg
     type: Motion video
     summary: Motion piece for International Women's Day.
     services: [motion]
+    featured: true
 toConfirm:
   - LinkedIn

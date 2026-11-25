@@ -6,6 +6,9 @@ import { SERVICE_IDS } from './data/services';
 const url = z.string().url();
 const services = z.array(z.enum(SERVICE_IDS));
 
+/** A headline number from the person's own profile, e.g. { value: '4 yrs', label: 'at Bank of Georgia' }. */
+const fact = z.object({ value: z.coerce.string(), label: z.string() });
+
 const project = z.object({
   name: z.string(),
   /** Brand or company the work was for (omit when it's the person's own product). */
@@ -25,7 +28,7 @@ const project = z.object({
   services: services.default([]),
   /** Screenshot under /public, e.g. /work/karcher.jpg */
   image: z.string().optional(),
-  /** Show in "Selected work". */
+  /** Show on the person's card. Projects with an image come first; founders show up to six, the network three. */
   featured: z.boolean().default(false),
 });
 
@@ -38,7 +41,10 @@ const people = defineCollection({
     /** Lower comes first. */
     order: z.number().default(50),
     location: z.string().optional(),
+    /** Kept for reference; the page itself shows no bios. */
     bio: z.string().optional(),
+    /** Two or three headline numbers, shown on the card (founders three, network two). */
+    facts: z.array(fact).default([]),
     links: z
       .object({
         linkedin: url.optional(),
@@ -67,6 +73,10 @@ const peopleRu = defineCollection({
     title: z.string().optional(),
     location: z.string().optional(),
     bio: z.string().optional(),
+    /** Russian for the facts, keyed by the English label. */
+    facts: z
+      .record(z.string(), z.object({ value: z.coerce.string().optional(), label: z.string().optional() }))
+      .default({}),
     projects: z
       .record(
         z.string(),

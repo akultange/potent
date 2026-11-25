@@ -6,6 +6,12 @@ bio: >-
   Старший дизайнер интерфейсов и брендов, стратег. Вёл полный цикл дизайна системы для дилеров
   Yamaha Motor Europe (более 40 рынков, более 1 500 дилеров), а также проекты по управлению
   персоналом, платформу для авторов контента и лендинги.
+facts:
+  dealers on the Yamaha CRM:
+    value: 1 500+
+    label: дилеров в CRM Yamaha
+  European markets it covers:
+    label: европейских рынков
 projects:
   Yamaha Motor Europe CRM:
     name: CRM Yamaha Motor Europe
