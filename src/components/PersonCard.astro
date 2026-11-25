@@ -15,10 +15,11 @@ const t = translator(lang);
 const d = person.data;
 const isFounder = d.group === 'founder';
 
-// Brands behind their work, featured projects first; brand names stay as they are.
+// Brands behind their featured work; brand names stay as they are.
 const clients = [
   ...new Set(
-    [...d.projects.filter((p) => p.featured), ...d.projects.filter((p) => !p.featured)]
+    d.projects
+      .filter((p) => p.featured)
       .map((p) => p.en.client)
       .filter((c): c is string => Boolean(c)),
   ),
@@ -37,7 +38,7 @@ const links = (Object.keys(LINK_LABELS) as (keyof typeof LINK_LABELS)[])
   .map((k) => ({ label: LINK_LABELS[k], href: d.links[k]! }));
 ---
 
-<article class:list={['person', isFounder ? 'person--founder' : 'person--member']} id={person.id}>
+<article class:list={['person', isFounder ? 'person--founder' : 'person--member']} id={person.id} data-reveal>
   <div class="person__face" style={`--hue:${hue(d.en.name)}`}>
     {
       d.photo ? (

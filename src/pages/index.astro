@@ -1,20 +1,31 @@
 ---
-// The agency blueprint, for an investor, in both languages: "/" renders this file as is
-// (English) and src/pages/ru/index.astro renders it with lang="ru". It goes: the promise and
-// the work, 01 the market, 02 the team, 03 what we sell, 04 the growth engine (academy and
-// podcast), 05 the plan. Text goes through t(): written here in English, looked up in
-// src/i18n/ru.ts. Numbers and their sources live in src/data/blueprint.ts.
+// Potent, a portfolio-style agency blueprint for an investor, in both languages: "/" renders
+// this file as is (English) and src/pages/ru/index.astro renders it with lang="ru".
+// The film first, then the work, big; then the team, the market, what we sell, the growth
+// engine and the plan. Text goes through t() (Russian in src/i18n/ru.ts); numbers and their
+// sources live in src/data/blueprint.ts, the work's order and sizes in src/data/showcase.ts.
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import Engine from '../components/Engine.astro';
-import Marquee from '../components/Marquee.astro';
 import PersonCard from '../components/PersonCard.astro';
 import Scope from '../components/Scope.astro';
+import Work from '../components/Work.astro';
 import { HIRES, MARKET, PLANS, PROOF, STREAMS } from '../data/blueprint';
+import { CASES } from '../data/showcase';
 import { AREAS, SERVICES } from '../data/services';
 import { SITE } from '../data/site';
-import { LANGS, LANG_LABELS, homePath, localPerson, localSite, translator, type Lang, type LocalPerson } from '../i18n';
-import { thumbOf } from '../lib/util';
+import {
+  LANGS,
+  LANG_LABELS,
+  homePath,
+  localPerson,
+  localSite,
+  projectCount,
+  translator,
+  type Lang,
+  type LocalPerson,
+} from '../i18n';
+import { asset } from '../lib/util';
 
 interface Props {
   lang?: Lang;
@@ -29,7 +40,6 @@ const people = (await getCollection('people'))
   .sort((a, b) => a.data.order - b.data.order || a.data.name.localeCompare(b.data.name))
   .map((p) => localPerson(p, ruTexts.get(p.id)));
 const founders = people.filter((p) => p.data.group === 'founder');
-// Specialists in team order: engineering, product design, brand & motion (by their main service).
 const areaRank = (p: LocalPerson) => {
   const area = SERVICES.find((s) => s.id === p.data.services[0])?.area;
   const i = AREAS.findIndex((a) => a.id === area);
@@ -37,31 +47,30 @@ const areaRank = (p: LocalPerson) => {
 };
 const specialists = people.filter((p) => p.data.group === 'network').sort((a, b) => areaRank(a) - areaRank(b));
 
-// The best-known clients behind featured work, at most eight.
 const rank = (c: string) => {
   const i = SITE.clientOrder.indexOf(c);
   return i === -1 ? SITE.clientOrder.length : i;
 };
+// The brands behind featured work, best known first.
 const clients = [
   ...new Set(people.flatMap((p) => p.data.projects.filter((pr) => pr.featured && pr.en.client).map((pr) => pr.en.client!))),
 ]
   .sort((a, b) => rank(a) - rank(b))
-  .slice(0, 8);
+  .slice(0, 10);
 
-// The academy is a real project of Giorgi's: its link and picture come from his file.
 const academy = founders.flatMap((p) => p.data.projects).find((p) => p.en.name === '101SPOT');
-
 const external = { target: '_blank', rel: 'noopener noreferrer' };
+const REEL = 'https://skhiladze.com/media/film/reel.mp4';
 ---
 
 <Base lang={lang}>
-  <header class="site-header">
-    <div class="container">
+  <header class="site-header" data-header>
+    <div class="wide">
       <a class="wordmark" href="#top"><i aria-hidden="true"></i>{site.name}</a>
       <nav class="nav" aria-label={t('Sections')}>
-        <a href="#market">{t('Market')}</a>
+        <a href="#work">{t('Work')}</a>
         <a href="#team">{t('Team')}</a>
-        <a href="#scope">{t('Services')}</a>
+        <a href="#market">{t('Market')}</a>
         <a href="#plan">{t('Plan')}</a>
       </nav>
       <ul class="lang" aria-label={t('Language')}>
@@ -83,23 +92,33 @@ const external = { target: '_blank', rel: 'noopener noreferrer' };
   </header>
 
   <main id="top">
+    <!-- The film: Luka's showreel, full screen. Phones, data saver and reduced motion get the still. -->
     <section class="hero">
-      <div class="container">
-        <p class="eyebrow">{t('Agency blueprint · {city}', { city: site.city })}</p>
+      <video class="hero__film" data-film={REEL} muted loop playsinline preload="none" poster={asset('/hd/reel-poster.webp')} aria-hidden="true" tabindex="-1"></video>
+      <div class="hero__shade" aria-hidden="true"></div>
+      <div class="wide hero__content">
+        <p class="eyebrow">{t('Potent — digital agency · {city}', { city: site.city })}</p>
         <h1>
           <span>{t('Big money is in digital.')}</span>
           <span>{t('We know how to earn it.')}</span>
           <em>{t("Here's the plan.")}</em>
         </h1>
+        <div class="hero__foot">
+          <span>{t('Showreel: Luka Skhiladze')}</span>
+          <a href="#work">{t('Scroll')} ↓</a>
+        </div>
       </div>
+    </section>
 
-      <Marquee people={people} lang={lang} />
-
-      <div class="container">
+    <section class="proof-band">
+      <div class="wide">
+        <p class="manifesto" data-reveal>
+          {t('A team of {n} with 80+ shipped projects for Bank of Georgia, Yamaha Motor Europe, SOCAR and Kärcher.', { n: people.length })}
+        </p>
         <ul class="proof">
           {
             PROOF.map((p) => (
-              <li class="proof__item">
+              <li class="proof__item" data-reveal>
                 <span class="proof__value">{t(p.value)}</span>
                 <span class="proof__label">
                   {t(p.label)}
@@ -113,103 +132,56 @@ const external = { target: '_blank', rel: 'noopener noreferrer' };
             ))
           }
         </ul>
-        {
-          clients.length > 0 && (
-            <div class="clients">
-              <p class="label">{t('Our people have worked for')}</p>
-              <ul>
-                {clients.map((c) => (
-                  <li>{c}</li>
-                ))}
-              </ul>
-            </div>
-          )
-        }
       </div>
     </section>
 
-    <section class="section" id="market" aria-labelledby="market-title">
-      <div class="container">
-        <header class="chapter-head">
-          <p class="chapter"><span>01</span>{t('The market')}</p>
-          <h2 id="market-title" set:html={t('Every business pays for digital. <em>Every year.</em>')} />
+    <section class="block" id="work" aria-labelledby="work-title">
+      <div class="wide">
+        <header class="block-head" data-reveal>
+          <h2 id="work-title">{t('Selected work')}</h2>
+          <p class="block-head__count">{projectCount(lang, CASES.length)}</p>
         </header>
-        <ul class="money">
-          {
-            MARKET.map((m) => (
-              <li class="money__card">
-                <span class="money__value">{t(m.value)}</span>
-                <span class="money__label">{t(m.label)}</span>
-                <a class="source" href={m.source.url} {...external}>
-                  {t('Source')}: {m.source.name}
-                </a>
-              </li>
-            ))
-          }
-        </ul>
-
-        <h3 class="sub-head">{t('How an agency earns')}</h3>
-        <ul class="streams">
-          {
-            STREAMS.map((s) => (
-              <li class="stream">
-                <svg class="stream__icon" viewBox="0 0 48 48" aria-hidden="true">
-                  {s.id === 'projects' && (
-                    <>
-                      <rect x="6" y="9" width="36" height="26" rx="3" />
-                      <path d="M6 16h36M17 41h14M24 35v6" />
-                    </>
-                  )}
-                  {s.id === 'support' && (
-                    <>
-                      <path d="M38 20a15 15 0 0 0-27-5M10 28a15 15 0 0 0 27 5" />
-                      <path d="M11 7v8h8M37 41v-8h-8" />
-                    </>
-                  )}
-                  {s.id === 'academy' && (
-                    <>
-                      <path d="M4 18 24 9l20 9-20 9z" />
-                      <path d="M12 22v10c0 3 5.5 6 12 6s12-3 12-6V22M44 18v12" />
-                    </>
-                  )}
-                  {s.id === 'podcast' && (
-                    <>
-                      <rect x="17" y="5" width="14" height="24" rx="7" />
-                      <path d="M10 22a14 14 0 0 0 28 0M24 36v7M17 43h14" />
-                    </>
-                  )}
-                </svg>
-                <h4>{t(s.title)}</h4>
-                <p>{t(s.text)}</p>
-              </li>
-            ))
-          }
-        </ul>
+        <Work people={people} lang={lang} />
       </div>
     </section>
 
-    <section class="section" id="team" aria-labelledby="team-title">
-      <div class="container">
-        <header class="chapter-head">
-          <p class="chapter"><span>02</span>{t('The team')}</p>
+    <section class="clients-band" aria-label={t('Our people have worked for')}>
+      <p class="eyebrow wide">{t('Our people have worked for')}</p>
+      <div class="ticker" aria-hidden="true">
+        {[0, 1].map(() => (
+          <ul>
+            {clients.map((c) => (
+              <li>{c}</li>
+            ))}
+          </ul>
+        ))}
+      </div>
+      <ul class="sr-only">
+        {clients.map((c) => <li>{c}</li>)}
+      </ul>
+    </section>
+
+    <section class="block" id="team" aria-labelledby="team-title">
+      <div class="wide">
+        <header class="block-head" data-reveal>
           <h2 id="team-title" set:html={t("Senior people who've done it for <em>big names.</em>")} />
         </header>
 
-        <h3 class="group-title">{t('Founders')}</h3>
+        <h3 class="kicker">{t('Founders')}</h3>
         <div class="founders">
           {founders.map((p) => <PersonCard person={p} lang={lang} />)}
         </div>
 
-        <h3 class="group-title">{t('Specialists')} <span>{specialists.length}</span></h3>
+        <h3 class="kicker">{t('Specialists')} <span>{specialists.length}</span></h3>
         <div class="members">
           {specialists.map((p) => <PersonCard person={p} lang={lang} />)}
         </div>
 
-        <h3 class="group-title">{t('Next hires, with the investment')}</h3>
-        <ul class="hires">
+        <h3 class="kicker">{t('Next hires, with the investment')}</h3>
+        <ul class="hires" data-reveal>
           {
             HIRES.map((h) => (
-              <li class="hire">
+              <li>
                 <span aria-hidden="true">+</span>
                 {t(h)}
               </li>
@@ -219,52 +191,92 @@ const external = { target: '_blank', rel: 'noopener noreferrer' };
       </div>
     </section>
 
-    <Scope lang={lang} people={people} number="03" label={t('What we sell')} compact />
+    <section class="block" id="market" aria-labelledby="market-title">
+      <div class="wide">
+        <header class="block-head" data-reveal>
+          <h2 id="market-title" set:html={t('Every business pays for digital. <em>Every year.</em>')} />
+        </header>
+        <ul class="money">
+          {
+            MARKET.map((m) => (
+              <li class="money__row" data-reveal>
+                <span class="money__value">{t(m.value)}</span>
+                <span class="money__label">
+                  {t(m.label)}
+                  <a class="source" href={m.source.url} {...external}>
+                    {t('Source')}: {m.source.name}
+                  </a>
+                </span>
+              </li>
+            ))
+          }
+        </ul>
 
-    <section class="section" id="engine" aria-labelledby="engine-title">
-      <div class="container engine">
-        <div class="engine__text">
-          <header class="chapter-head">
-            <p class="chapter"><span>04</span>{t('Growth engine')}</p>
-            <h2 id="engine-title" set:html={t('Our own academy grows <em>our own people.</em>')} />
-          </header>
-          <p class="engine__lede">
+        <h3 class="kicker">{t('How an agency earns')}</h3>
+        <ol class="streams">
+          {
+            STREAMS.map((s, i) => (
+              <li class="stream" data-reveal>
+                <span class="stream__n">{String(i + 1).padStart(2, '0')}</span>
+                <span class="stream__title">{t(s.title)}</span>
+                <span class="stream__text">{t(s.text)}</span>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+    </section>
+
+    <Scope lang={lang} people={people} label={t('What we sell')} compact />
+
+    <section class="block" id="engine" aria-labelledby="engine-title">
+      <div class="wide">
+        <header class="block-head" data-reveal>
+          <h2 id="engine-title" set:html={t('Our own academy grows <em>our own people.</em>')} />
+          <p class="block-head__text">
             {t('Seniors lead, academy graduates do the volume: more projects with the same team, and a higher margin.')}
           </p>
+        </header>
+        <div class="engine">
           {
             academy && (
-              <a class="academy" href={academy.url ?? academy.caseStudy} {...external}>
-                {academy.image && <img src={thumbOf(academy.image)} alt="" width="640" height="400" loading="lazy" />}
+              <a class="academy" href={academy.url ?? academy.caseStudy} {...external} data-reveal>
+                <img
+                  src={asset('/hd/101spot-1200.webp')}
+                  srcset={`${asset('/hd/101spot-1200.webp')} 1200w, ${asset('/hd/101spot-2400.webp')} 2400w`}
+                  sizes="(min-width: 1000px) 55vw, 100vw"
+                  alt=""
+                  loading="lazy"
+                />
                 <span class="academy__text">
-                  <span class="academy__name">
-                    101SPOT <span aria-hidden="true">↗</span>
-                  </span>
-                  <span class="academy__by">{t('Academy co-founded by Giorgi Kheladze')}</span>
-                  <span class="academy__fact">
+                  <span class="academy__name">101SPOT ↗</span>
+                  <span>{t('Academy co-founded by Giorgi Kheladze')}</span>
+                  <span>
                     <b>{t('90 days')}</b> {t('from junior to mid-level designer')}
                   </span>
                 </span>
               </a>
             )
           }
+          <div data-reveal><Engine lang={lang} /></div>
         </div>
-        <Engine lang={lang} />
       </div>
     </section>
 
-    <section class="section" id="plan" aria-labelledby="plan-title">
-      <div class="container">
-        <header class="chapter-head">
-          <p class="chapter"><span>05</span>{t('The plan')}</p>
+    <section class="block" id="plan" aria-labelledby="plan-title">
+      <div class="wide">
+        <header class="block-head" data-reveal>
           <h2 id="plan-title" set:html={t('$100,000 to build it <em>faster.</em>')} />
         </header>
         <div class="plans">
           {
             PLANS.map((p) => (
-              <article class:list={['plan', { 'plan--pick': p.recommended }]}>
-                {p.recommended && <p class="plan__badge">{t('Recommended')}</p>}
+              <article class:list={['plan', { 'plan--pick': p.recommended }]} data-reveal>
+                <p class="plan__top">
+                  <span>{t(p.name)}</span>
+                  {p.recommended && <span class="plan__badge">{t('Recommended')}</span>}
+                </p>
                 <p class="plan__amount">{t(p.amount)}</p>
-                <h3 class="plan__name">{t(p.name)}</h3>
                 <ul class="plan__points">
                   {p.points.map((point) => (
                     <li>{t(point)}</li>
@@ -279,9 +291,47 @@ const external = { target: '_blank', rel: 'noopener noreferrer' };
   </main>
 
   <footer class="site-footer">
-    <div class="container">
-      <p><strong>{site.name}</strong> · {site.city}</p>
-      <p>{t("Project credits come from each person's own portfolio and profiles.")}</p>
+    <div class="wide">
+      <p class="site-footer__mark" aria-hidden="true">{site.name}</p>
+      <div class="site-footer__row">
+        <p>{site.name} · {site.city}</p>
+        <p>{t("Project credits come from each person's own portfolio and profiles.")}</p>
+      </div>
     </div>
   </footer>
 </Base>
+
+<script>
+  // The header gets a backdrop once the film is behind it.
+  const header = document.querySelector<HTMLElement>('[data-header]');
+  const onScroll = () => header?.toggleAttribute('data-solid', window.scrollY > 40);
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  // The showreel loads only where it makes sense: wide screens, no data saver, no reduced motion.
+  const film = document.querySelector<HTMLVideoElement>('[data-film]');
+  const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const saver = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData;
+  if (film && !calm && !saver && window.innerWidth >= 700) {
+    film.src = film.dataset.film!;
+    film.play().catch(() => {});
+  }
+
+  // Things rise into place as they come into view.
+  const items = [...document.querySelectorAll<HTMLElement>('[data-reveal]')];
+  if (calm || !('IntersectionObserver' in window)) {
+    for (const el of items) el.classList.add('is-in');
+  } else {
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (!e.isIntersecting) continue;
+          e.target.classList.add('is-in');
+          io.unobserve(e.target);
+        }
+      },
+      { rootMargin: '0px 0px -8% 0px' },
+    );
+    for (const el of items) io.observe(el);
+  }
+</script>

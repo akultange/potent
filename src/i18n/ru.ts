@@ -74,12 +74,16 @@ export const RU = {
       'Сведения о проектах взяты из портфолио и профилей самих специалистов.',
 
     // the agency blueprint
-    'Agency blueprint · {city}': 'План агентства · {city}',
+    'Potent — digital agency · {city}': 'Potent — диджитал-агентство · {city}',
     'Big money is in digital.': 'Большие деньги — в цифре.',
+    'Showreel: Luka Skhiladze': 'Шоурил: Лука Схиладзе',
+    Scroll: 'Листайте',
+    'A team of {n} with 80+ shipped projects for Bank of Georgia, Yamaha Motor Europe, SOCAR and Kärcher.':
+      'Команда из {n} человек и 80+ проектов для Bank of Georgia, Yamaha Motor Europe, SOCAR и Kärcher.',
+    'Selected work': 'Избранные работы',
+    'View project': 'Смотреть проект',
     'We know how to earn it.': 'Мы знаем, как их зарабатывать.',
     "Here's the plan.": 'Вот план.',
-    Pause: 'Остановить',
-    Play: 'Запустить',
     Market: 'Рынок',
     Team: 'Команда',
     Plan: 'План',
@@ -159,8 +163,8 @@ export const RU = {
 
   /** src/data/site.ts */
   site: {
-    tagline: 'План агентства',
-    description: 'План цифрового агентства: рынок, команда, работы и план роста.',
+    tagline: 'Диджитал-агентство · Тбилиси',
+    description: 'Диджитал-агентство из Тбилиси: 80+ проектов для Bank of Georgia, Yamaha Motor Europe, SOCAR и Kärcher, опытная команда и план роста.',
     city: 'Тбилиси, Грузия',
   },
 

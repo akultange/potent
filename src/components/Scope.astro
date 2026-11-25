@@ -81,9 +81,9 @@ const items = localScope(lang).map((item) => {
     <div class="section-head">
       <div>
         {
-          number && (
+          (number || label) && (
             <p class="chapter">
-              <span>{number}</span>
+              {number && <span>{number}</span>}
               {label ?? t('Services')}
             </p>
           )

@@ -1,0 +1,81 @@
+---
+// Selected work, big: each project as a large picture with its name, client and the face of
+// the person who made it. Order and sizes live in src/data/showcase.ts.
+import { CASES } from '../data/showcase';
+import { translator, type Lang, type LocalPerson } from '../i18n';
+import { asset, initials } from '../lib/util';
+
+interface Props {
+  /** Everyone on the page, in the page's language. */
+  people: LocalPerson[];
+  lang?: Lang;
+}
+
+const { people, lang = 'en' } = Astro.props;
+const t = translator(lang);
+
+const SIZES = {
+  full: '(min-width: 1500px) 1440px, 100vw',
+  half: '(min-width: 900px) 50vw, 100vw',
+  third: '(min-width: 900px) 33vw, 100vw',
+} as const;
+
+const cases = CASES.map((c, i) => {
+  const person = people.find((p) => p.id === c.person);
+  const project = person?.data.projects.find((p) => p.en.name === c.project);
+  if (!person || !project) {
+    throw new Error(
+      `src/data/showcase.ts: "${c.project}" by "${c.person}" is not in src/content/people/${c.person}.yaml.`,
+    );
+  }
+  const own = project.image ? asset(project.image) : null;
+  const picture = c.hd
+    ? c.single
+      ? { src: asset(`/hd/${c.hd}-1200.webp`), srcset: undefined }
+      : {
+          src: asset(`/hd/${c.hd}-1200.webp`),
+          srcset: `${asset(`/hd/${c.hd}-1200.webp`)} 1200w, ${asset(`/hd/${c.hd}-2400.webp`)} 2400w`,
+        }
+    : { src: own, srcset: undefined };
+  return {
+    ...c,
+    n: String(i + 1).padStart(2, '0'),
+    name: project.name,
+    client: project.client && !project.name.includes(project.client) ? project.client : null,
+    type: project.type,
+    href: project.url ?? project.caseStudy,
+    picture,
+    by: person.data.name,
+    byId: person.id,
+    photo: person.data.photo ? asset(person.data.photo) : null,
+  };
+});
+---
+
+<div class="work-grid">
+  {
+    cases.map((c) => (
+      <article class:list={['case', `case--${c.size}`]} data-reveal>
+        <a class="case__media" href={c.href} target="_blank" rel="noopener noreferrer" aria-label={`${c.name}, ${t('View project')}`}>
+          {c.picture.src && (
+            <img src={c.picture.src} srcset={c.picture.srcset} sizes={SIZES[c.size]} alt="" loading="lazy" decoding="async" />
+          )}
+          <span class="case__view" aria-hidden="true">
+            {t('View project')} ↗
+          </span>
+        </a>
+        <div class="case__caption">
+          <span class="case__n">{c.n}</span>
+          <div class="case__title">
+            <h3>{c.name}</h3>
+            <p>{[c.client, c.type].filter(Boolean).join(' · ')}</p>
+          </div>
+          <a class="case__by" href={`#${c.byId}`}>
+            {c.photo ? <img src={c.photo} alt="" width="28" height="28" loading="lazy" /> : <span>{initials(c.by)}</span>}
+            {c.by}
+          </a>
+        </div>
+      </article>
+    ))
+  }
+</div>

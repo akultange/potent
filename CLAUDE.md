@@ -7,10 +7,11 @@
 - Russian is laid over the English: page texts in `src/i18n/ru.ts` (templates call
   `t('English text')`), people in `src/content/people-ru/`. Every new word on the page needs its
   Russian line.
-- The page is an agency blueprint for an investor who is not digital (send him /ru/): promise and
-  moving work wall, 01 market (sourced numbers), 02 team (real photos; open roles shown as roles,
-  never invented people), 03 what we sell, 04 growth engine (academy, podcast), 05 plan ($40k vs
-  $100k). Numbers live in `src/data/blueprint.ts` with their sources. Keep words short.
+- The page is a dark, portfolio-style agency blueprint for one non-digital investor (send him
+  /ru/): Luka's showreel hero, proof numbers, "Selected work" as huge pictures
+  (`src/data/showcase.ts`, retina files in `public/hd/`), client ticker, B&W team portraits plus
+  open roles (never invented people), market numbers with sources (`src/data/blueprint.ts`), what
+  we sell, academy/podcast engine, $40k vs $100k plan. Big pictures, few words.
 - Two founders push to `main` in parallel. Commit small and often, always `git pull --rebase`
   before `git push`, resolve conflicts by keeping both sides' intent, never force-push or rewrite
   pushed history. No branches or PRs.

@@ -1,17 +1,29 @@
 # Potent
 
-Investor page for Potent: a blueprint for the agency, written for an investor who is not from
-the digital trade (the Russian page, /ru/, is the one to send). It goes:
+Potent's site: a dark, portfolio-style agency blueprint, built to show one investor (the
+Russian page, /ru/, is the one to send) that this team is big, proven and worth backing:
 
-1. **The promise and the work**: a moving wall of the team's projects and three proven numbers.
-2. **The market**: why digital is big money, every number with its source.
-3. **The team**: real faces. Founders, specialists, and the roles the investment hires next.
-4. **What we sell**: everything digital, in pictures.
-5. **The growth engine**: our own academy and podcast, so the team grows and margins stay high.
-6. **The plan**: $40k to start or $100k to scale.
+1. **The film**: Luka's showreel full screen, with the promise on top (phones get a still).
+2. **Proof**: one sentence and three big numbers.
+3. **Selected work**: the projects as huge pictures, each with its maker's face.
+4. **Clients**, as a slow ticker of brand names.
+5. **The team**: large black-and-white portraits, and the roles the investment hires next.
+6. **The market**: giant numbers, each with its source, and how the agency earns.
+7. **What we sell**: everything digital, in pictures.
+8. **The growth engine**: our own academy and podcast.
+9. **The plan**: $40k to start or $100k to scale.
 
 Static [Astro](https://astro.build) site, no backend. Words are kept short; bios and project
 write-ups stay in the YAML files.
+
+## Pictures
+
+- `src/data/showcase.ts` sets which projects are in "Selected work", in what order and how big
+  (full width, half or third).
+- `public/hd/`: retina screenshots for the big pictures (`<name>-1200.webp` and
+  `<name>-2400.webp`). Full-width pictures need the 2400px file; half and third widths are fine
+  with a project's own 1200px image.
+- `public/people/`: square portraits, set with `photo:` in each person's file.
 
 Live: https://akultange.github.io/potent/ in English and https://akultange.github.io/potent/ru/ in
 Russian (every push to `main` is published by `.github/workflows/deploy.yml`, about a minute later).
