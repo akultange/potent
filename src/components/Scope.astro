@@ -17,9 +17,13 @@ interface Props {
   people: LocalPerson[];
   /** Chapter number shown above the title, e.g. "03". */
   number?: string;
+  /** Chapter name next to the number; "Services" when left out. */
+  label?: string;
+  /** Pictures and titles only: no sentence under each tile and no real-project strip. */
+  compact?: boolean;
 }
 
-const { lang = 'en', people, number } = Astro.props;
+const { lang = 'en', people, number, label, compact = false } = Astro.props;
 const t = translator(lang);
 
 // How wide each tile is drawn, so the browser picks the right picture file.
@@ -72,7 +76,7 @@ const items = localScope(lang).map((item) => {
 });
 ---
 
-<section class="section scope" id="scope" aria-labelledby="scope-title">
+<section class:list={['section', 'scope', { 'scope--compact': compact }]} id="scope" aria-labelledby="scope-title">
   <div class="container">
     <div class="section-head">
       <div>
@@ -80,7 +84,7 @@ const items = localScope(lang).map((item) => {
           number && (
             <p class="chapter">
               <span>{number}</span>
-              {t('Services')}
+              {label ?? t('Services')}
             </p>
           )
         }
@@ -141,10 +145,10 @@ const items = localScope(lang).map((item) => {
 
             <div class="scope__body">
               <h3>{item.title}</h3>
-              <p>{item.text}</p>
+              {!compact && <p>{item.text}</p>}
             </div>
 
-            {item.examples.length > 0 && (
+            {!compact && item.examples.length > 0 && (
               <div class="scope__proof">
                 <p class="label">{t('From our work')}</p>
                 <ul class="scope__examples">
@@ -565,6 +569,58 @@ const items = localScope(lang).map((item) => {
   @media (prefers-reduced-motion: reduce) {
     .scope__media video {
       display: none;
+    }
+  }
+
+  /* Compact: pictures and titles only, every tile the same size, three to a row on desktop */
+  .scope--compact .scope__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .scope--compact .scope__item,
+  .scope--compact .scope__item--wide,
+  .scope--compact .scope__item--hero {
+    grid-column: auto;
+  }
+
+  .scope--compact .scope__item--hero {
+    grid-column: 1 / -1;
+  }
+
+  .scope--compact .scope__media,
+  .scope--compact .scope__item--wide .scope__media {
+    aspect-ratio: 4 / 3;
+  }
+
+  .scope--compact .scope__item--hero .scope__media {
+    aspect-ratio: 16 / 9;
+  }
+
+  .scope--compact .scope__body,
+  .scope--compact .scope__item--hero .scope__body {
+    display: block;
+    padding: 12px 14px 14px;
+  }
+
+  .scope--compact .scope__body h3,
+  .scope--compact .scope__item--wide .scope__body h3,
+  .scope--compact .scope__item--hero .scope__body h3 {
+    max-width: none;
+    font-size: 16px;
+    letter-spacing: -0.015em;
+  }
+
+  @media (min-width: 900px) {
+    .scope--compact .scope__grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .scope--compact .scope__item--hero {
+      grid-column: auto;
+    }
+
+    .scope--compact .scope__item--hero .scope__media {
+      aspect-ratio: 4 / 3;
     }
   }
 </style>

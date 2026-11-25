@@ -1,8 +1,8 @@
 export const SITE = {
   name: 'Potent',
-  tagline: "What we're working with",
+  tagline: 'Agency blueprint',
   description:
-    'Two managing partners, a network of senior specialists, and everything digital we can make together.',
+    'A blueprint for a digital agency: the market, the team, the work and the plan to grow.',
   city: 'Tbilisi, Georgia',
   /** Clients listed first (in this order) in the hero's client line; others follow. */
   clientOrder: ['Yamaha Motor Europe', 'Bank of Georgia', 'Kärcher Georgia', 'SOCAR', 'FINA'],

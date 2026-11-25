@@ -1,14 +1,17 @@
 # Potent
 
-Investor page for Potent: what we're working with. Three parts, told mostly in pictures:
+Investor page for Potent: a blueprint for the agency, written for an investor who is not from
+the digital trade (the Russian page, /ru/, is the one to send). It goes:
 
-1. **Managing partners**: the two of us who run it, our work and a few numbers.
-2. **Network**: our potential team of senior specialists, grouped into engineering, product design,
-   and brand & motion.
-3. **Services**: everything digital we can make together, and who does what.
+1. **The promise and the work**: a moving wall of the team's projects and three proven numbers.
+2. **The market**: why digital is big money, every number with its source.
+3. **The team**: real faces. Founders, specialists, and the roles the investment hires next.
+4. **What we sell**: everything digital, in pictures.
+5. **The growth engine**: our own academy and podcast, so the team grows and margins stay high.
+6. **The plan**: $40k to start or $100k to scale.
 
-Static [Astro](https://astro.build) site, no backend. The page keeps words to a minimum: names,
-titles, numbers and pictures of the work. Bios and project write-ups stay in the YAML files.
+Static [Astro](https://astro.build) site, no backend. Words are kept short; bios and project
+write-ups stay in the YAML files.
 
 Live: https://akultange.github.io/potent/ in English and https://akultange.github.io/potent/ru/ in
 Russian (every push to `main` is published by `.github/workflows/deploy.yml`, about a minute later).
@@ -30,6 +33,7 @@ add people at the same time without merge conflicts. Copy an existing file, name
 ```yaml
 name: Jane Doe
 title: Senior brand designer          # short role line
+photo: /people/jane-doe.jpg           # square portrait in public/people/ (initials without one)
 group: network                        # founder | network
 order: 40                             # lower = earlier on the page
 location: Tbilisi, Georgia
@@ -67,6 +71,13 @@ has none yet.
 
 Services live in `src/data/services.ts`. If a file uses an unknown service id or a malformed URL,
 `npm run build` fails and names the file and field.
+
+## Blueprint numbers and plan
+
+Everything on the page that is not about one person lives in `src/data/blueprint.ts`: the proof
+numbers, the market figures (each with its source link), how the agency earns, the next hires and
+the two plans. This page asks someone for money, so every number keeps its source, and no
+revenue or return figure goes in until the founders give it.
 
 ## English and Russian
 

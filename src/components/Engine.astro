@@ -1,0 +1,49 @@
+---
+// The growth loop as one drawing: academy, interns, team, projects, revenue, podcast and back
+// to the academy, with the point of it in the middle. Labels come from src/data/blueprint.ts.
+import { ENGINE } from '../data/blueprint';
+import { translator, type Lang } from '../i18n';
+
+interface Props {
+  lang?: Lang;
+}
+
+const { lang = 'en' } = Astro.props;
+const t = translator(lang);
+
+const C = 300;
+const R = 212;
+const nodes = ENGINE.map((label, i) => {
+  const a = ((-90 + (360 / ENGINE.length) * i) * Math.PI) / 180;
+  return { label: t(label), x: C + R * Math.cos(a), y: C + R * Math.sin(a) };
+});
+// Arrowheads halfway between neighbours, turned along the circle (clockwise).
+const arrows = ENGINE.map((_, i) => {
+  const deg = -90 + (360 / ENGINE.length) * (i + 0.5);
+  const a = (deg * Math.PI) / 180;
+  return { x: C + R * Math.cos(a), y: C + R * Math.sin(a), rotate: deg + 90 };
+});
+const [line1, line2] = t('Higher margin').split(' ');
+const summary = `${[...ENGINE, ENGINE[0]].map((l) => t(l)).join(' → ')}: ${t('Higher margin')}`;
+---
+
+<svg class="engine-loop" viewBox="0 0 600 600" role="img" aria-label={summary}>
+  <circle class="engine-loop__ring" cx={C} cy={C} r={R} />
+  {
+    arrows.map((a) => (
+      <path class="engine-loop__arrow" d="M -9 -7 L 9 0 L -9 7 Z" transform={`translate(${a.x} ${a.y}) rotate(${a.rotate})`} />
+    ))
+  }
+  {
+    nodes.map((n) => (
+      <g>
+        <circle class="engine-loop__node" cx={n.x} cy={n.y} r="62" />
+        <text class="engine-loop__label" x={n.x} y={n.y} text-anchor="middle" dominant-baseline="central">
+          {n.label}
+        </text>
+      </g>
+    ))
+  }
+  <text class="engine-loop__center" x={C} y={C - 22} text-anchor="middle" dominant-baseline="central">{line1}</text>
+  <text class="engine-loop__center" x={C} y={C + 26} text-anchor="middle" dominant-baseline="central">{line2}</text>
+</svg>

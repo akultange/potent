@@ -1,3 +1,6 @@
+import { existsSync } from 'node:fs';
+import path from 'node:path';
+
 /** Stable hue (0–359) for a string, used to tint avatars and work tiles. */
 export function hue(s: string): number {
   let h = 7;
@@ -21,4 +24,13 @@ export function initials(name: string): string {
     .map((w) => w[0]!.toUpperCase())
     .slice(0, 2)
     .join('');
+}
+
+/**
+ * The small 640 x 400 copy of a project screenshot (public/scope/work/, made by
+ * scripts/scope-thumbs.mjs) if it exists, else the full screenshot. Build time only.
+ */
+export function thumbOf(image: string): string {
+  const small = `/scope/work/${image.split('/').pop()!.replace(/\.\w+$/, '')}.webp`;
+  return asset(existsSync(path.join(process.cwd(), 'public', small)) ? small : image);
 }

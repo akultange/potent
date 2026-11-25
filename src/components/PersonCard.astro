@@ -1,30 +1,29 @@
 ---
-// One person: their work in pictures, then name, title, a few numbers and links. No paragraphs;
-// bios and project write-ups stay in the YAML files.
-import Mosaic from './Mosaic.astro';
+// One person, face first: their photo (or initials), name, role, the brands they have worked
+// for and their links. Founders get a larger card with their headline numbers.
 import { translator, type Lang, type LocalPerson } from '../i18n';
-import { hue, initials } from '../lib/util';
+import { asset, hue, initials } from '../lib/util';
 
 interface Props {
   /** A person from src/content/people/, already in the page's language (see localPerson). */
   person: LocalPerson;
   lang?: Lang;
-  /** Heading level of the name: 3 straight under a section title, 4 under a team name. */
-  level?: 3 | 4;
 }
 
-const { person, lang = 'en', level = 3 } = Astro.props;
+const { person, lang = 'en' } = Astro.props;
 const t = translator(lang);
 const d = person.data;
 const isFounder = d.group === 'founder';
-const Name = level === 4 ? 'h4' : 'h3';
 
-// Featured projects with a picture, in YAML order: up to six for a founder, three in the network.
-// Someone without pictures yet shows their featured projects as lettered tiles instead.
-const featured = d.projects.filter((p) => p.featured);
-const pictured = featured.filter((p) => p.image);
-const tiles = (pictured.length > 0 ? pictured : featured).slice(0, isFounder ? 6 : 3);
-const facts = d.facts.slice(0, isFounder ? 3 : 2);
+// Brands behind their work, featured projects first; brand names stay as they are.
+const clients = [
+  ...new Set(
+    [...d.projects.filter((p) => p.featured), ...d.projects.filter((p) => !p.featured)]
+      .map((p) => p.en.client)
+      .filter((c): c is string => Boolean(c)),
+  ),
+].slice(0, isFounder ? 4 : 2);
+const facts = isFounder ? d.facts.slice(0, 3) : [];
 
 const LINK_LABELS = {
   linkedin: 'LinkedIn',
@@ -33,26 +32,27 @@ const LINK_LABELS = {
   instagram: 'Instagram',
   github: 'GitHub',
 } as const;
-
 const links = (Object.keys(LINK_LABELS) as (keyof typeof LINK_LABELS)[])
   .filter((k) => d.links[k])
   .map((k) => ({ label: LINK_LABELS[k], href: d.links[k]! }));
-const isEmpty = d.projects.length === 0 && d.facts.length === 0;
 ---
 
-<article class:list={['person', isFounder ? 'person--founder' : 'person--network']} id={person.id}>
-  {tiles.length > 0 && <Mosaic projects={tiles} label={t('Work by {name}', { name: d.name })} />}
+<article class:list={['person', isFounder ? 'person--founder' : 'person--member']} id={person.id}>
+  <div class="person__face" style={`--hue:${hue(d.en.name)}`}>
+    {
+      d.photo ? (
+        <img src={asset(d.photo)} alt={d.name} loading="lazy" decoding="async" />
+      ) : (
+        <span class="person__initials" aria-hidden="true">
+          {initials(d.name)}
+        </span>
+      )
+    }
+  </div>
 
   <div class="person__body">
-    <header class="person__head">
-      <span class="avatar" style={`--hue:${hue(d.en.name)}`} aria-hidden="true">{initials(d.name)}</span>
-      <div>
-        <Name class="person__name">{d.name}</Name>
-        <p class="person__title">{d.title}</p>
-      </div>
-    </header>
-
-    {isEmpty && <p class="pending">{t('Profile coming soon.')}</p>}
+    <h4 class="person__name">{d.name}</h4>
+    <p class="person__title">{d.title}</p>
 
     {
       facts.length > 0 && (
@@ -64,6 +64,16 @@ const isEmpty = d.projects.length === 0 && d.facts.length === 0;
             </div>
           ))}
         </dl>
+      )
+    }
+
+    {
+      clients.length > 0 && (
+        <ul class="brands" aria-label={t('Worked for')}>
+          {clients.map((c) => (
+            <li>{c}</li>
+          ))}
+        </ul>
       )
     }
 

@@ -1,28 +1,20 @@
 ---
-// The investor brief, in both languages: "/" renders this file as is (English) and
-// src/pages/ru/index.astro renders it with lang="ru". Three parts: 01 the founders, 02 the
-// network (our potential team), 03 what we can make together. Pictures, numbers and names;
-// very few words. Text goes through t(): written here in English, looked up in src/i18n/ru.ts.
+// The agency blueprint, for an investor, in both languages: "/" renders this file as is
+// (English) and src/pages/ru/index.astro renders it with lang="ru". It goes: the promise and
+// the work, 01 the market, 02 the team, 03 what we sell, 04 the growth engine (academy and
+// podcast), 05 the plan. Text goes through t(): written here in English, looked up in
+// src/i18n/ru.ts. Numbers and their sources live in src/data/blueprint.ts.
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
+import Engine from '../components/Engine.astro';
+import Marquee from '../components/Marquee.astro';
 import PersonCard from '../components/PersonCard.astro';
 import Scope from '../components/Scope.astro';
+import { HIRES, MARKET, PLANS, PROOF, STREAMS } from '../data/blueprint';
 import { AREAS, SERVICES } from '../data/services';
-import { SCOPE, SCOPE_WIDTHS } from '../data/scope';
 import { SITE } from '../data/site';
-import {
-  LANGS,
-  LANG_LABELS,
-  counted,
-  homePath,
-  localPerson,
-  localServices,
-  localSite,
-  translator,
-  type Lang,
-  type LocalPerson,
-} from '../i18n';
-import { asset, hue, initials } from '../lib/util';
+import { LANGS, LANG_LABELS, homePath, localPerson, localSite, translator, type Lang, type LocalPerson } from '../i18n';
+import { thumbOf } from '../lib/util';
 
 interface Props {
   lang?: Lang;
@@ -37,17 +29,15 @@ const people = (await getCollection('people'))
   .sort((a, b) => a.data.order - b.data.order || a.data.name.localeCompare(b.data.name))
   .map((p) => localPerson(p, ruTexts.get(p.id)));
 const founders = people.filter((p) => p.data.group === 'founder');
-const network = people.filter((p) => p.data.group === 'network');
+// Specialists in team order: engineering, product design, brand & motion (by their main service).
+const areaRank = (p: LocalPerson) => {
+  const area = SERVICES.find((s) => s.id === p.data.services[0])?.area;
+  const i = AREAS.findIndex((a) => a.id === area);
+  return i === -1 ? AREAS.length : i;
+};
+const specialists = people.filter((p) => p.data.group === 'network').sort((a, b) => areaRank(a) - areaRank(b));
 
-// The network as a potential team: each person sits under the area of their main (first)
-// service. Anyone without a service still shows up, under "More specialists".
-const areaOf = (p: LocalPerson) => SERVICES.find((s) => s.id === p.data.services[0])?.area;
-const teams = [
-  ...AREAS.map((a) => ({ name: t(a.name), people: network.filter((p) => areaOf(p) === a.id) })),
-  { name: t('More specialists'), people: network.filter((p) => !areaOf(p)) },
-].filter((team) => team.people.length > 0);
-
-// The best-known clients behind featured work, at most eight, so the line stays short.
+// The best-known clients behind featured work, at most eight.
 const rank = (c: string) => {
   const i = SITE.clientOrder.indexOf(c);
   return i === -1 ? SITE.clientOrder.length : i;
@@ -58,21 +48,10 @@ const clients = [
   .sort((a, b) => rank(a) - rank(b))
   .slice(0, 8);
 
-// Who does what: the managing partners, then the network in team order.
-const services = localServices(lang).filter((s) => people.some((p) => (p.data.services as string[]).includes(s.id)));
-const coverage = [
-  { name: t('Managing partners'), people: founders },
-  { name: t('Network'), people: teams.flatMap((team) => team.people) },
-]
-  .map((g) => ({ ...g, people: g.people.filter((p) => p.data.services.length > 0) }))
-  .filter((g) => g.people.length > 0);
+// The academy is a real project of Giorgi's: its link and picture come from his file.
+const academy = founders.flatMap((p) => p.data.projects).find((p) => p.en.name === '101SPOT');
 
-const stills = SCOPE.slice(0, 4).map((s) => asset(`/scope/${s.id}-${SCOPE_WIDTHS[s.size][0]}.webp`));
-const stats = [
-  { href: '#founders', num: '01', count: founders.length, unit: counted(lang, founders.length, 'partners'), faces: founders },
-  { href: '#network', num: '02', count: network.length, unit: counted(lang, network.length, 'specialists'), faces: network },
-  { href: '#scope', num: '03', count: SCOPE.length, unit: counted(lang, SCOPE.length, 'services'), faces: [] as LocalPerson[] },
-];
+const external = { target: '_blank', rel: 'noopener noreferrer' };
 ---
 
 <Base lang={lang}>
@@ -80,9 +59,10 @@ const stats = [
     <div class="container">
       <a class="wordmark" href="#top"><i aria-hidden="true"></i>{site.name}</a>
       <nav class="nav" aria-label={t('Sections')}>
-        <a href="#founders">{t('Partners')}</a>
-        <a href="#network">{t('Network')}</a>
+        <a href="#market">{t('Market')}</a>
+        <a href="#team">{t('Team')}</a>
         <a href="#scope">{t('Services')}</a>
+        <a href="#plan">{t('Plan')}</a>
       </nav>
       <ul class="lang" aria-label={t('Language')}>
         {
@@ -105,36 +85,34 @@ const stats = [
   <main id="top">
     <section class="hero">
       <div class="container">
-        <p class="eyebrow">{t('Investor brief · {city}', { city: site.city })}</p>
+        <p class="eyebrow">{t('Agency blueprint · {city}', { city: site.city })}</p>
         <h1>
-          <span>{t('Two managing partners.')}</span>
-          <span>{t('A senior network.')}</span>
-          <em>{t('Everything digital.')}</em>
+          <span>{t('Big money is in digital.')}</span>
+          <span>{t('We know how to earn it.')}</span>
+          <em>{t("Here's the plan.")}</em>
         </h1>
+      </div>
 
-        <ul class="stats">
+      <Marquee people={people} lang={lang} />
+
+      <div class="container">
+        <ul class="proof">
           {
-            stats.map((s) => (
-              <li>
-                <a class="stat" href={s.href}>
-                  <span class="stat__num">{s.num}</span>
-                  <span class="stat__count">{s.count}</span>
-                  <span class="stat__unit">{s.unit}</span>
-                  <span class="stat__visual" aria-hidden="true">
-                    {s.faces.length > 0
-                      ? s.faces.map((p) => (
-                          <span class="avatar avatar--sm" style={`--hue:${hue(p.data.en.name)}`}>
-                            {initials(p.data.name)}
-                          </span>
-                        ))
-                      : stills.map((src) => <img class="stat__still" src={src} alt="" />)}
-                  </span>
-                </a>
+            PROOF.map((p) => (
+              <li class="proof__item">
+                <span class="proof__value">{t(p.value)}</span>
+                <span class="proof__label">
+                  {t(p.label)}
+                  {p.source && (
+                    <a class="source" href={p.source.url} {...external}>
+                      {p.source.name}
+                    </a>
+                  )}
+                </span>
               </li>
             ))
           }
         </ul>
-
         {
           clients.length > 0 && (
             <div class="clients">
@@ -150,93 +128,151 @@ const stats = [
       </div>
     </section>
 
-    <section class="section" id="founders" aria-labelledby="founders-title">
+    <section class="section" id="market" aria-labelledby="market-title">
       <div class="container">
         <header class="chapter-head">
-          <p class="chapter"><span>01</span>{t('Managing partners')}</p>
-          <h2 id="founders-title" set:html={t("Managers who've done <em>every part</em> of the work")} />
+          <p class="chapter"><span>01</span>{t('The market')}</p>
+          <h2 id="market-title" set:html={t('Every business pays for digital. <em>Every year.</em>')} />
         </header>
+        <ul class="money">
+          {
+            MARKET.map((m) => (
+              <li class="money__card">
+                <span class="money__value">{t(m.value)}</span>
+                <span class="money__label">{t(m.label)}</span>
+                <a class="source" href={m.source.url} {...external}>
+                  {t('Source')}: {m.source.name}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+
+        <h3 class="sub-head">{t('How an agency earns')}</h3>
+        <ul class="streams">
+          {
+            STREAMS.map((s) => (
+              <li class="stream">
+                <svg class="stream__icon" viewBox="0 0 48 48" aria-hidden="true">
+                  {s.id === 'projects' && (
+                    <>
+                      <rect x="6" y="9" width="36" height="26" rx="3" />
+                      <path d="M6 16h36M17 41h14M24 35v6" />
+                    </>
+                  )}
+                  {s.id === 'support' && (
+                    <>
+                      <path d="M38 20a15 15 0 0 0-27-5M10 28a15 15 0 0 0 27 5" />
+                      <path d="M11 7v8h8M37 41v-8h-8" />
+                    </>
+                  )}
+                  {s.id === 'academy' && (
+                    <>
+                      <path d="M4 18 24 9l20 9-20 9z" />
+                      <path d="M12 22v10c0 3 5.5 6 12 6s12-3 12-6V22M44 18v12" />
+                    </>
+                  )}
+                  {s.id === 'podcast' && (
+                    <>
+                      <rect x="17" y="5" width="14" height="24" rx="7" />
+                      <path d="M10 22a14 14 0 0 0 28 0M24 36v7M17 43h14" />
+                    </>
+                  )}
+                </svg>
+                <h4>{t(s.title)}</h4>
+                <p>{t(s.text)}</p>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </section>
+
+    <section class="section" id="team" aria-labelledby="team-title">
+      <div class="container">
+        <header class="chapter-head">
+          <p class="chapter"><span>02</span>{t('The team')}</p>
+          <h2 id="team-title" set:html={t("Senior people who've done it for <em>big names.</em>")} />
+        </header>
+
+        <h3 class="group-title">{t('Founders')}</h3>
         <div class="founders">
           {founders.map((p) => <PersonCard person={p} lang={lang} />)}
         </div>
-      </div>
-    </section>
 
-    <section class="section" id="network" aria-labelledby="network-title">
-      <div class="container">
-        <header class="chapter-head">
-          <p class="chapter"><span>02</span>{t('Network')}</p>
-          <h2 id="network-title" set:html={t('Our potential <em>team</em>')} />
-        </header>
-        <div class="teams">
+        <h3 class="group-title">{t('Specialists')} <span>{specialists.length}</span></h3>
+        <div class="members">
+          {specialists.map((p) => <PersonCard person={p} lang={lang} />)}
+        </div>
+
+        <h3 class="group-title">{t('Next hires, with the investment')}</h3>
+        <ul class="hires">
           {
-            teams.map((team) => (
-              <section class="team" aria-label={team.name}>
-                <h3 class="team__name">
-                  {team.name} <span>{team.people.length}</span>
-                </h3>
-                <div class="team__people">
-                  {team.people.map((p) => (
-                    <PersonCard person={p} lang={lang} level={4} />
-                  ))}
-                </div>
-              </section>
+            HIRES.map((h) => (
+              <li class="hire">
+                <span aria-hidden="true">+</span>
+                {t(h)}
+              </li>
             ))
           }
-        </div>
+        </ul>
       </div>
     </section>
 
-    <Scope lang={lang} people={people} number="03" />
+    <Scope lang={lang} people={people} number="03" label={t('What we sell')} compact />
 
-    <section class="section section--continued" id="who-does-what" aria-labelledby="matrix-title">
+    <section class="section" id="engine" aria-labelledby="engine-title">
+      <div class="container engine">
+        <div class="engine__text">
+          <header class="chapter-head">
+            <p class="chapter"><span>04</span>{t('Growth engine')}</p>
+            <h2 id="engine-title" set:html={t('Our own academy grows <em>our own people.</em>')} />
+          </header>
+          <p class="engine__lede">
+            {t('Seniors lead, academy graduates do the volume: more projects with the same team, and a higher margin.')}
+          </p>
+          {
+            academy && (
+              <a class="academy" href={academy.url ?? academy.caseStudy} {...external}>
+                {academy.image && <img src={thumbOf(academy.image)} alt="" width="640" height="400" loading="lazy" />}
+                <span class="academy__text">
+                  <span class="academy__name">
+                    101SPOT <span aria-hidden="true">↗</span>
+                  </span>
+                  <span class="academy__by">{t('Academy co-founded by Giorgi Kheladze')}</span>
+                  <span class="academy__fact">
+                    <b>{t('90 days')}</b> {t('from junior to mid-level designer')}
+                  </span>
+                </span>
+              </a>
+            )
+          }
+        </div>
+        <Engine lang={lang} />
+      </div>
+    </section>
+
+    <section class="section" id="plan" aria-labelledby="plan-title">
       <div class="container">
         <header class="chapter-head">
-          <h2 id="matrix-title" set:html={t('Who does <em>what</em>')} />
+          <p class="chapter"><span>05</span>{t('The plan')}</p>
+          <h2 id="plan-title" set:html={t('$100,000 to build it <em>faster.</em>')} />
         </header>
-        <div class="matrix-wrap" tabindex="0" role="region" aria-labelledby="matrix-title">
-          <table class="matrix">
-            <thead>
-              <tr>
-                <th scope="col" class="matrix__corner"><span class="sr-only">{t('Person')}</span></th>
-                {services.map((s) => <th scope="col">{s.short}</th>)}
-              </tr>
-            </thead>
-            {
-              coverage.map((g) => (
-                <tbody>
-                  <tr class="matrix__group">
-                    <th scope="rowgroup" colspan={services.length + 1}>
-                      <span>{g.name}</span>
-                    </th>
-                  </tr>
-                  {g.people.map((p) => (
-                    <tr>
-                      <th scope="row">
-                        <a href={`#${p.id}`}>
-                          <span class="avatar avatar--xs" style={`--hue:${hue(p.data.en.name)}`} aria-hidden="true">
-                            {initials(p.data.name)}
-                          </span>
-                          {p.data.name}
-                        </a>
-                      </th>
-                      {services.map((s) =>
-                        (p.data.services as string[]).includes(s.id) ? (
-                          <td>
-                            <span class="dot" role="img" aria-label={t('Yes')} />
-                          </td>
-                        ) : (
-                          <td>
-                            <span class="sr-only">{t('No')}</span>
-                          </td>
-                        ),
-                      )}
-                    </tr>
+        <div class="plans">
+          {
+            PLANS.map((p) => (
+              <article class:list={['plan', { 'plan--pick': p.recommended }]}>
+                {p.recommended && <p class="plan__badge">{t('Recommended')}</p>}
+                <p class="plan__amount">{t(p.amount)}</p>
+                <h3 class="plan__name">{t(p.name)}</h3>
+                <ul class="plan__points">
+                  {p.points.map((point) => (
+                    <li>{t(point)}</li>
                   ))}
-                </tbody>
-              ))
-            }
-          </table>
+                </ul>
+              </article>
+            ))
+          }
         </div>
       </div>
     </section>
