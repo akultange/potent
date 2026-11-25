@@ -53,6 +53,14 @@ toConfirm:                            # open questions, never shown on the page
 Services live in `src/data/services.ts`. If a file uses an unknown service id or a malformed URL,
 `npm run build` fails and names the file and field.
 
+## The "Everything digital" section
+
+The pictures right under the header: everything we can make, in plain words, from the smallest
+job to the biggest. Text and order live in `src/data/scope.ts`. Each tile has a picture
+(`public/scope/<id>-<width>.webp`) and a short silent loop of the same picture coming alive
+(`public/scope/<id>.mp4`); set `loop: false` on a tile to show only the still. The layout is
+`src/components/Scope.astro`.
+
 ## Working together
 
 We both push straight to `main`:

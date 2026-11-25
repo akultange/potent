@@ -1,0 +1,338 @@
+---
+// "Everything digital": the full range in pictures, from a sound to the software a company runs on.
+// The text lives in src/data/scope.ts, the pictures and loops in public/scope/.
+import { SCOPE, SCOPE_WIDTHS } from '../data/scope';
+import { asset } from '../lib/util';
+
+// How wide each tile is drawn, so the browser picks the right picture file.
+const SIZES = {
+  square: '(min-width: 900px) 364px, 50vw',
+  wide: '(min-width: 900px) 553px, 100vw',
+  hero: '(min-width: 900px) 1120px, 100vw',
+} as const;
+
+const items = SCOPE.map((item) => {
+  const [small, large] = SCOPE_WIDTHS[item.size];
+  const ratio = item.size === 'square' ? 1 : 9 / 16;
+  return {
+    ...item,
+    src: asset(`/scope/${item.id}-${large}.webp`),
+    srcset: `${asset(`/scope/${item.id}-${small}.webp`)} ${small}w, ${asset(`/scope/${item.id}-${large}.webp`)} ${large}w`,
+    sizes: SIZES[item.size],
+    width: large,
+    height: Math.round(large * ratio),
+    film: item.loop ? asset(`/scope/${item.id}.mp4`) : null,
+  };
+});
+---
+
+<section class="section scope" id="scope" aria-labelledby="scope-title">
+  <div class="container">
+    <div class="section-head">
+      <h2 id="scope-title">Everything <em>digital</em></h2>
+      <div>
+        <p>
+          From a ten-second sound to the software a whole company runs on. One team takes it from the idea to
+          the finished thing.
+        </p>
+        <button class="scope__pause" type="button" hidden>Pause the pictures</button>
+      </div>
+    </div>
+
+    <ul class="scope__grid">
+      {
+        items.map((item) => (
+          <li class:list={['scope__item', `scope__item--${item.size}`]}>
+            <div class="scope__media">
+              <img
+                src={item.src}
+                srcset={item.srcset}
+                sizes={item.sizes}
+                width={item.width}
+                height={item.height}
+                alt=""
+                loading="lazy"
+                decoding="async"
+              />
+              {item.film && (
+                <video
+                  data-src={item.film}
+                  muted
+                  loop
+                  playsinline
+                  preload="none"
+                  disablepictureinpicture
+                  disableremoteplayback
+                  aria-hidden="true"
+                  tabindex="-1"
+                />
+              )}
+            </div>
+            <div class="scope__body">
+              <h3>{item.title}</h3>
+              <p>{item.text}</p>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .scope__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .scope__item {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+  }
+
+  .scope__item--wide,
+  .scope__item--hero {
+    grid-column: 1 / -1;
+  }
+
+  /* The pictures are shot on warm paper; the tile keeps that paper in both themes. */
+  .scope__media {
+    position: relative;
+    aspect-ratio: 1;
+    overflow: hidden;
+    background: #efe9e2;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .scope__item--wide .scope__media,
+  .scope__item--hero .scope__media {
+    aspect-ratio: 16 / 9;
+  }
+
+  .scope__media img,
+  .scope__media video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* The loop sits on top of the still and fades in once it is really playing. */
+  .scope__media video {
+    opacity: 0;
+    transition: opacity 0.6s ease;
+  }
+
+  .scope__media video.is-playing {
+    opacity: 1;
+  }
+
+  .scope__body {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 14px 14px 16px;
+  }
+
+  .scope__body h3 {
+    font-size: 16px;
+    letter-spacing: -0.015em;
+  }
+
+  .scope__body p {
+    font-size: 13.5px;
+    line-height: 1.45;
+    color: var(--muted);
+  }
+
+  .scope__item--wide .scope__body h3,
+  .scope__item--hero .scope__body h3 {
+    font-size: 19px;
+  }
+
+  .scope__item--wide .scope__body p,
+  .scope__item--hero .scope__body p {
+    font-size: 14.5px;
+  }
+
+  /* Moving pictures that never stop need a way to stop them. */
+  .scope__pause {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    margin-top: 10px;
+    padding: 6px 0;
+    border: 0;
+    background: none;
+    font: inherit;
+    font-size: 14px;
+    color: var(--faint);
+    cursor: pointer;
+  }
+
+  .scope__pause[hidden] {
+    display: none;
+  }
+
+  .scope__pause:hover {
+    color: var(--ink);
+  }
+
+  .scope__pause::before {
+    content: '';
+    width: 9px;
+    height: 11px;
+    border-inline: 3px solid currentColor;
+  }
+
+  .scope__pause[data-paused]::before {
+    width: 0;
+    height: 0;
+    border-block: 6px solid transparent;
+    border-inline: 9px solid currentColor;
+    border-inline-end-width: 0;
+  }
+
+  @media (min-width: 600px) {
+    .scope__body {
+      gap: 8px;
+      padding: 18px 20px 20px;
+    }
+
+    .scope__body h3 {
+      font-size: 19px;
+    }
+
+    .scope__body p {
+      font-size: 14.5px;
+    }
+  }
+
+  @media (min-width: 900px) {
+    .scope__grid {
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+    }
+
+    .scope__item {
+      grid-column: span 2;
+    }
+
+    .scope__item--wide {
+      grid-column: span 3;
+    }
+
+    .scope__item--hero {
+      grid-column: 1 / -1;
+    }
+
+    .scope__item--wide .scope__body h3 {
+      font-size: 23px;
+    }
+
+    .scope__item--wide .scope__body p {
+      max-width: 44ch;
+      font-size: 15px;
+    }
+
+    /* The last tile is the biggest job: title on the left, the plain explanation on the right. */
+    .scope__item--hero .scope__body {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: end;
+      gap: 24px;
+      padding: 26px 28px 28px;
+    }
+
+    .scope__item--hero .scope__body h3 {
+      max-width: 14ch;
+      font-size: clamp(28px, 3vw, 38px);
+      letter-spacing: -0.03em;
+    }
+
+    .scope__item--hero .scope__body p {
+      max-width: 46ch;
+      font-size: 17px;
+    }
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .scope__media img,
+    .scope__media video {
+      filter: brightness(0.93);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .scope__media video {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  // Each loop loads when its tile comes near the screen and plays only while it is on screen.
+  // Tiles that arrive together wake up one after another, so the row does not move in step.
+  // With reduced motion or data saver on, the stills stay as they are.
+  const films = [...document.querySelectorAll<HTMLVideoElement>('.scope__media video')];
+  const pause = document.querySelector<HTMLButtonElement>('.scope__pause');
+  const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const saver = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData;
+
+  if (films.length > 0 && !calm && !saver && 'IntersectionObserver' in window) {
+    const onScreen = new Set<HTMLVideoElement>();
+    let stopped = false;
+
+    const start = (film: HTMLVideoElement) => {
+      if (!film.src) film.src = film.dataset.src!;
+      film.play().catch(() => {});
+    };
+
+    const watcher = new IntersectionObserver(
+      (entries) => {
+        let fresh = 0;
+        for (const entry of entries) {
+          const film = entry.target as HTMLVideoElement;
+          if (!entry.isIntersecting) {
+            onScreen.delete(film);
+            film.pause();
+            continue;
+          }
+          onScreen.add(film);
+          if (stopped) continue;
+          if (film.src) {
+            start(film);
+          } else {
+            window.setTimeout(() => {
+              if (!stopped && onScreen.has(film)) start(film);
+            }, fresh++ * 380);
+          }
+        }
+      },
+      { rootMargin: '15% 0px' },
+    );
+
+    for (const film of films) {
+      film.addEventListener('playing', () => film.classList.add('is-playing'), { once: true });
+      watcher.observe(film);
+    }
+
+    if (pause) {
+      pause.hidden = false;
+      pause.addEventListener('click', () => {
+        stopped = !stopped;
+        pause.toggleAttribute('data-paused', stopped);
+        pause.textContent = stopped ? 'Play the pictures' : 'Pause the pictures';
+        for (const film of onScreen) {
+          if (stopped) film.pause();
+          else start(film);
+        }
+      });
+    }
+  }
+</script>

@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import PersonCard from '../components/PersonCard.astro';
+import Scope from '../components/Scope.astro';
 import { SERVICES } from '../data/services';
 import { SITE } from '../data/site';
 import { asset, hue, initials } from '../lib/util';
@@ -87,6 +88,8 @@ const pad = (n: number) => String(n).padStart(2, '0');
         }
       </div>
     </section>
+
+    <Scope />
 
     <section class="section" id="services" aria-labelledby="services-title">
       <div class="container">
