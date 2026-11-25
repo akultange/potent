@@ -1,0 +1,26 @@
+name: Mikheil
+title: Product designer at Bank of Georgia
+order: 20
+bio: Product designer on mBank, Bank of Georgia's mobile banking app.
+services: [product-design]
+projects:
+  - name: mBank
+    client: Bank of Georgia
+    type: Mobile banking app
+    sector: Banking & fintech
+    summary: Bank of Georgia's mobile banking app.
+    role: Product design
+    services: [product-design]
+    featured: true
+  - name: Sachemo
+    url: https://www.sachemo.store/en
+    type: Marketplace
+    sector: Retail & crafts
+    summary: >-
+      Curated marketplace for Georgian handmade goods (leather, ceramics, jewellery,
+      textiles and more) from independent makers, in Georgian and English.
+    services: [product-design, ecommerce]
+    featured: true
+toConfirm:
+  - Surname and LinkedIn
+  - Mikheil's exact role on Sachemo (design only, or founder?)

@@ -1,0 +1,23 @@
+name: Lazare Londaridze
+title: Senior UX & brand designer
+order: 30
+location: Tbilisi, Georgia
+bio: Senior experience designer, brand designer and strategist.
+links:
+  portfolio: https://www.figma.com/proto/YL1RlptRMBMwXhUmb1wHpv/Lazare?page-id=5000%3A9657&node-id=6204-254858&starting-point-node-id=6204%3A254858&scaling=scale-down&content-scaling=fixed
+  instagram: https://www.instagram.com/londaridze_lazare/
+services: [product-design, branding]
+projects:
+  - name: Atlantis Dental Clinic
+    client: Atlantis Dental Clinic
+    url: https://www.instagram.com/reel/DdOpiYmThNn/
+    type: Logo & identity
+    sector: Healthcare
+    summary: >-
+      Logo that fuses a tooth silhouette with a Vitruvian scroll woven into its root,
+      a nod to the Greek heritage behind the Atlantis name.
+    services: [branding]
+    featured: true
+toConfirm:
+  - LinkedIn
+  - More projects from his Figma portfolio

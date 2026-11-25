@@ -1,0 +1,44 @@
+name: Maggie Oniani
+title: Graphic designer & illustrator
+order: 40
+location: Tbilisi, Georgia
+bio: >-
+  Graphic designer and illustrator: posters, social-media creative, and illustration
+  for animation and motion pieces.
+links:
+  behance: https://www.behance.net/maggieoniani
+services: [graphic-design, motion]
+projects:
+  - name: SOCAR Instagram feed
+    client: SOCAR
+    type: Social media design
+    sector: Energy
+    summary: Instagram feed design for SOCAR.
+    services: [graphic-design]
+    featured: true
+  - name: GAMO social media
+    client: GAMO
+    type: Social media design
+    summary: Social-media creative for GAMO.
+    services: [graphic-design]
+  - name: MZESUMZIRA posters
+    client: MZESUMZIRA
+    type: Poster series
+    summary: Poster series for MZESUMZIRA.
+    services: [graphic-design]
+  - name: Laline video designs
+    client: Laline
+    type: Design for video
+    summary: Designs for a Laline video, made with other designers.
+    services: [graphic-design, motion]
+  - name: FIGUREBI illustrations
+    client: FIGUREBI
+    type: Illustration for animation
+    summary: Illustrations for the FIGUREBI animation.
+    services: [graphic-design, motion]
+  - name: Women's Day motion video
+    type: Motion video
+    summary: Motion piece for International Women's Day.
+    services: [motion]
+toConfirm:
+  - LinkedIn

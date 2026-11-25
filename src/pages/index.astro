@@ -1,0 +1,259 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import PersonCard from '../components/PersonCard.astro';
+import { SERVICES } from '../data/services';
+import { SITE } from '../data/site';
+import { hue, initials } from '../lib/util';
+
+const people = (await getCollection('people')).sort(
+  (a, b) => a.data.order - b.data.order || a.data.name.localeCompare(b.data.name),
+);
+const founders = people.filter((p) => p.data.group === 'founder');
+const network = people.filter((p) => p.data.group === 'network');
+
+const projects = people.flatMap((person) => person.data.projects.map((project) => ({ ...project, person })));
+// Featured first, then everything else (shown when a service filter is active).
+const work = [...projects.filter((p) => p.featured), ...projects.filter((p) => !p.featured)];
+
+const services = SERVICES.map((s) => ({
+  ...s,
+  people: people.filter((p) => (p.data.services as string[]).includes(s.id)),
+  projectCount: projects.filter((p) => (p.services as string[]).includes(s.id)).length,
+})).filter((s) => s.people.length > 0);
+
+const clients = [...new Set(projects.filter((p) => p.featured && p.client).map((p) => p.client!))];
+const matrixPeople = people.filter((p) => p.data.services.length > 0);
+const pad = (n: number) => String(n).padStart(2, '0');
+---
+
+<Base>
+  <header class="site-header">
+    <div class="container">
+      <a class="wordmark" href="#top"><i aria-hidden="true"></i>{SITE.name}</a>
+      <nav class="nav" aria-label="Sections">
+        <a href="#services">Services</a>
+        <a href="#who-does-what">Who does what</a>
+        <a href="#people">People</a>
+        <a href="#work">Work</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="container">
+        <p class="eyebrow">Design &amp; engineering agency · {SITE.city}</p>
+        <h1>Product, brand and engineering, from <em>one senior team.</em></h1>
+        <p class="lede">
+          {SITE.name} pairs a founder-led product design practice with a network of specialists in
+          Tbilisi. Between us, we've designed and built for banks, regulators, retailers and consumer
+          brands.
+        </p>
+        <dl class="stats">
+          <div class="stat"><dt>Specialists</dt><dd>{people.length}</dd></div>
+          <div class="stat"><dt>Services</dt><dd>{services.length}</dd></div>
+          <div class="stat"><dt>Projects shipped</dt><dd>{projects.length}</dd></div>
+        </dl>
+        {
+          clients.length > 0 && (
+            <div class="clients">
+              <p class="label">Work for</p>
+              <ul>
+                {clients.map((c) => (
+                  <li>{c}</li>
+                ))}
+              </ul>
+            </div>
+          )
+        }
+      </div>
+    </section>
+
+    <section class="section" id="services" aria-labelledby="services-title">
+      <div class="container">
+        <div class="section-head">
+          <h2 id="services-title">What we <em>do</em></h2>
+          <p>Every service is backed by someone in the network who has already done it, with the projects to prove it.</p>
+        </div>
+        <div class="services">
+          {
+            services.map((s, i) => (
+              <article class="service">
+                <p class="service__num">{pad(i + 1)}</p>
+                <h3>{s.name}</h3>
+                <p class="service__blurb">{s.blurb}</p>
+                <footer>
+                  <ul class="faces" aria-label="Delivered by">
+                    {s.people.map((p) => (
+                      <li>
+                        <a href={`#${p.id}`} title={p.data.name}>
+                          <span class="avatar avatar--sm" style={`--hue:${hue(p.data.name)}`} aria-hidden="true">
+                            {initials(p.data.name)}
+                          </span>
+                          <span class="face-name">{p.data.name}</span>
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                  {s.projectCount > 0 && (
+                    <a class="service__work" href="#work" data-goto-filter={s.id}>
+                      {s.projectCount} {s.projectCount === 1 ? 'project' : 'projects'} →
+                    </a>
+                  )}
+                </footer>
+              </article>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="who-does-what" aria-labelledby="matrix-title">
+      <div class="container">
+        <div class="section-head">
+          <h2 id="matrix-title">Who does <em>what</em></h2>
+          <p>Each person and the services they can lead.</p>
+        </div>
+        <div class="matrix-wrap" tabindex="0" role="region" aria-labelledby="matrix-title">
+          <table class="matrix">
+            <thead>
+              <tr>
+                <th scope="col" class="matrix__corner">Person</th>
+                {services.map((s) => <th scope="col">{s.short}</th>)}
+              </tr>
+            </thead>
+            <tbody>
+              {
+                matrixPeople.map((p) => (
+                  <tr>
+                    <th scope="row">
+                      <a href={`#${p.id}`}>{p.data.name}</a>
+                      <span>{p.data.title}</span>
+                    </th>
+                    {services.map((s) =>
+                      (p.data.services as string[]).includes(s.id) ? (
+                        <td>
+                          <span class="dot" role="img" aria-label="Yes" />
+                        </td>
+                      ) : (
+                        <td>
+                          <span class="sr-only">No</span>
+                        </td>
+                      ),
+                    )}
+                  </tr>
+                ))
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="people" aria-labelledby="people-title">
+      <div class="container">
+        <div class="section-head">
+          <h2 id="people-title">The <em>people</em></h2>
+          <p>Founders and the specialists we bring in, with the work each of them has done.</p>
+        </div>
+
+        <h3 class="label group-label">Founders</h3>
+        <div class="people-grid people-grid--founders">
+          {founders.map((p) => <PersonCard person={p} />)}
+        </div>
+
+        <h3 class="label group-label">Network</h3>
+        <div class="people-grid">
+          {network.map((p) => <PersonCard person={p} />)}
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="work" aria-labelledby="work-title">
+      <div class="container">
+        <div class="section-head">
+          <h2 id="work-title">Selected <em>work</em></h2>
+          <p>Filter by service to see everything the network has shipped in that area.</p>
+        </div>
+
+        <div class="filters" role="group" aria-label="Filter work by service">
+          <button type="button" data-filter="all" aria-pressed="true">All</button>
+          {
+            services
+              .filter((s) => s.projectCount > 0)
+              .map((s) => (
+                <button type="button" data-filter={s.id} aria-pressed="false">
+                  {s.short}
+                </button>
+              ))
+          }
+        </div>
+
+        <div class="work-grid">
+          {
+            work.map((p) => {
+              const href = p.url ?? p.caseStudy;
+              const tile = p.client ?? p.name;
+              return (
+                <article
+                  class="work"
+                  data-services={p.services.join(' ')}
+                  data-featured={p.featured ? 'true' : 'false'}
+                  hidden={!p.featured}
+                >
+                  <div class="work__thumb" style={`--hue:${hue(tile)}`}>
+                    {p.image ? <img src={p.image} alt="" loading="lazy" /> : <span class="work__mono">{tile}</span>}
+                  </div>
+                  <div class="work__body">
+                    <p class="work__meta">{[p.type, p.sector].filter(Boolean).join(' · ')}</p>
+                    <h3>
+                      {href ? (
+                        <a href={href} target="_blank" rel="noopener noreferrer">
+                          {p.name}
+                          <span aria-hidden="true"> ↗</span>
+                        </a>
+                      ) : (
+                        p.name
+                      )}
+                    </h3>
+                    <p class="work__summary">{p.summary}</p>
+                    <p class="work__by">
+                      by <a href={`#${p.person.id}`}>{p.person.data.name}</a>
+                    </p>
+                  </div>
+                </article>
+              );
+            })
+          }
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p><strong>{SITE.name}</strong> · {SITE.city}</p>
+      <p>Project credits come from each person's own portfolio and profiles.</p>
+    </div>
+  </footer>
+</Base>
+
+<script>
+  const buttons = [...document.querySelectorAll<HTMLButtonElement>('[data-filter]')];
+  const cards = [...document.querySelectorAll<HTMLElement>('.work')];
+
+  function applyFilter(filter: string) {
+    for (const b of buttons) b.setAttribute('aria-pressed', String(b.dataset.filter === filter));
+    for (const c of cards) {
+      const services = (c.dataset.services ?? '').split(' ');
+      c.hidden = filter === 'all' ? c.dataset.featured !== 'true' : !services.includes(filter);
+    }
+  }
+
+  for (const b of buttons) b.addEventListener('click', () => applyFilter(b.dataset.filter!));
+
+  for (const link of document.querySelectorAll<HTMLAnchorElement>('[data-goto-filter]')) {
+    link.addEventListener('click', () => applyFilter(link.dataset.gotoFilter!));
+  }
+</script>

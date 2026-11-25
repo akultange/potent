@@ -1,0 +1,19 @@
+name: Mariam Kokaia
+title: Motion designer & video editor
+order: 35
+location: Tbilisi, Georgia
+bio: >-
+  Motion designer with 4+ years and 15+ large projects for startups and individual
+  clients: explainer videos, logo and UI animation, social content and editing.
+  Makes product launch videos with Giorgi.
+links:
+  linkedin: https://www.linkedin.com/in/mariam-kokaia-33912621a/
+  portfolio: https://mariamkokaia.framer.website/
+services: [motion]
+projects:
+  - name: Showreel
+    url: https://mariamkokaia.framer.website/
+    type: Motion reel
+    summary: Explainer videos, logo animations, UI animations and social content.
+    services: [motion]
+    featured: true

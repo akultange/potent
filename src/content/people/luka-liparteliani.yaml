@@ -1,0 +1,45 @@
+name: Luka Liparteliani
+title: CTO at OMNI · MushCore
+order: 10
+location: Tbilisi, Georgia
+bio: >-
+  Engineering lead. CTO at OMNI, and ships web platforms and e-commerce through
+  MushCore, a digital product, e-commerce and cloud studio.
+links:
+  linkedin: https://www.linkedin.com/in/llipa99/
+  github: https://github.com/lukaliparteliani
+services: [engineering, web, ecommerce]
+projects:
+  - name: Kärcher Georgia online store
+    client: Kärcher Georgia
+    url: https://karchershop.ge/en
+    type: E-commerce
+    sector: Retail
+    summary: >-
+      Official Kärcher online store for Georgia, with Home & Garden and Professional
+      catalogues, cart and card checkout, in English and Georgian. Runs on Shopify.
+    services: [ecommerce]
+    featured: true
+  - name: Homeland of Wine Magazine
+    client: Homeland of Wine
+    url: https://homelandofwinemagazine.com
+    type: Magazine website
+    sector: Media & publishing
+    summary: >-
+      Bilingual magazine on Georgian wine covering regions, grape varieties, producers,
+      and food and travel, with newsletter sign-up. Built on Next.js; credited
+      “Powered by MushCore”.
+    services: [web, engineering]
+    featured: true
+  - name: MushCore
+    url: https://mushcore.com
+    type: Digital product studio
+    sector: Technology
+    summary: >-
+      Studio for product development, e-commerce and cloud: AI integration, UX and
+      platform architecture. Studio work includes Meama's Shopify Plus migration and
+      super app.
+    services: [engineering, ecommerce, web]
+    featured: true
+toConfirm:
+  - Luka's role at MushCore (founder?) and on the Kärcher and Homeland of Wine builds

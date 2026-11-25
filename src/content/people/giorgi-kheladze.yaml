@@ -1,0 +1,84 @@
+name: Giorgi Kheladze
+title: Co-founder · Senior product designer
+group: founder
+order: 1
+bio: >-
+  Designs complex web apps for fintech and B2B SaaS. Four years at Bank of Georgia
+  designing merchant tools and design-system components used across 14 digital
+  products; before that, product design for Israeli startups at Webiz.
+links:
+  linkedin: https://www.linkedin.com/in/giorgi-kheladze/
+  portfolio: https://kheladze.framer.website/
+services: [product-design]
+projects:
+  - name: Ads Manager
+    client: Bank of Georgia
+    url: https://businessmanager.bog.ge/en
+    caseStudy: https://kheladze.framer.website/ads-manager
+    type: Web app
+    sector: Banking & fintech
+    summary: >-
+      Self-serve ad management for the bank's business customers: preset audience
+      segments, built-in stock imagery and post-campaign analytics.
+    role: >-
+      UX/UI design and design-system components (used across 4,000 screens in 14
+      products); user testing with the research team
+    services: [product-design]
+    featured: true
+  - name: FINA
+    client: FINA
+    url: https://fina2.net/
+    type: SupTech / RegTech platform
+    sector: RegTech
+    summary: >-
+      Supervisory and regulatory-reporting software for central banks and regulators,
+      used by 12+ institutions across 14 countries, including the National Bank of Georgia.
+    services: [product-design]
+    featured: true
+  - name: Webiz talent platform
+    client: Webiz
+    url: https://webiz.com/
+    caseStudy: https://kheladze.framer.website/webizerp
+    type: Web app
+    sector: HR tech
+    summary: >-
+      Internal hiring platform for an outsourcing company, with a candidate portal,
+      company dashboard and admin panel. An 8-month design-system effort made design
+      work 5× faster.
+    role: Interface design and design system; briefly led a team of five designers
+    services: [product-design]
+    featured: true
+  - name: Cyngular
+    client: Cyngular
+    caseStudy: https://kheladze.framer.website/cyngular
+    type: Web app
+    sector: Cybersecurity
+    summary: >-
+      Cybersecurity monitoring platform with dashboards, diagnostics, analytics,
+      advanced search and code tracking.
+    role: Feature design, market research, client communication and dev handoff (via Webiz)
+    services: [product-design]
+    featured: true
+  - name: Guma
+    client: Guma
+    caseStudy: https://kheladze.framer.website/guma
+    type: Web app prototype
+    sector: Payments
+    summary: >-
+      Investor prototype for a secure payment-processing platform: card creation,
+      invoices, transaction tracking and loans, extended to mobile.
+    role: Prototype and visual design with one other designer (via Webiz)
+    services: [product-design]
+  - name: 101SPOT
+    url: https://great-hand-274711.framer.app/
+    type: Design education
+    sector: Education
+    summary: >-
+      UI/UX mentorship programme that takes junior designers to mid-level in 90 days,
+      with courses, 1:1 mentoring, mock interviews and a Discord community. Co-founded
+      with Beka Giorgadze.
+    role: Co-founder and mentor
+    services: [product-design]
+toConfirm:
+  - What was Giorgi's role on FINA (fina2.net)?
+  - Location line (Tbilisi?)
