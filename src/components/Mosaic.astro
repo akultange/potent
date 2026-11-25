@@ -1,0 +1,48 @@
+---
+// A person's work as one block of pictures: the first project large, the rest around it.
+// The layout follows the count (1–6), see .mosaic--N in global.css. Names show on the large
+// picture and, on the others, when hovered or focused.
+import type { LocalProject } from '../i18n';
+import { asset, hue } from '../lib/util';
+
+interface Props {
+  /** Projects already in the page's language (see localPerson). */
+  projects: LocalProject[];
+  label: string;
+}
+
+const { projects, label } = Astro.props;
+const shown = projects.slice(0, 6);
+const AREA = 'abcdef';
+const external = { target: '_blank', rel: 'noopener noreferrer' };
+---
+
+<ul class:list={['mosaic', `mosaic--${shown.length}`]} aria-label={label}>
+  {
+    shown.map((p, i) => {
+      const href = p.url ?? p.caseStudy;
+      const Wrap = href ? 'a' : 'div';
+      const client = p.client && !p.name.includes(p.client) ? p.client : null;
+      return (
+        <li
+          class:list={['m-tile', { 'm-tile--lead': i === 0 }]}
+          style={`grid-area:${AREA[i]};--hue:${hue(p.en.name)}`}
+        >
+          <Wrap class="m-tile__link" {...(href ? { href, ...external } : {})}>
+            {p.image ? (
+              <img src={asset(p.image)} alt="" loading="lazy" decoding="async" />
+            ) : (
+              <span class="m-tile__mono" aria-hidden="true">
+                {p.name}
+              </span>
+            )}
+            <span class="m-tile__cap">
+              <span>{p.name}</span>
+              {client && <small>{client}</small>}
+            </span>
+          </Wrap>
+        </li>
+      );
+    })
+  }
+</ul>

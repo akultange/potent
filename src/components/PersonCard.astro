@@ -1,17 +1,30 @@
 ---
-import { localServices, translator, type Lang, type LocalPerson } from '../i18n';
+// One person: their work in pictures, then name, title, a few numbers and links. No paragraphs;
+// bios and project write-ups stay in the YAML files.
+import Mosaic from './Mosaic.astro';
+import { translator, type Lang, type LocalPerson } from '../i18n';
 import { hue, initials } from '../lib/util';
 
 interface Props {
   /** A person from src/content/people/, already in the page's language (see localPerson). */
   person: LocalPerson;
   lang?: Lang;
+  /** Heading level of the name: 3 straight under a section title, 4 under a team name. */
+  level?: 3 | 4;
 }
 
-const { person, lang = 'en' } = Astro.props;
+const { person, lang = 'en', level = 3 } = Astro.props;
 const t = translator(lang);
 const d = person.data;
 const isFounder = d.group === 'founder';
+const Name = level === 4 ? 'h4' : 'h3';
+
+// Featured projects with a picture, in YAML order: up to six for a founder, three in the network.
+// Someone without pictures yet shows their featured projects as lettered tiles instead.
+const featured = d.projects.filter((p) => p.featured);
+const pictured = featured.filter((p) => p.image);
+const tiles = (pictured.length > 0 ? pictured : featured).slice(0, isFounder ? 6 : 3);
+const facts = d.facts.slice(0, isFounder ? 3 : 2);
 
 const LINK_LABELS = {
   linkedin: 'LinkedIn',
@@ -24,89 +37,49 @@ const LINK_LABELS = {
 const links = (Object.keys(LINK_LABELS) as (keyof typeof LINK_LABELS)[])
   .filter((k) => d.links[k])
   .map((k) => ({ label: LINK_LABELS[k], href: d.links[k]! }));
-
-const services = localServices(lang);
-const serviceName = (id: string) => services.find((s) => s.id === id)?.name ?? id;
-const isEmpty = !d.bio && d.services.length === 0 && d.projects.length === 0;
+const isEmpty = d.projects.length === 0 && d.facts.length === 0;
 ---
 
-<article
-  class:list={['person', { 'person--founder': isFounder }]}
-  id={person.id}
-  data-services={d.services.join(' ')}
->
-  <header class="person__head">
-    <div class="avatar" style={`--hue:${hue(d.en.name)}`} aria-hidden="true">{initials(d.name)}</div>
-    <div class="person__id">
-      <h3>{d.name}</h3>
-      <p class="person__title">{d.title}</p>
-      {d.location && <p class="person__loc">{d.location}</p>}
-    </div>
-  </header>
+<article class:list={['person', isFounder ? 'person--founder' : 'person--network']} id={person.id}>
+  {tiles.length > 0 && <Mosaic projects={tiles} label={t('Work by {name}', { name: d.name })} />}
 
-  {d.bio && <p class="person__bio">{d.bio}</p>}
-  {isEmpty && <p class="pending">{t('Profile coming soon.')}</p>}
+  <div class="person__body">
+    <header class="person__head">
+      <span class="avatar" style={`--hue:${hue(d.en.name)}`} aria-hidden="true">{initials(d.name)}</span>
+      <div>
+        <Name class="person__name">{d.name}</Name>
+        <p class="person__title">{d.title}</p>
+      </div>
+    </header>
 
-  {
-    links.length > 0 && (
-      <ul class="links" aria-label={t('{name} online', { name: d.name })}>
-        {links.map((l) => (
-          <li>
-            <a href={l.href} target="_blank" rel="noopener noreferrer">
-              {l.label}
-              <span aria-hidden="true">↗</span>
-            </a>
-          </li>
-        ))}
-      </ul>
-    )
-  }
+    {isEmpty && <p class="pending">{t('Profile coming soon.')}</p>}
 
-  {
-    d.services.length > 0 && (
-      <ul class="chips" aria-label={t('Services')}>
-        {d.services.map((s) => (
-          <li class="chip">{serviceName(s)}</li>
-        ))}
-      </ul>
-    )
-  }
+    {
+      facts.length > 0 && (
+        <dl class="facts">
+          {facts.map((f) => (
+            <div class="fact">
+              <dt>{f.label}</dt>
+              <dd>{f.value}</dd>
+            </div>
+          ))}
+        </dl>
+      )
+    }
 
-  {
-    d.projects.length > 0 && (
-      <section class="projects" aria-label={t("{name}'s projects", { name: d.name })}>
-        <h4 class="label">{t('Projects')}</h4>
-        <ul>
-          {d.projects.map((p) => (
+    {
+      links.length > 0 && (
+        <ul class="links" aria-label={t('{name} online', { name: d.name })}>
+          {links.map((l) => (
             <li>
-              <p class="proj-name">
-                {p.url ? (
-                  <a href={p.url} target="_blank" rel="noopener noreferrer">
-                    {p.name}
-                    <span aria-hidden="true"> ↗</span>
-                  </a>
-                ) : (
-                  p.name
-                )}
-              </p>
-              <p class="proj-meta">
-                {[p.client && p.client !== p.name ? p.client : null, p.type].filter(Boolean).join(' · ')}
-              </p>
-              <p class="proj-summary">{p.summary}</p>
-              {p.role && (
-                <p class="proj-role">
-                  <span>{t('Role')}</span> {p.role}
-                </p>
-              )}
-              {p.caseStudy && (
-                <a class="proj-case" href={p.caseStudy} target="_blank" rel="noopener noreferrer">
-                  {t('Case study')} <span aria-hidden="true">↗</span>
-                </a>
-              )}
+              <a href={l.href} target="_blank" rel="noopener noreferrer">
+                {l.label}
+                <span aria-hidden="true">↗</span>
+              </a>
             </li>
           ))}
         </ul>
-      </section>
-    )
-  }
+      )
+    }
+  </div>
 </article>

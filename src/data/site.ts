@@ -1,9 +1,9 @@
 export const SITE = {
   name: 'Potent',
-  tagline: 'Services & network',
+  tagline: "What we're working with",
   description:
-    'Product design, brand, motion and engineering: the services Potent delivers and the specialists behind them.',
+    'Two founders, a network of senior specialists, and everything digital we can make together.',
   city: 'Tbilisi, Georgia',
-  /** Clients listed first (in this order) in the hero's "Work for" line; others follow. */
+  /** Clients listed first (in this order) in the hero's client line; others follow. */
   clientOrder: ['Yamaha Motor Europe', 'Bank of Georgia', 'Kärcher Georgia', 'SOCAR', 'FINA'],
 };

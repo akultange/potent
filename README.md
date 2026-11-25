@@ -1,7 +1,14 @@
 # Potent
 
-Investor page for Potent: the services we offer and the network of specialists who deliver them.
-Static [Astro](https://astro.build) site, no backend.
+Investor page for Potent: what we're working with. Three parts, told mostly in pictures:
+
+1. **Founders**: the two of us, our work and a few numbers.
+2. **Network**: our potential team of senior specialists, grouped into engineering, product design,
+   and brand & motion.
+3. **Services**: everything digital we can make together, and who does what.
+
+Static [Astro](https://astro.build) site, no backend. The page keeps words to a minimum: names,
+titles, numbers and pictures of the work. Bios and project write-ups stay in the YAML files.
 
 Live: https://akultange.github.io/potent/ in English and https://akultange.github.io/potent/ru/ in
 Russian (every push to `main` is published by `.github/workflows/deploy.yml`, about a minute later).
@@ -26,14 +33,18 @@ title: Senior brand designer          # short role line
 group: network                        # founder | network
 order: 40                             # lower = earlier on the page
 location: Tbilisi, Georgia
-bio: One or two sentences.
+bio: One or two sentences.            # kept for reference, not shown on the page
+facts:                                # 2–3 headline numbers (founders show 3, the network 2)
+  - value: 6 yrs
+    label: in brand design
 links:                                # all optional
   linkedin: https://www.linkedin.com/in/...
   portfolio: https://...
   behance: https://www.behance.net/...
   instagram: https://www.instagram.com/...
   github: https://github.com/...
-services: [branding, graphic-design]  # ids from src/data/services.ts
+services: [branding, graphic-design]  # ids from src/data/services.ts; the first one decides
+                                      # the person's group in the network
 projects:
   - name: Project name
     client: Brand it was for          # omit for own products
@@ -44,11 +55,15 @@ projects:
     summary: What it is, one or two sentences.
     role: What this person did        # optional
     services: [branding]
-    featured: true                    # show in "Selected work"
-    image: /work/project.jpg          # optional screenshot in public/work/
+    featured: true                    # show on the person's card
+    image: /work/project.jpg          # picture in public/work/
 toConfirm:                            # open questions, never shown on the page
   - LinkedIn
 ```
+
+Each card shows the person's featured projects as one block of pictures, in YAML order: up to
+six for a founder, three in the network. Only projects with an `image` are used, unless the person
+has none yet.
 
 Services live in `src/data/services.ts`. If a file uses an unknown service id or a malformed URL,
 `npm run build` fails and names the file and field.
@@ -62,8 +77,9 @@ The page is written once, in English: `src/pages/index.astro` is both pages, and
   templates go through `t('English text')`; the Russian page looks that English text up in
   `ru.ts`.
 - **People and projects**: one file per person in `src/content/people-ru/`, with the same file
-  name as in `src/content/people/`. It holds only texts (name, title, bio and, per project,
-  type, sector, summary, role); projects are matched by their English name.
+  name as in `src/content/people/`. It holds only texts (name, title, bio, the facts keyed by
+  their English label and, per project, type, sector, summary, role); projects are matched by
+  their English name.
 
 Anything without a Russian line is shown in English on the Russian page, so adding a person or
 a text in English never breaks the build. It just stays English until its Russian is added.
@@ -72,7 +88,7 @@ The typefaces are in `src/assets/fonts/` and are served from the site itself.
 
 ## The "Everything digital" section
 
-The tiles right under the header: everything we can make, from the smallest job to the biggest.
+Part 3 of the page: everything we can make, from the smallest job to the biggest.
 Each tile says it three ways: a picture, one plain sentence, and real projects where we did it.
 
 - Text, order and the real projects of each tile: `src/data/scope.ts` (Russian in

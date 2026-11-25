@@ -42,7 +42,13 @@ export function translator(lang: Lang) {
   };
 }
 
-const EN_NOUNS = { people: 'People', services: 'Services', projects: 'Projects' } as const;
+const EN_NOUNS = {
+  people: 'People',
+  services: 'Services',
+  projects: 'Projects',
+  founders: 'Founders',
+  specialists: 'Specialists',
+} as const;
 
 /** The word under a number in the page header: "People" / "человек", "Projects" / "проектов". */
 export function counted(lang: Lang, n: number, what: keyof typeof EN_NOUNS): string {
@@ -107,6 +113,10 @@ export function localPerson(person: Person, ru?: PersonRu) {
       title: line(ru?.title, d.title)!,
       location: line(ru?.location, d.location),
       bio: line(ru?.bio, d.bio),
+      facts: d.facts.map((f) => {
+        const r = ru?.facts[f.label];
+        return { value: r?.value ?? f.value, label: line(r?.label, f.label)! };
+      }),
       projects: d.projects.map((p) => {
         const r = ru?.projects[p.name];
         return {

@@ -72,6 +72,20 @@ export const RU = {
     // footer
     "Project credits come from each person's own portfolio and profiles.":
       'Сведения о проектах взяты из портфолио и профилей самих специалистов.',
+
+    // the investor brief: hero, founders, network
+    'Investor brief · {city}': 'Для инвесторов · {city}',
+    'Two founders.': 'Два основателя.',
+    'A senior network.': 'Сильная сеть.',
+    'Everything digital.': 'Всё в цифре.',
+    'Our people have worked for': 'Наши люди работали с',
+    "Managers who've done <em>every part</em> of the work": 'Менеджеры, которые знают работу <em>изнутри</em>',
+    'Our potential <em>team</em>': 'Наша будущая <em>команда</em>',
+    Engineering: 'Разработка',
+    'Product design': 'Продуктовый дизайн',
+    'Brand & motion': 'Бренд и видео',
+    'More specialists': 'Другие специалисты',
+    'Work by {name}': 'Работы: {name}',
   } as Record<string, string>,
 
   /** Words that follow a number: one, a few (2 to 4), many. */
@@ -79,13 +93,14 @@ export const RU = {
     people: ['человек', 'человека', 'человек'],
     services: ['услуга', 'услуги', 'услуг'],
     projects: ['проект', 'проекта', 'проектов'],
+    founders: ['основатель', 'основателя', 'основателей'],
+    specialists: ['специалист', 'специалиста', 'специалистов'],
   },
 
   /** src/data/site.ts */
   site: {
-    tagline: 'Услуги и команда',
-    description:
-      'Продуктовый дизайн, бренд, видео и разработка: услуги Potent и специалисты, которые их выполняют.',
+    tagline: 'С чем мы работаем',
+    description: 'Два основателя, сеть опытных специалистов и всё, что мы вместе можем сделать в цифре.',
     city: 'Тбилиси, Грузия',
   },
 
