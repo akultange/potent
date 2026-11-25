@@ -41,6 +41,8 @@ const people = defineCollection({
     /** Lower comes first. */
     order: z.number().default(50),
     location: z.string().optional(),
+    /** Square portrait under /public, e.g. /people/jane-doe.jpg; initials are shown without one. */
+    photo: z.string().optional(),
     /** Kept for reference; the page itself shows no bios. */
     bio: z.string().optional(),
     /** Two or three headline numbers, shown on the card (founders three, network two). */

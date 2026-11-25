@@ -1,5 +1,6 @@
 name: Mariam Kokaia
 title: Motion designer & video editor
+photo: /people/mariam-kokaia.jpg
 order: 35
 location: Tbilisi, Georgia
 bio: >-
@@ -12,7 +13,7 @@ facts:
   - value: 15+
     label: large projects
 links:
-  linkedin: https://www.linkedin.com/in/mariam-kokaia-33912621a/
+  linkedin: https://www.linkedin.com/in/mariam-kokaia-motiondesigner/
   portfolio: https://mariamkokaia.framer.website/
 services: [motion]
 projects:
