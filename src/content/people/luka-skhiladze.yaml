@@ -47,7 +47,7 @@ projects:
     featured: true
     image: /work/luka-skhiladze.webp
   - name: Showreel 2026
-    url: https://vimeo.com/1236859193
+    url: https://skhiladze.com/media/film/reel.mp4
     type: Motion reel
     summary: >-
       One minute of motion design, 3D, AI film and stage visuals, cut to his own score.
@@ -81,7 +81,7 @@ projects:
     summary: Reels ad for a Japanese reading-practice app.
     services: [motion]
   - name: Milestone reveal animation
-    url: https://vimeo.com/1236721859
+    url: https://skhiladze.com/media/film/envelope.mp4
     type: In-app animation
     summary: >-
       Client work for an app: a wax-sealed envelope opens to show the reward when a user
@@ -94,21 +94,21 @@ projects:
     role: Colorist
     services: [motion]
   - name: Stage Visuals Pack
-    url: https://vimeo.com/1234375913
+    url: https://skhiladze.com/media/film/stage.mp4
     type: Concept visuals
     sector: Live events
     summary: Characters and seamless loops for concert LED screens.
     services: [motion]
     image: /work/luka-stage.webp
   - name: Fuse 2
-    url: https://vimeo.com/1233689711
+    url: https://skhiladze.com/media/film/fuse3d.mp4
     type: Concept film
     sector: AI software
     summary: 3D product film for an AI-agent platform.
     services: [motion]
     image: /work/luka-fuse3d.webp
   - name: Coffee prices
-    url: https://vimeo.com/1236838621
+    url: https://skhiladze.com/media/film/coffee.mp4
     type: Concept film
     summary: Hand-drawn explainer for YouTube about coffee prices.
     services: [motion]
