@@ -8,13 +8,16 @@ Russian page, /ru/, is the one to send) that this team is big, proven and worth 
 2. **Proof**: one sentence and three big numbers.
 3. **Selected work**: ten projects as huge pictures, each with one line on why it matters and its
    maker's face, then twelve more as a compact grid.
-4. **The team**: large black-and-white portraits.
-5. **What we sell**: everything digital, in pictures.
-6. **The market**: giant numbers, each with its source, and how we make money.
-7. **The growth engine**: the academy and podcast.
-8. **The plan**: $100k to scale (his choice, first) or $40k to start, and who we hire first.
-9. **Next step**: the two founders. Their Telegram/WhatsApp buttons appear once `CONTACTS` in
-   `src/data/blueprint.ts` is filled in.
+4. **The team**: large colour portraits, then a network card (the founders' counts of extra
+   developers and designers, `NETWORK` in `src/data/blueprint.ts`).
+5. **How the team is built**: Giorgi (Head of Digital) and Luka (CTO), each with 2 to 3 team
+   leads, plus outsource and sales & marketing (`STRUCTURE`).
+6. **How a project runs**: five steps (`PROCESS`).
+7. **What we sell**: everything digital, in pictures.
+8. **The market**: giant numbers, each with its source, and how we make money.
+9. **The growth engine**: the academy and podcast; the hero's "Here's the plan" leads here.
+10. **Next step**: the two founders. Their Telegram/WhatsApp buttons appear once `CONTACTS` in
+    `src/data/blueprint.ts` is filled in.
 
 Static [Astro](https://astro.build) site, no backend. Words are kept short; bios and project
 write-ups stay in the YAML files.
@@ -27,7 +30,9 @@ write-ups stay in the YAML files.
 - `public/hd/`: retina screenshots for the big pictures (`<name>-1200.webp`, `-1600.webp` and
   `-2400.webp`). Third widths are fine with a project's own 1200px image.
 - `public/hd/reel-still.webp` and `reel-still-phone.webp`: the hero's still, a frame of Luka's
-  reel (12.9 s, the eclipse).
+  reel (31.3 s, the aurora); the film starts from that frame.
+- `public/people/network.webp`: the network card's stand-in photo (Unsplash, Tai Bui), chosen so
+  no stranger's face reads as a team member.
 - `public/people/`: square portraits, set with `photo:` in each person's file.
 
 Live: https://akultange.github.io/potent/ in English and https://akultange.github.io/potent/ru/ in

@@ -1,6 +1,6 @@
 // The parts of the investor blueprint that are not about one person: proof, market, how the
-// agency earns, who we hire next and the two ways to start. Russian for every text is in
-// src/i18n/ru.ts (keyed by the English text).
+// agency earns, the network, how the team is organised and how a project runs. Russian for every
+// text is in src/i18n/ru.ts (keyed by the English text).
 //
 // Every number has its source next to it. Keep it that way: this page asks someone for money.
 
@@ -71,26 +71,31 @@ export const STREAMS = [
 /** The academy and podcast loop, clockwise from the top. Drawn by src/components/Engine.astro. */
 export const ENGINE = ['Academy', 'Interns', 'Team', 'Projects', 'Revenue', 'Podcast'] as const;
 
-/** The roles the investment hires first, shown with the plan. Founders' plan: change freely. */
-export const HIRES = ['Project managers', 'Developers', 'Designers', 'Sales managers', 'Marketers', 'Academy mentors'];
-
 /**
- * The two ways to start, the investor's choice ($100k) first. This is the founders' plan, not a
- * promise: no revenue or return figures go here until the founders give them.
+ * The card after the specialists: how many more people our network brings. Founders' numbers
+ * (Giorgi, 2026-11-26); keep them true. The photo is a stand-in from Unsplash (Tai Bui,
+ * unsplash.com/photos/mdeT5gewa3Q), chosen so no stranger's face reads as a team member.
  */
-export const PLANS = [
-  {
-    amount: '$100k',
-    name: 'Scale',
-    points: ['The full team from day one', 'Our own academy and interns', 'Sales and marketing from the start'],
-    recommended: true,
-  },
-  {
-    amount: '$40k',
-    name: 'Start',
-    points: ['A small core team', 'First clients', 'Grow step by step'],
-    recommended: false,
-  },
+export const NETWORK = { photo: '/people/network.webp', groups: ['+{n} developers', '+{n} designers'], n: 10 };
+
+/** How the agency is organised, from the founders (2026-11-26). Roles only, no names. */
+export const STRUCTURE = {
+  heads: [
+    { person: 'giorgi-kheladze', role: 'Head of Digital' },
+    { person: 'luka-skhiladze', role: 'CTO' },
+  ],
+  /** Each head has 2 to 3 team leads; the third box is drawn lighter. */
+  leads: 3,
+  sales: ['Sales manager', 'Marketer', 'Marketer & influencer'],
+};
+
+/** How a project runs, start to finish. */
+export const PROCESS = [
+  { title: 'Brief', text: 'Sales brings the client; a team lead sets the scope, timeline and price.' },
+  { title: 'Design', text: 'Design teams shape the product, brand and motion before anything is built.' },
+  { title: 'Build', text: 'Engineering teams build it; outsource partners add hands at peaks.' },
+  { title: 'Launch', text: 'Release, measure, fix.' },
+  { title: 'Support', text: 'Monthly updates, ads and content keep the client with us.' },
 ];
 
 /**

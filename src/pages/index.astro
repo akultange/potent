@@ -1,8 +1,9 @@
 ---
 // Potent, a portfolio-style agency blueprint for an investor, in both languages: "/" renders
 // this file as is (English) and src/pages/ru/index.astro renders it with lang="ru".
-// The story: the film and the big names, proof, the work (big), the team, what we sell, the
-// market and how we make money, the growth engine, the plan, and the next step. Text goes
+// The story: the film and the big names, proof, the work (big), the team, how the team is
+// built, how a project runs, what we sell, the market and how we make money, the growth engine
+// (the plan), and the next step. Text goes
 // through t() (Russian in src/i18n/ru.ts); numbers and their sources live in
 // src/data/blueprint.ts, the work's order and sizes in src/data/showcase.ts.
 import { getCollection } from 'astro:content';
@@ -11,7 +12,7 @@ import Engine from '../components/Engine.astro';
 import PersonCard from '../components/PersonCard.astro';
 import Scope from '../components/Scope.astro';
 import Work from '../components/Work.astro';
-import { CONTACTS, HIRES, MARKET, PLANS, PROOF, STREAMS } from '../data/blueprint';
+import { CONTACTS, MARKET, NETWORK, PROCESS, PROOF, STREAMS, STRUCTURE } from '../data/blueprint';
 import { CASES, MORE } from '../data/showcase';
 import { AREAS, SERVICES } from '../data/services';
 import { SITE } from '../data/site';
@@ -57,6 +58,13 @@ for (const b of SITE.brands) {
   if (!clients.has(b)) throw new Error(`src/data/site.ts: "${b}" is in brands, but no project in src/content/people/ has it as client.`);
 }
 
+// The two heads of the team structure, with their faces.
+const heads = STRUCTURE.heads.map((h) => {
+  const p = founders.find((f) => f.id === h.person);
+  if (!p) throw new Error(`src/data/blueprint.ts: STRUCTURE names "${h.person}", who is not a founder.`);
+  return { id: p.id, name: p.data.name, role: h.role, photo: p.data.photo ? asset(p.data.photo) : null };
+});
+
 const academy = founders.flatMap((p) => p.data.projects).find((p) => p.en.name === '101SPOT');
 const [first, second] = founders.map((p) => p.data.name.split(' ')[0]);
 const external = { target: '_blank', rel: 'noopener noreferrer' };
@@ -71,9 +79,9 @@ const REEL = 'https://skhiladze.com/media/film/reel.mp4';
         <a href="#work">{t('Work')}</a>
         <a href="#team">{t('Team')}</a>
         <a href="#market">{t('Market')}</a>
-        <a href="#plan">{t('Plan')}</a>
+        <a href="#engine">{t('Plan')}</a>
       </nav>
-      <a class="nav-plan" href="#plan">{t('Plan')} <span aria-hidden="true">↓</span></a>
+      <a class="nav-plan" href="#engine">{t('Plan')} <span aria-hidden="true">↓</span></a>
       <ul class="lang" aria-label={t('Language')}>
         {
           LANGS.map((l) => (
@@ -106,7 +114,7 @@ const REEL = 'https://skhiladze.com/media/film/reel.mp4';
         <h1>
           <span>{t('Big money is in digital.')}</span>{' '}
           <span>{t('We know how to earn it.')}</span>{' '}
-          <em><a href="#plan">{t("Here's the plan.")}</a></em>
+          <em><a href="#engine">{t("Here's the plan.")}</a></em>
         </h1>
         <div class="hero__brands">
           <p class="eyebrow" id="brands-title">{t('Our people have worked for')}</p>
@@ -127,7 +135,7 @@ const REEL = 'https://skhiladze.com/media/film/reel.mp4';
     <section class="proof-band" id="proof" aria-labelledby="proof-title">
       <div class="wide">
         <p class="manifesto" id="proof-title" data-reveal>
-          {keep(t('Four of us have built products for Bank of Georgia. Two are CTOs.'))}
+          {keep(t('Four of us have built products for Bank of Georgia. Two are CTOs of other companies.'))}
         </p>
         <ul class="proof" role="list">
           {
@@ -173,7 +181,92 @@ const REEL = 'https://skhiladze.com/media/film/reel.mp4';
         <h3 class="kicker">{t('Specialists')} <span>{specialists.length}</span></h3>
         <div class="members">
           {specialists.map((p) => <PersonCard person={p} lang={lang} />)}
+          <article class="person person--member person--network" data-reveal>
+            <div class="person__face">
+              <img src={asset(NETWORK.photo)} alt="" loading="lazy" decoding="async" />
+            </div>
+            <div class="person__body">
+              <h4 class="person__name">
+                {NETWORK.groups.map((g) => <span>{t(g, { n: NETWORK.n })}</span>)}
+              </h4>
+              <p class="person__title">{t('From our network in Tbilisi')}</p>
+            </div>
+          </article>
         </div>
+      </div>
+    </section>
+
+    <section class="block" id="structure" aria-labelledby="structure-title">
+      <div class="wide">
+        <header class="block-head" data-reveal>
+          <h2 id="structure-title" set:html={t('How the team <em>is built.</em>')} />
+        </header>
+        <div class="org" data-reveal>
+          <div class="org__branches">
+            {
+              heads.map((h) => (
+                <div class="org__branch">
+                  <a class="org__head" href={`#${h.id}`}>
+                    {h.photo && <img src={h.photo} alt="" width="56" height="56" loading="lazy" decoding="async" />}
+                    <span>
+                      <b>{h.name}</b>
+                      {t(h.role)}
+                    </span>
+                  </a>
+                  <ul class="org__leads" role="list">
+                    {Array.from({ length: STRUCTURE.leads }, (_, i) => (
+                      <li class:list={['org__lead', { 'org__lead--maybe': i === STRUCTURE.leads - 1 }]}>
+                        {t('Team lead')}
+                        <span class="org__team" aria-hidden="true">
+                          <i />
+                          <i />
+                          <i />
+                          <i />
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                  <p class="org__note">{t('2–3 team leads, each with a team')}</p>
+                </div>
+              ))
+            }
+          </div>
+          <div class="org__shared">
+            <div class="org__unit">
+              <h3 class="org__label">{t('Outsource')}</h3>
+              <p>{t('Partner teams for extra hands')}</p>
+            </div>
+            <div class="org__unit">
+              <h3 class="org__label">{t('Sales & marketing')}</h3>
+              <ul role="list">
+                {STRUCTURE.sales.map((r) => (
+                  <li>{t(r)}</li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="block" id="process" aria-labelledby="process-title">
+      <div class="wide">
+        <header class="block-head" data-reveal>
+          <h2 id="process-title" set:html={t('How a project <em>runs.</em>')} />
+        </header>
+        <ol class="process" role="list">
+          {
+            PROCESS.map((step, i) => (
+              <li class="process__step" data-reveal>
+                <span class="process__n" aria-hidden="true">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <h3 class="process__title">{t(step.title)}</h3>
+                <p class="process__text">{t(step.text)}</p>
+              </li>
+            ))
+          }
+        </ol>
       </div>
     </section>
 
@@ -254,44 +347,6 @@ const REEL = 'https://skhiladze.com/media/film/reel.mp4';
       </div>
     </section>
 
-    <section class="block" id="plan" aria-labelledby="plan-title">
-      <div class="wide">
-        <header class="block-head" data-reveal>
-          <h2 id="plan-title" set:html={t('$100,000 to scale <em>faster.</em>')} />
-        </header>
-        <div class="plans">
-          {
-            PLANS.map((p) => (
-              <article class:list={['plan', { 'plan--pick': p.recommended }]} data-reveal>
-                <div class="plan__top">
-                  <h3 class="plan__name">{t(p.name)}</h3>
-                  {p.recommended && <span class="plan__badge">{t('Recommended')}</span>}
-                </div>
-                <p class="plan__amount">{t(p.amount)}</p>
-                <ul class="plan__points" role="list">
-                  {p.points.map((point) => (
-                    <li>{t(point)}</li>
-                  ))}
-                </ul>
-              </article>
-            ))
-          }
-        </div>
-
-        <h3 class="kicker">{t('Who we hire first')}</h3>
-        <ul class="hires" role="list" data-reveal>
-          {
-            HIRES.map((h) => (
-              <li>
-                <span aria-hidden="true">+</span>
-                {t(h)}
-              </li>
-            ))
-          }
-        </ul>
-      </div>
-    </section>
-
     <section class="block next" id="next" aria-labelledby="next-title">
       <div class="wide">
         <header class="block-head" data-reveal>
@@ -353,19 +408,21 @@ const REEL = 'https://skhiladze.com/media/film/reel.mp4';
   window.addEventListener('scroll', onScroll, { passive: true });
 
   // The film plays only on big screens (not phones, either way up), without data saver or
-  // reduced motion; everyone else keeps the still. It runs from the EV film to just before the
-  // name card: the reel's opening (cartoons with placeholder logos) and its ending are skipped.
+  // reduced motion; everyone else keeps the still. It starts at the still's frame (the aurora,
+  // 31.3 s) and then loops from the EV film to just before the name card: the reel's opening
+  // (cartoons with placeholder logos) and its ending are skipped.
   const film = document.querySelector<HTMLVideoElement>('[data-film]');
   const toggle = document.querySelector<HTMLButtonElement>('.hero__toggle');
   const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const saver = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData;
   const roomy = window.matchMedia('(min-width: 700px) and (min-height: 500px)').matches;
   if (film && toggle && !calm && !saver && roomy) {
+    const START = 31.3;
     const FROM = 15.6;
     const TO = 51.9;
     let stopped = false;
     const play = () => film.play().catch(() => {});
-    film.src = `${film.dataset.film}#t=${FROM}`;
+    film.src = `${film.dataset.film}#t=${START}`;
     film.addEventListener(
       'playing',
       () => {

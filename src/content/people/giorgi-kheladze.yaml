@@ -1,5 +1,5 @@
 name: Giorgi Kheladze
-title: Co-founder & managing partner · Senior product designer
+title: Co-founder & Head of Digital · Senior product designer
 photo: /people/giorgi-kheladze.jpg
 group: founder
 order: 1
@@ -8,6 +8,9 @@ bio: >-
   designing merchant tools and design-system components used across 14 digital
   products; before that, product design for Israeli startups at Webiz.
 facts:
+  # from Giorgi, 2026-11-26
+  - value: 10+ yrs
+    label: in digital
   - value: 4 yrs
     label: at Bank of Georgia
   - value: '14'

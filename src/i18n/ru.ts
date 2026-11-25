@@ -87,8 +87,8 @@ export const RU = {
     Plan: 'План',
 
     // proof
-    'Four of us have built products for Bank of Georgia. Two are CTOs.':
-      'Четверо из нас делали продукты для Bank of Georgia. Двое — технические директора.',
+    'Four of us have built products for Bank of Georgia. Two are CTOs of other companies.':
+      'Четверо из нас делали продукты для Bank of Georgia. Двое — технические директора других компаний.',
     '1.8M': '1,8 млн',
     'people use the Bank of Georgia app our designer works on':
       'человек пользуются приложением Bank of Georgia — над ним работает наш дизайнер',
@@ -118,6 +118,39 @@ export const RU = {
     "Senior people who've done it for <em>big names.</em>": 'Опытная команда. <em>Крупные бренды.</em>',
     Specialists: 'Специалисты',
     'Worked for': 'Работали с',
+    '+{n} developers': '+{n} разработчиков',
+    '+{n} designers': '+{n} дизайнеров',
+    'From our network in Tbilisi': 'Из нашей сети в Тбилиси',
+
+    // how the team is built
+    'How the team <em>is built.</em>': 'Как устроена <em>команда.</em>',
+    'Head of Digital': 'Руководитель цифрового направления',
+    CTO: 'Технический директор',
+    'Team lead': 'Тимлид',
+    '2–3 team leads, each with a team': '2–3 тимлида, у каждого своя команда',
+    Outsource: 'Аутсорс',
+    'Partner teams for extra hands': 'Команды-партнёры, когда нужно больше рук',
+    'Sales & marketing': 'Продажи и маркетинг',
+    'Sales manager': 'Менеджер по продажам',
+    Marketer: 'Маркетолог',
+    'Marketer & influencer': 'Маркетолог и инфлюенсер',
+
+    // how a project runs
+    'How a project <em>runs.</em>': 'Как идёт <em>проект.</em>',
+    Brief: 'Задача',
+    'Sales brings the client; a team lead sets the scope, timeline and price.':
+      'Продажи приводят клиента, тимлид определяет объём, сроки и цену.',
+    Design: 'Дизайн',
+    'Design teams shape the product, brand and motion before anything is built.':
+      'Дизайнеры продумывают продукт, бренд и анимацию до начала разработки.',
+    Build: 'Разработка',
+    'Engineering teams build it; outsource partners add hands at peaks.':
+      'Разработчики делают продукт, партнёры на аутсорсе помогают в пиковые моменты.',
+    Launch: 'Запуск',
+    'Release, measure, fix.': 'Выпускаем, измеряем, исправляем.',
+    Support: 'Поддержка',
+    'Monthly updates, ads and content keep the client with us.':
+      'Ежемесячные обновления, реклама и контент — клиент остаётся с нами.',
 
     // what we sell, the market, how we make money
     'What we sell': 'Что мы продаём',
@@ -151,27 +184,6 @@ export const RU = {
     Interns: 'Стажёры',
     Revenue: 'Выручка',
     'Higher margin': 'Выше маржа',
-
-    // the plan
-    '$100,000 to scale <em>faster.</em>': '$100 000 — чтобы расти <em>быстрее.</em>',
-    '$100k': '$100 000',
-    '$40k': '$40 000',
-    Scale: 'Масштаб',
-    Start: 'Старт',
-    Recommended: 'Рекомендуем',
-    'The full team from day one': 'Полная команда с первого дня',
-    'Our own academy and interns': 'Своя академия и стажёры',
-    'Sales and marketing from the start': 'Продажи и маркетинг с самого начала',
-    'A small core team': 'Небольшая основная команда',
-    'First clients': 'Первые клиенты',
-    'Grow step by step': 'Рост шаг за шагом',
-    'Who we hire first': 'Кого наймём первыми',
-    'Project managers': 'Менеджеры проектов',
-    Developers: 'Разработчики',
-    Designers: 'Дизайнеры',
-    'Sales managers': 'Менеджеры по продажам',
-    Marketers: 'Маркетологи',
-    'Academy mentors': 'Наставники академии',
 
     // next step
     "Next step: <em>let's talk.</em>": 'Следующий шаг — <em>поговорим.</em>',
