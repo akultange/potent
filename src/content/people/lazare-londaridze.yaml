@@ -2,12 +2,53 @@ name: Lazare Londaridze
 title: Senior UX & brand designer
 order: 30
 location: Tbilisi, Georgia
-bio: Senior experience designer, brand designer and strategist.
+bio: >-
+  Senior experience designer, brand designer and strategist. Led full-cycle product
+  design for Yamaha Motor Europe's dealer CRM (40+ markets, 1,500+ dealers), plus
+  workforce, creator-economy and landing-page work.
 links:
   portfolio: https://www.figma.com/proto/YL1RlptRMBMwXhUmb1wHpv/Lazare?page-id=5000%3A9657&node-id=6204-254858&starting-point-node-id=6204%3A254858&scaling=scale-down&content-scaling=fixed
   instagram: https://www.instagram.com/londaridze_lazare/
-services: [product-design, branding]
+services: [product-design, branding, web]
 projects:
+  - name: Yamaha Motor Europe CRM
+    client: Yamaha Motor Europe
+    caseStudy: https://www.figma.com/proto/YL1RlptRMBMwXhUmb1wHpv/Lazare?page-id=5000%3A9657&node-id=6204-255040&starting-point-node-id=6204%3A254858&scaling=scale-down&content-scaling=fixed
+    type: Enterprise CRM
+    sector: Automotive
+    summary: >-
+      One CRM for Yamaha's 1,500+ official dealers across 40+ European markets, covering
+      quotations, a 3D configurator, stock management and activity scheduling.
+    role: Full-cycle product design from discovery to post-launch, plus the CRM design system
+    services: [product-design]
+    featured: true
+  - name: Egofy
+    client: Egofy
+    caseStudy: https://www.figma.com/proto/YL1RlptRMBMwXhUmb1wHpv/Lazare?page-id=5000%3A9657&node-id=6204-257252&starting-point-node-id=6204%3A254858&scaling=scale-down&content-scaling=fixed
+    type: Workforce management platform
+    sector: HR tech
+    summary: >-
+      Workforce-management platform that brings forecasting, scheduling, capacity
+      planning, requests and coverage into one system across countries and time zones.
+    services: [product-design]
+    featured: true
+  - name: Seensme
+    client: Seensme
+    caseStudy: https://www.figma.com/proto/YL1RlptRMBMwXhUmb1wHpv/Lazare?page-id=5000%3A9657&node-id=6204-258572&starting-point-node-id=6204%3A254858&scaling=scale-down&content-scaling=fixed
+    type: Creator platform (mobile)
+    sector: Creator economy
+    summary: >-
+      Creator monetisation app with subscriptions, pay-per-view and messaging. Results:
+      onboarding completion up ~40%, subscription setup time down 70%, PPV conversion up 25%.
+    services: [product-design]
+    featured: true
+  - name: Landing pages
+    caseStudy: https://www.figma.com/proto/YL1RlptRMBMwXhUmb1wHpv/Lazare?page-id=5000%3A9657&node-id=6204-258527&starting-point-node-id=6204%3A254858&scaling=scale-down&content-scaling=fixed
+    type: Landing pages
+    summary: >-
+      Conversion-focused landing pages across industries, including affiliate-platform
+      software, covering positioning, UX strategy, copy and visual direction.
+    services: [web, branding]
   - name: Atlantis Dental Clinic
     client: Atlantis Dental Clinic
     url: https://www.instagram.com/reel/DdOpiYmThNn/
@@ -20,4 +61,3 @@ projects:
     featured: true
 toConfirm:
   - LinkedIn
-  - More projects from his Figma portfolio
