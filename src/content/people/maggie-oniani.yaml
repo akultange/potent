@@ -13,12 +13,12 @@ projects:
   - name: SOCAR Instagram feed
     url: https://www.behance.net/gallery/194573085/SOCAR-INSTAGRAM-FEED
     image: /work/maggie-socar.jpg
-    client: SOCAR
-    type: Social media design
+    # Her Behance page: "My vision of what Socar Petroleum Georgia's Instagram should look like."
+    # A concept, so SOCAR is not a client and the project is not shown big.
+    type: Concept for social media
     sector: Energy
-    summary: Instagram feed design for SOCAR.
+    summary: Her own concept for SOCAR Petroleum Georgia's Instagram feed, not commissioned.
     services: [graphic-design]
-    featured: true
   - name: GAMO social media
     url: https://www.behance.net/gallery/190534433/GAMO-Social-media
     image: /work/maggie-gamo.jpg
@@ -49,12 +49,16 @@ projects:
     summary: Illustrations for the FIGUREBI animation.
     services: [graphic-design, motion]
     featured: true
-  - name: Women's Day motion video
+  - name: Women's Day video
     url: https://www.behance.net/gallery/194550491/Motion-Video-For-Womens-Day
     image: /work/maggie-womens-day.jpg
-    type: Motion video
-    summary: Motion piece for International Women's Day.
-    services: [motion]
+    # Behance credits: graphic designer Maggie Oniani, motion designer Lika Daushvili.
+    client: SkillWill Georgia
+    type: Graphics for animation
+    summary: Graphics for SkillWill Georgia's Women's Day video; animation by Lika Daushvili.
+    role: Graphic design (animation by Lika Daushvili)
+    services: [graphic-design]
     featured: true
 toConfirm:
   - LinkedIn
+  - 'SOCAR: show it as a client only if SOCAR really hired her (Behance calls the feed her own vision)'

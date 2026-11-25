@@ -1,17 +1,18 @@
 ---
 // Potent, a portfolio-style agency blueprint for an investor, in both languages: "/" renders
 // this file as is (English) and src/pages/ru/index.astro renders it with lang="ru".
-// The film first, then the work, big; then the team, the market, what we sell, the growth
-// engine and the plan. Text goes through t() (Russian in src/i18n/ru.ts); numbers and their
-// sources live in src/data/blueprint.ts, the work's order and sizes in src/data/showcase.ts.
+// The story: the film and the big names, proof, the work (big), the team, what we sell, the
+// market and how we make money, the growth engine, the plan, and the next step. Text goes
+// through t() (Russian in src/i18n/ru.ts); numbers and their sources live in
+// src/data/blueprint.ts, the work's order and sizes in src/data/showcase.ts.
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import Engine from '../components/Engine.astro';
 import PersonCard from '../components/PersonCard.astro';
 import Scope from '../components/Scope.astro';
 import Work from '../components/Work.astro';
-import { HIRES, MARKET, PLANS, PROOF, STREAMS } from '../data/blueprint';
-import { CASES } from '../data/showcase';
+import { CONTACTS, HIRES, MARKET, PLANS, PROOF, STREAMS } from '../data/blueprint';
+import { CASES, MORE } from '../data/showcase';
 import { AREAS, SERVICES } from '../data/services';
 import { SITE } from '../data/site';
 import {
@@ -25,7 +26,7 @@ import {
   type Lang,
   type LocalPerson,
 } from '../i18n';
-import { asset } from '../lib/util';
+import { asset, keep } from '../lib/util';
 
 interface Props {
   lang?: Lang;
@@ -45,25 +46,24 @@ const areaRank = (p: LocalPerson) => {
   const i = AREAS.findIndex((a) => a.id === area);
   return i === -1 ? AREAS.length : i;
 };
-const specialists = people.filter((p) => p.data.group === 'network').sort((a, b) => areaRank(a) - areaRank(b));
+// Faces first, then by area; people without a photo yet come last.
+const specialists = people
+  .filter((p) => p.data.group === 'network')
+  .sort((a, b) => Number(!a.data.photo) - Number(!b.data.photo) || areaRank(a) - areaRank(b));
 
-const rank = (c: string) => {
-  const i = SITE.clientOrder.indexOf(c);
-  return i === -1 ? SITE.clientOrder.length : i;
-};
-// The brands behind featured work, best known first.
-const clients = [
-  ...new Set(people.flatMap((p) => p.data.projects.filter((pr) => pr.featured && pr.en.client).map((pr) => pr.en.client!))),
-]
-  .sort((a, b) => rank(a) - rank(b))
-  .slice(0, 10);
+// The big names on the first screen must be real clients in someone's file.
+const clients = new Set(people.flatMap((p) => p.data.projects.map((pr) => pr.en.client).filter(Boolean)));
+for (const b of SITE.brands) {
+  if (!clients.has(b)) throw new Error(`src/data/site.ts: "${b}" is in brands, but no project in src/content/people/ has it as client.`);
+}
 
 const academy = founders.flatMap((p) => p.data.projects).find((p) => p.en.name === '101SPOT');
+const [first, second] = founders.map((p) => p.data.name.split(' ')[0]);
 const external = { target: '_blank', rel: 'noopener noreferrer' };
 const REEL = 'https://skhiladze.com/media/film/reel.mp4';
 ---
 
-<Base lang={lang}>
+<Base lang={lang} title={t("{name}: big money is in digital. Here's the plan.", { name: site.name })}>
   <header class="site-header" data-header>
     <div class="wide">
       <a class="wordmark" href="#top"><i aria-hidden="true"></i>{site.name}</a>
@@ -73,6 +73,7 @@ const REEL = 'https://skhiladze.com/media/film/reel.mp4';
         <a href="#market">{t('Market')}</a>
         <a href="#plan">{t('Plan')}</a>
       </nav>
+      <a class="nav-plan" href="#plan">{t('Plan')} <span aria-hidden="true">↓</span></a>
       <ul class="lang" aria-label={t('Language')}>
         {
           LANGS.map((l) => (
@@ -92,39 +93,52 @@ const REEL = 'https://skhiladze.com/media/film/reel.mp4';
   </header>
 
   <main id="top">
-    <!-- The film: Luka's showreel, full screen. Phones, data saver and reduced motion get the still. -->
+    <!-- A still from Luka's reel; on big screens the reel itself fades in over it (see the script). -->
     <section class="hero">
-      <video class="hero__film" data-film={REEL} muted loop playsinline preload="none" poster={asset('/hd/reel-poster.webp')} aria-hidden="true" tabindex="-1"></video>
+      <picture class="hero__still">
+        <source media="(max-width: 699px)" srcset={asset('/hd/reel-still-phone.webp')} />
+        <img src={asset('/hd/reel-still.webp')} alt="" fetchpriority="high" decoding="async" />
+      </picture>
+      <video class="hero__film" data-film={REEL} muted playsinline preload="none" aria-hidden="true" tabindex="-1"></video>
       <div class="hero__shade" aria-hidden="true"></div>
       <div class="wide hero__content">
-        <p class="eyebrow">{t('Potent — digital agency · {city}', { city: site.city })}</p>
+        <p class="eyebrow">{site.tagline}</p>
         <h1>
-          <span>{t('Big money is in digital.')}</span>
-          <span>{t('We know how to earn it.')}</span>
-          <em>{t("Here's the plan.")}</em>
+          <span>{t('Big money is in digital.')}</span>{' '}
+          <span>{t('We know how to earn it.')}</span>{' '}
+          <em><a href="#plan">{t("Here's the plan.")}</a></em>
         </h1>
+        <div class="hero__brands">
+          <p class="eyebrow" id="brands-title">{t('Our people have worked for')}</p>
+          <ul role="list" aria-labelledby="brands-title">
+            {SITE.brands.map((b) => <li>{b}</li>)}
+          </ul>
+        </div>
         <div class="hero__foot">
-          <span>{t('Showreel: Luka Skhiladze')}</span>
-          <a href="#work">{t('Scroll')} ↓</a>
+          <span class="hero__credit">
+            {t('Film by co-founder Luka Skhiladze')}
+            <button class="hero__toggle" type="button" aria-pressed="false" aria-label={t('Pause the film')} hidden></button>
+          </span>
+          <a href="#proof">{t('Scroll')} <span aria-hidden="true">↓</span></a>
         </div>
       </div>
     </section>
 
-    <section class="proof-band">
+    <section class="proof-band" id="proof" aria-labelledby="proof-title">
       <div class="wide">
-        <p class="manifesto" data-reveal>
-          {t('A team of {n} with 80+ shipped projects for Bank of Georgia, Yamaha Motor Europe, SOCAR and Kärcher.', { n: people.length })}
+        <p class="manifesto" id="proof-title" data-reveal>
+          {keep(t('Four of us have built products for Bank of Georgia. Two are CTOs.'))}
         </p>
-        <ul class="proof">
+        <ul class="proof" role="list">
           {
             PROOF.map((p) => (
               <li class="proof__item" data-reveal>
                 <span class="proof__value">{t(p.value)}</span>
                 <span class="proof__label">
-                  {t(p.label)}
+                  {keep(t(p.label))}{' '}
                   {p.source && (
                     <a class="source" href={p.source.url} {...external}>
-                      {p.source.name}
+                      {t('Source')}: {p.source.name}
                     </a>
                   )}
                 </span>
@@ -139,26 +153,10 @@ const REEL = 'https://skhiladze.com/media/film/reel.mp4';
       <div class="wide">
         <header class="block-head" data-reveal>
           <h2 id="work-title">{t('Selected work')}</h2>
-          <p class="block-head__count">{projectCount(lang, CASES.length)}</p>
+          <p class="block-head__count">{projectCount(lang, CASES.length + MORE.length)}</p>
         </header>
         <Work people={people} lang={lang} />
       </div>
-    </section>
-
-    <section class="clients-band" aria-label={t('Our people have worked for')}>
-      <p class="eyebrow wide">{t('Our people have worked for')}</p>
-      <div class="ticker" aria-hidden="true">
-        {[0, 1].map(() => (
-          <ul>
-            {clients.map((c) => (
-              <li>{c}</li>
-            ))}
-          </ul>
-        ))}
-      </div>
-      <ul class="sr-only">
-        {clients.map((c) => <li>{c}</li>)}
-      </ul>
     </section>
 
     <section class="block" id="team" aria-labelledby="team-title">
@@ -176,33 +174,23 @@ const REEL = 'https://skhiladze.com/media/film/reel.mp4';
         <div class="members">
           {specialists.map((p) => <PersonCard person={p} lang={lang} />)}
         </div>
-
-        <h3 class="kicker">{t('Next hires, with the investment')}</h3>
-        <ul class="hires" data-reveal>
-          {
-            HIRES.map((h) => (
-              <li>
-                <span aria-hidden="true">+</span>
-                {t(h)}
-              </li>
-            ))
-          }
-        </ul>
       </div>
     </section>
+
+    <Scope lang={lang} people={people} label={t('What we sell')} compact />
 
     <section class="block" id="market" aria-labelledby="market-title">
       <div class="wide">
         <header class="block-head" data-reveal>
-          <h2 id="market-title" set:html={t('Every business pays for digital. <em>Every year.</em>')} />
+          <h2 id="market-title" set:html={t('Every business pays for digital. <em>More every year.</em>')} />
         </header>
-        <ul class="money">
+        <ul class="money" role="list">
           {
             MARKET.map((m) => (
               <li class="money__row" data-reveal>
                 <span class="money__value">{t(m.value)}</span>
                 <span class="money__label">
-                  {t(m.label)}
+                  {keep(t(m.label))}{' '}
                   <a class="source" href={m.source.url} {...external}>
                     {t('Source')}: {m.source.name}
                   </a>
@@ -212,12 +200,14 @@ const REEL = 'https://skhiladze.com/media/film/reel.mp4';
           }
         </ul>
 
-        <h3 class="kicker">{t('How an agency earns')}</h3>
-        <ol class="streams">
+        <h3 class="kicker">{t('How we make money')}</h3>
+        <ol class="streams" role="list">
           {
             STREAMS.map((s, i) => (
               <li class="stream" data-reveal>
-                <span class="stream__n">{String(i + 1).padStart(2, '0')}</span>
+                <span class="stream__n" aria-hidden="true">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
                 <span class="stream__title">{t(s.title)}</span>
                 <span class="stream__text">{t(s.text)}</span>
               </li>
@@ -227,14 +217,12 @@ const REEL = 'https://skhiladze.com/media/film/reel.mp4';
       </div>
     </section>
 
-    <Scope lang={lang} people={people} label={t('What we sell')} compact />
-
     <section class="block" id="engine" aria-labelledby="engine-title">
       <div class="wide">
         <header class="block-head" data-reveal>
-          <h2 id="engine-title" set:html={t('Our own academy grows <em>our own people.</em>')} />
+          <h2 id="engine-title" set:html={t('Our academy will grow <em>our own people.</em>')} />
           <p class="block-head__text">
-            {t('Seniors lead, academy graduates do the volume: more projects with the same team, and a higher margin.')}
+            {t('Seniors will lead, academy graduates will do the volume: more projects with the same team, and a higher margin.')}
           </p>
         </header>
         <div class="engine">
@@ -243,13 +231,16 @@ const REEL = 'https://skhiladze.com/media/film/reel.mp4';
               <a class="academy" href={academy.url ?? academy.caseStudy} {...external} data-reveal>
                 <img
                   src={asset('/hd/101spot-1200.webp')}
-                  srcset={`${asset('/hd/101spot-1200.webp')} 1200w, ${asset('/hd/101spot-2400.webp')} 2400w`}
-                  sizes="(min-width: 1000px) 55vw, 100vw"
+                  srcset={`${asset('/hd/101spot-1200.webp')} 1200w, ${asset('/hd/101spot-1600.webp')} 1600w, ${asset('/hd/101spot-2400.webp')} 2400w`}
+                  sizes="(min-width: 1440px) 750px, (min-width: 1000px) 53vw, (min-width: 534px) 94vw, calc(100vw - 32px)"
                   alt=""
                   loading="lazy"
+                  decoding="async"
                 />
                 <span class="academy__text">
-                  <span class="academy__name">101SPOT ↗</span>
+                  <span class="academy__name">
+                    101SPOT <span aria-hidden="true">↗</span>
+                  </span>
                   <span>{t('Academy co-founded by Giorgi Kheladze')}</span>
                   <span>
                     <b>{t('90 days')}</b> {t('from junior to mid-level designer')}
@@ -266,18 +257,18 @@ const REEL = 'https://skhiladze.com/media/film/reel.mp4';
     <section class="block" id="plan" aria-labelledby="plan-title">
       <div class="wide">
         <header class="block-head" data-reveal>
-          <h2 id="plan-title" set:html={t('$100,000 to build it <em>faster.</em>')} />
+          <h2 id="plan-title" set:html={t('$100,000 to scale <em>faster.</em>')} />
         </header>
         <div class="plans">
           {
             PLANS.map((p) => (
               <article class:list={['plan', { 'plan--pick': p.recommended }]} data-reveal>
-                <p class="plan__top">
-                  <span>{t(p.name)}</span>
+                <div class="plan__top">
+                  <h3 class="plan__name">{t(p.name)}</h3>
                   {p.recommended && <span class="plan__badge">{t('Recommended')}</span>}
-                </p>
+                </div>
                 <p class="plan__amount">{t(p.amount)}</p>
-                <ul class="plan__points">
+                <ul class="plan__points" role="list">
                   {p.points.map((point) => (
                     <li>{t(point)}</li>
                   ))}
@@ -286,6 +277,59 @@ const REEL = 'https://skhiladze.com/media/film/reel.mp4';
             ))
           }
         </div>
+
+        <h3 class="kicker">{t('Who we hire first')}</h3>
+        <ul class="hires" role="list" data-reveal>
+          {
+            HIRES.map((h) => (
+              <li>
+                <span aria-hidden="true">+</span>
+                {t(h)}
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </section>
+
+    <section class="block next" id="next" aria-labelledby="next-title">
+      <div class="wide">
+        <header class="block-head" data-reveal>
+          <h2 id="next-title" set:html={t("Next step: <em>let's talk.</em>")} />
+          <p class="block-head__text">{t('{a} and {b} will answer any question.', { a: first!, b: second! })}</p>
+        </header>
+        <ul class="next__people" role="list" data-reveal>
+          {
+            founders.map((p) => (
+              <li>
+                <a href={`#${p.id}`}>
+                  {p.data.photo && <img src={asset(p.data.photo)} alt="" width="72" height="72" loading="lazy" decoding="async" />}
+                  <span>
+                    <b>{p.data.name}</b>
+                    {t('Co-founder')}
+                  </span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+        {
+          CONTACTS.length > 0 ? (
+            <ul class="next__actions" role="list" data-reveal>
+              {CONTACTS.map((c) => (
+                <li>
+                  <a href={c.href} {...external}>
+                    {t(c.label)}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p class="next__hint" data-reveal>
+              {t('Reply to the message this link came in.')}
+            </p>
+          )
+        }
       </div>
     </section>
   </main>
@@ -302,19 +346,55 @@ const REEL = 'https://skhiladze.com/media/film/reel.mp4';
 </Base>
 
 <script>
-  // The header gets a backdrop once the film is behind it.
+  // The header gets a backdrop once the page scrolls.
   const header = document.querySelector<HTMLElement>('[data-header]');
   const onScroll = () => header?.toggleAttribute('data-solid', window.scrollY > 40);
   onScroll();
   window.addEventListener('scroll', onScroll, { passive: true });
 
-  // The showreel loads only where it makes sense: wide screens, no data saver, no reduced motion.
+  // The film plays only on big screens (not phones, either way up), without data saver or
+  // reduced motion; everyone else keeps the still. It runs from the EV film to just before the
+  // name card: the reel's opening (cartoons with placeholder logos) and its ending are skipped.
   const film = document.querySelector<HTMLVideoElement>('[data-film]');
+  const toggle = document.querySelector<HTMLButtonElement>('.hero__toggle');
   const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const saver = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData;
-  if (film && !calm && !saver && window.innerWidth >= 700) {
-    film.src = film.dataset.film!;
-    film.play().catch(() => {});
+  const roomy = window.matchMedia('(min-width: 700px) and (min-height: 500px)').matches;
+  if (film && toggle && !calm && !saver && roomy) {
+    const FROM = 15.6;
+    const TO = 51.9;
+    let stopped = false;
+    const play = () => film.play().catch(() => {});
+    film.src = `${film.dataset.film}#t=${FROM}`;
+    film.addEventListener(
+      'playing',
+      () => {
+        film.classList.add('is-on');
+        film.parentElement?.setAttribute('data-film-on', '');
+      },
+      { once: true },
+    );
+    film.addEventListener('timeupdate', () => {
+      if (film.currentTime >= TO) film.currentTime = FROM;
+    });
+    film.addEventListener('ended', () => {
+      film.currentTime = FROM;
+      play();
+    });
+    play();
+    // A way to stop the motion, and a rest while the film is off screen.
+    toggle.hidden = false;
+    toggle.addEventListener('click', () => {
+      stopped = !stopped;
+      toggle.setAttribute('aria-pressed', String(stopped));
+      if (stopped) film.pause();
+      else play();
+    });
+    new IntersectionObserver(([e]) => {
+      if (stopped) return;
+      if (e?.isIntersecting) play();
+      else film.pause();
+    }).observe(film);
   }
 
   // Things rise into place as they come into view.

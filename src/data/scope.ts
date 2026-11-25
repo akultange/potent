@@ -107,7 +107,7 @@ export const SCOPE: ScopeItem[] = [
       {
         person: 'maggie-oniani',
         project: 'SOCAR Instagram feed',
-        note: 'Instagram feed design for SOCAR.',
+        note: "Her own concept for SOCAR's Instagram feed.",
       },
       {
         person: 'maggie-oniani',

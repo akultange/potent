@@ -3,15 +3,18 @@
 Potent's site: a dark, portfolio-style agency blueprint, built to show one investor (the
 Russian page, /ru/, is the one to send) that this team is big, proven and worth backing:
 
-1. **The film**: Luka's showreel full screen, with the promise on top (phones get a still).
+1. **The film**: a still from Luka's reel (the reel itself plays on big screens), the promise
+   and the big client names (`brands` in `src/data/site.ts`).
 2. **Proof**: one sentence and three big numbers.
-3. **Selected work**: the projects as huge pictures, each with its maker's face.
-4. **Clients**, as a slow ticker of brand names.
-5. **The team**: large black-and-white portraits, and the roles the investment hires next.
-6. **The market**: giant numbers, each with its source, and how the agency earns.
-7. **What we sell**: everything digital, in pictures.
-8. **The growth engine**: our own academy and podcast.
-9. **The plan**: $40k to start or $100k to scale.
+3. **Selected work**: ten projects as huge pictures, each with one line on why it matters and its
+   maker's face, then twelve more as a compact grid.
+4. **The team**: large black-and-white portraits.
+5. **What we sell**: everything digital, in pictures.
+6. **The market**: giant numbers, each with its source, and how we make money.
+7. **The growth engine**: the academy and podcast.
+8. **The plan**: $100k to scale (his choice, first) or $40k to start, and who we hire first.
+9. **Next step**: the two founders. Their Telegram/WhatsApp buttons appear once `CONTACTS` in
+   `src/data/blueprint.ts` is filled in.
 
 Static [Astro](https://astro.build) site, no backend. Words are kept short; bios and project
 write-ups stay in the YAML files.
@@ -19,10 +22,12 @@ write-ups stay in the YAML files.
 ## Pictures
 
 - `src/data/showcase.ts` sets which projects are in "Selected work", in what order and how big
-  (full width, half or third).
-- `public/hd/`: retina screenshots for the big pictures (`<name>-1200.webp` and
-  `<name>-2400.webp`). Full-width pictures need the 2400px file; half and third widths are fine
-  with a project's own 1200px image.
+  (full width, half or third; the build stops if a row is left half empty), plus the compact
+  "More work" list.
+- `public/hd/`: retina screenshots for the big pictures (`<name>-1200.webp`, `-1600.webp` and
+  `-2400.webp`). Third widths are fine with a project's own 1200px image.
+- `public/hd/reel-still.webp` and `reel-still-phone.webp`: the hero's still, a frame of Luka's
+  reel (12.9 s, the eclipse).
 - `public/people/`: square portraits, set with `photo:` in each person's file.
 
 Live: https://akultange.github.io/potent/ in English and https://akultange.github.io/potent/ru/ in

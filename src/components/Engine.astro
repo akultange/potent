@@ -23,8 +23,9 @@ const arrows = ENGINE.map((_, i) => {
   const a = (deg * Math.PI) / 180;
   return { x: C + R * Math.cos(a), y: C + R * Math.sin(a), rotate: deg + 90 };
 });
-const [line1, line2] = t('Higher margin').split(' ');
-const summary = `${[...ENGINE, ENGINE[0]].map((l) => t(l)).join(' → ')}: ${t('Higher margin')}`;
+const [line1, ...rest] = t('Higher margin').split(/\s+/);
+const line2 = rest.join(' ');
+const summary = `${[...ENGINE, ENGINE[0]].map((l) => t(l)).join(', ')}: ${t('Higher margin')}`;
 ---
 
 <svg class="engine-loop" viewBox="0 0 600 600" role="img" aria-label={summary}>

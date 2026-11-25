@@ -34,3 +34,9 @@ export function thumbOf(image: string): string {
   const small = `/scope/work/${image.split('/').pop()!.replace(/\.\w+$/, '')}.webp`;
   return asset(existsSync(path.join(process.cwd(), 'public', small)) ? small : image);
 }
+
+/** Names that read as one word: their spaces become no-break spaces, so "Bank of / Georgia" can't happen. */
+const KEEP = /Bank of Georgia|Yamaha Motor Europe|Kärcher Georgia|Virtual Zone|App Store|EV Store|SkillWill Georgia|Sweeft Digital/g;
+export function keep(text: string): string {
+  return text.replace(KEEP, (name) => name.replaceAll(' ', '\u00a0'));
+}

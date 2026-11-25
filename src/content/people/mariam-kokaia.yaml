@@ -18,8 +18,9 @@ links:
 services: [motion]
 projects:
   - name: Showreel
-    image: /work/showreel.jpg
-    url: https://mariamkokaia.framer.website/
+    image: /work/mariam-showreel.webp
+    # the reel on her portfolio site (mariamkokaia.framer.website), on YouTube
+    url: https://www.youtube.com/watch?v=hXnK7ChYUJM
     type: Motion reel
     summary: Explainer videos, logo animations, UI animations and social content.
     services: [motion]

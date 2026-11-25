@@ -8,10 +8,11 @@
   `t('English text')`), people in `src/content/people-ru/`. Every new word on the page needs its
   Russian line.
 - The page is a dark, portfolio-style agency blueprint for one non-digital investor (send him
-  /ru/): Luka's showreel hero, proof numbers, "Selected work" as huge pictures
-  (`src/data/showcase.ts`, retina files in `public/hd/`), client ticker, B&W team portraits plus
-  open roles (never invented people), market numbers with sources (`src/data/blueprint.ts`), what
-  we sell, academy/podcast engine, $40k vs $100k plan. Big pictures, few words.
+  /ru/): Luka's reel as the hero with the big client names, proof numbers, "Selected work" as
+  huge pictures plus a compact grid (`src/data/showcase.ts`, retina files in `public/hd/`), B&W
+  team portraits (never invented people), what we sell, market numbers with sources
+  (`src/data/blueprint.ts`), academy/podcast engine, $100k vs $40k plan with open roles, next
+  step. Big pictures, few words.
 - Two founders push to `main` in parallel. Commit small and often, always `git pull --rebase`
   before `git push`, resolve conflicts by keeping both sides' intent, never force-push or rewrite
   pushed history. No branches or PRs.

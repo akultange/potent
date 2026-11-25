@@ -50,12 +50,12 @@ projects:
       React Native app for real-time shipment tracking.
     role: Shipment lifecycle, administration and financial features; the tracking app
     services: [engineering, web]
-    featured: true
   - name: Enterprise web apps
     client: Sweeft Digital
     type: Enterprise web apps
     summary: Enterprise web applications, internal business platforms and reusable UI components in React and TypeScript.
     services: [engineering, web]
+    featured: true
 toConfirm:
   - Photo (his GitHub picture is WALL-E, and LinkedIn asks to sign in)
   - Is his "Ads Manager ecosystem" the same Ads Manager Giorgi designed and Dimitri built? If so, show it as one project by three of our people

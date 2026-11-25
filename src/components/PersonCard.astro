@@ -2,7 +2,7 @@
 // One person, face first: their photo (or initials), name, role, the brands they have worked
 // for and their links. Founders get a larger card with their headline numbers.
 import { translator, type Lang, type LocalPerson } from '../i18n';
-import { asset, hue, initials } from '../lib/util';
+import { asset, initials, keep } from '../lib/util';
 
 interface Props {
   /** A person from src/content/people/, already in the page's language (see localPerson). */
@@ -39,7 +39,7 @@ const links = (Object.keys(LINK_LABELS) as (keyof typeof LINK_LABELS)[])
 ---
 
 <article class:list={['person', isFounder ? 'person--founder' : 'person--member']} id={person.id} data-reveal>
-  <div class="person__face" style={`--hue:${hue(d.en.name)}`}>
+  <div class="person__face">
     {
       d.photo ? (
         <img src={asset(d.photo)} alt={d.name} loading="lazy" decoding="async" />
@@ -53,7 +53,7 @@ const links = (Object.keys(LINK_LABELS) as (keyof typeof LINK_LABELS)[])
 
   <div class="person__body">
     <h4 class="person__name">{d.name}</h4>
-    <p class="person__title">{d.title}</p>
+    <p class="person__title">{keep(d.title)}</p>
 
     {
       facts.length > 0 && (
@@ -83,7 +83,7 @@ const links = (Object.keys(LINK_LABELS) as (keyof typeof LINK_LABELS)[])
         <ul class="links" aria-label={t('{name} online', { name: d.name })}>
           {links.map((l) => (
             <li>
-              <a href={l.href} target="_blank" rel="noopener noreferrer">
+              <a href={l.href} target="_blank" rel="noopener noreferrer" aria-label={`${l.label}: ${d.name}`}>
                 {l.label}
                 <span aria-hidden="true">↗</span>
               </a>

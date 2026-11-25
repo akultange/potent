@@ -26,12 +26,19 @@ interface Props {
 const { lang = 'en', people, number, label, compact = false } = Astro.props;
 const t = translator(lang);
 
-// How wide each tile is drawn, so the browser picks the right picture file.
-const SIZES = {
-  square: '(min-width: 900px) 364px, (min-width: 600px) 50vw, 100vw',
-  wide: '(min-width: 900px) 553px, 100vw',
-  hero: '(min-width: 900px) 1120px, 100vw',
-} as const;
+// How wide each tile is drawn, so the browser picks the right picture file. Compact mode has
+// smaller tiles: two to a row on phones, three from 900px.
+const SIZES = compact
+  ? {
+      square: '(min-width: 1440px) 444px, (min-width: 900px) 31vw, calc(50vw - 23px)',
+      wide: '(min-width: 1440px) 592px, (min-width: 900px) 41vw, calc(67vw - 31px)',
+      hero: '(min-width: 1440px) 592px, (min-width: 900px) 41vw, (min-width: 534px) 94vw, calc(100vw - 32px)',
+    }
+  : {
+      square: '(min-width: 900px) 364px, (min-width: 600px) 50vw, 100vw',
+      wide: '(min-width: 900px) 553px, 100vw',
+      hero: '(min-width: 900px) 1120px, 100vw',
+    };
 
 /** The small copy of a project screenshot if it exists, the full screenshot if it does not. */
 function thumb(image: string): string {

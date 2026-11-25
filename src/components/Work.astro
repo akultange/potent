@@ -1,9 +1,10 @@
 ---
-// Selected work, big: each project as a large picture with its name, client and the face of
-// the person who made it. Order and sizes live in src/data/showcase.ts.
-import { CASES } from '../data/showcase';
+// Selected work: the best projects as large pictures, each with its name, one line on why it
+// matters and the face of the person who made it; then the rest as a compact grid. Order, sizes
+// and the one-liners live in src/data/showcase.ts.
+import { CASES, MORE, type Case } from '../data/showcase';
 import { translator, type Lang, type LocalPerson } from '../i18n';
-import { asset, initials } from '../lib/util';
+import { asset, initials, keep, thumbOf } from '../lib/util';
 
 interface Props {
   /** Everyone on the page, in the page's language. */
@@ -14,64 +15,93 @@ interface Props {
 const { people, lang = 'en' } = Astro.props;
 const t = translator(lang);
 
+// How wide each picture is drawn (16px page gutters on phones, 3vw up to 1333px, 1360px of
+// content at most), so the browser picks the right file.
 const SIZES = {
-  full: '(min-width: 1500px) 1440px, 100vw',
-  half: '(min-width: 900px) 50vw, 100vw',
-  third: '(min-width: 900px) 33vw, 100vw',
+  full: '(min-width: 1440px) 1360px, (min-width: 534px) 94vw, calc(100vw - 32px)',
+  half: '(min-width: 1440px) 668px, (min-width: 760px) 46vw, (min-width: 534px) 94vw, calc(100vw - 32px)',
+  third: '(min-width: 1440px) 437px, (min-width: 760px) 31vw, (min-width: 534px) 94vw, calc(100vw - 32px)',
 } as const;
 
-const cases = CASES.map((c, i) => {
+// Halves go in pairs and thirds in threes, so no row of big pictures is left half empty.
+const SPAN = { full: 6, half: 3, third: 2 } as const;
+let col = 0;
+for (const c of CASES) {
+  if (col + SPAN[c.size] > 6) {
+    throw new Error(`src/data/showcase.ts: the row before "${c.project}" is not full (halves go in pairs, thirds in threes).`);
+  }
+  col = (col + SPAN[c.size]) % 6;
+}
+if (col) throw new Error('src/data/showcase.ts: the last row of big pictures is not full.');
+
+function find(c: { person: string; project: string }) {
   const person = people.find((p) => p.id === c.person);
   const project = person?.data.projects.find((p) => p.en.name === c.project);
   if (!person || !project) {
-    throw new Error(
-      `src/data/showcase.ts: "${c.project}" by "${c.person}" is not in src/content/people/${c.person}.yaml.`,
-    );
+    throw new Error(`src/data/showcase.ts: "${c.project}" by "${c.person}" is not in src/content/people/${c.person}.yaml.`);
   }
-  const own = project.image ? asset(project.image) : null;
-  const picture = c.hd
-    ? c.single
-      ? { src: asset(`/hd/${c.hd}-1200.webp`), srcset: undefined }
-      : {
-          src: asset(`/hd/${c.hd}-1200.webp`),
-          srcset: `${asset(`/hd/${c.hd}-1200.webp`)} 1200w, ${asset(`/hd/${c.hd}-2400.webp`)} 2400w`,
-        }
-    : { src: own, srcset: undefined };
+  // The case study shows the work better than the live product's front page.
+  return { person, project, href: project.caseStudy ?? project.url };
+}
+
+const cases = CASES.map((c: Case, i) => {
+  const { person, project, href } = find(c);
+  const hd = (w: number) => asset(`/hd/${c.hd}-${w}.webp`);
   return {
     ...c,
     n: String(i + 1).padStart(2, '0'),
     name: project.name,
-    client: project.client && !project.name.includes(project.client) ? project.client : null,
-    type: project.type,
-    href: project.url ?? project.caseStudy,
-    picture,
+    line: keep(
+      [project.client && !project.name.includes(project.client) ? project.client : null, c.note ? t(c.note) : project.type]
+        .filter(Boolean)
+        .join(' · '),
+    ),
+    href,
+    src: c.hd ? hd(1200) : project.image ? asset(project.image) : null,
+    srcset: c.hd ? `${hd(1200)} 1200w, ${hd(1600)} 1600w, ${hd(2400)} 2400w` : undefined,
     by: person.data.name,
     byId: person.id,
     photo: person.data.photo ? asset(person.data.photo) : null,
   };
 });
+
+const more = MORE.map((m) => {
+  const { person, project, href } = find(m);
+  return { name: project.name, href, src: project.image ? thumbOf(project.image) : null, by: person.data.name };
+});
+const external = { target: '_blank', rel: 'noopener noreferrer' };
 ---
 
 <div class="work-grid">
   {
     cases.map((c) => (
       <article class:list={['case', `case--${c.size}`]} data-reveal>
-        <a class="case__media" href={c.href} target="_blank" rel="noopener noreferrer" aria-label={`${c.name}, ${t('View project')}`}>
-          {c.picture.src && (
-            <img src={c.picture.src} srcset={c.picture.srcset} sizes={SIZES[c.size]} alt="" loading="lazy" decoding="async" />
-          )}
-          <span class="case__view" aria-hidden="true">
-            {t('View project')} ↗
-          </span>
-        </a>
+        {c.href ? (
+          <a class="case__media" href={c.href} {...external} aria-label={`${c.name}, ${t('View project')}`}>
+            {c.src && <img src={c.src} srcset={c.srcset} sizes={SIZES[c.size]} alt="" loading="lazy" decoding="async" />}
+            <span class="case__view" aria-hidden="true">
+              <span class="case__view-text">{t('View project')}</span> ↗
+            </span>
+          </a>
+        ) : (
+          <div class="case__media">
+            {c.src && <img src={c.src} srcset={c.srcset} sizes={SIZES[c.size]} alt="" loading="lazy" decoding="async" />}
+          </div>
+        )}
         <div class="case__caption">
-          <span class="case__n">{c.n}</span>
+          <span class="case__n" aria-hidden="true">
+            {c.n}
+          </span>
           <div class="case__title">
             <h3>{c.name}</h3>
-            <p>{[c.client, c.type].filter(Boolean).join(' · ')}</p>
+            <p>{c.line}</p>
           </div>
           <a class="case__by" href={`#${c.byId}`}>
-            {c.photo ? <img src={c.photo} alt="" width="28" height="28" loading="lazy" /> : <span>{initials(c.by)}</span>}
+            {c.photo ? (
+              <img src={c.photo} alt="" width="28" height="28" loading="lazy" decoding="async" />
+            ) : (
+              <span aria-hidden="true">{initials(c.by)}</span>
+            )}
             {c.by}
           </a>
         </div>
@@ -79,3 +109,20 @@ const cases = CASES.map((c, i) => {
     ))
   }
 </div>
+
+<h3 class="kicker">
+  {t('More work')} <span>{more.length}</span>
+</h3>
+<ul class="more" role="list">
+  {
+    more.map((m) => (
+      <li data-reveal>
+        <a class="more__item" href={m.href} {...external}>
+          <span class="more__pic">{m.src && <img src={m.src} alt="" width="640" height="400" loading="lazy" decoding="async" />}</span>
+          <span class="more__name">{m.name}</span>
+          <span class="more__by">{m.by}</span>
+        </a>
+      </li>
+    ))
+  }
+</ul>

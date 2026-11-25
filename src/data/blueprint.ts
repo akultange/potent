@@ -14,23 +14,27 @@ const IDC =
 const PWC = 'https://taxsummaries.pwc.com/georgia/corporate/tax-credits-and-incentives';
 const BOG_APP = 'https://apps.apple.com/ge/app/bank-of-georgia/id1159368231';
 
-/** Big numbers under the headline: what our people have already done. */
+/** Big numbers under the headline: what our people have already done. The first is orange. */
 export const PROOF: { value: string; label: string; source?: Source }[] = [
-  {
-    // From their own portfolios: Luka S. 38 (31 films, 7 sites and apps), Mariam 15+, Maggie 12
-    // on Behance, Giorgi 6, Dimitri 6, Lazare 5, Luka L. 3, Mikheil 2 = 87.
-    value: '80+',
-    label: 'projects shipped by our people',
-  },
   {
     value: '1.8M',
     label: 'people use the Bank of Georgia app our designer works on',
     source: { name: 'App Store', url: BOG_APP },
   },
   {
-    // Lazare's portfolio: the CRM serves 1,500+ dealers in 40+ European markets.
+    // Lazare's case study (public/work/yamaha.jpg): one CRM for 1,500+ dealers across 40+
+    // European markets; he owned the product design. Say "designed", not "led" or "his project".
     value: '40+',
-    label: "markets run on Yamaha's dealer CRM, led by our designer",
+    label: "European markets covered by Yamaha's dealer CRM, designed by our designer",
+  },
+  {
+    // Every piece in their own portfolios and CVs, spec and concept work included: Luka S. 38
+    // (skhiladze.com: 31 films, 7 sites and apps; 31 of the 38 are spec or concept), Mariam 15+,
+    // Maggie 12 on Behance, Giorgi 6, Dimitri 6, Guram 5, Lazare 5, Luka L. 3, Mikheil 2 = 92;
+    // about 88 when the shared Bank of Georgia projects count once. Client work alone is about
+    // 43, so never call this "shipped" or "for clients".
+    value: '80+',
+    label: "works in our people's portfolios",
   },
 ];
 
@@ -39,16 +43,19 @@ export const MARKET: { value: string; label: string; source: Source }[] = [
   {
     value: '$3.9 trillion',
     label: 'what companies worldwide will spend on going digital in 2027',
-    source: { name: 'IDC', url: IDC },
+    source: { name: 'IDC, 2023', url: IDC },
   },
   {
     value: '+16% a year',
     label: 'how fast that spending grows',
-    source: { name: 'IDC', url: IDC },
+    source: { name: 'IDC, 2023', url: IDC },
   },
   {
+    // PwC: 0% only on profit from IT the company itself builds and sells outside Georgia, and
+    // only with Virtual Zone status. Nothing here says Potent has the status: the founders have
+    // not confirmed it, and local clients, the academy and the podcast would not qualify.
     value: '0% profit tax',
-    label: 'for IT companies in Georgia that sell abroad (Virtual Zone)',
+    label: 'on IT that Georgian companies with Virtual Zone status build and sell abroad',
     source: { name: 'PwC', url: PWC },
   },
 ];
@@ -64,24 +71,32 @@ export const STREAMS = [
 /** The academy and podcast loop, clockwise from the top. Drawn by src/components/Engine.astro. */
 export const ENGINE = ['Academy', 'Interns', 'Team', 'Projects', 'Revenue', 'Podcast'] as const;
 
-/** The roles the investment hires first. Founders' plan: change freely. */
-export const HIRES = ['Project managers', 'Developers', 'Designers', 'Sales', 'Marketing', 'Academy mentors'];
+/** The roles the investment hires first, shown with the plan. Founders' plan: change freely. */
+export const HIRES = ['Project managers', 'Developers', 'Designers', 'Sales managers', 'Marketers', 'Academy mentors'];
 
 /**
- * The two ways to start. This is the founders' plan, not a promise: no revenue or return
- * figures go here until the founders give them.
+ * The two ways to start, the investor's choice ($100k) first. This is the founders' plan, not a
+ * promise: no revenue or return figures go here until the founders give them.
  */
 export const PLANS = [
-  {
-    amount: '$40k',
-    name: 'Start',
-    points: ['A small core team', 'First clients', 'Grow step by step'],
-    recommended: false,
-  },
   {
     amount: '$100k',
     name: 'Scale',
     points: ['The full team from day one', 'Our own academy and interns', 'Sales and marketing from the start'],
     recommended: true,
   },
+  {
+    amount: '$40k',
+    name: 'Start',
+    points: ['A small core team', 'First clients', 'Grow step by step'],
+    recommended: false,
+  },
 ];
+
+/**
+ * How to reach the founders, shown as buttons under "Next step". Founders' handles only, for
+ * example { label: 'Telegram', href: 'https://t.me/<handle>' } or { label: 'WhatsApp', href:
+ * 'https://wa.me/<number>' }. While it is empty the page asks him to reply to the message the
+ * link came in.
+ */
+export const CONTACTS: { label: string; href: string }[] = [];

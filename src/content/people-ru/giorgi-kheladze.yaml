@@ -12,7 +12,7 @@ facts:
   products use the design-system components:
     label: продуктов на компонентах дизайн-системы
   faster design work after the Webiz design system:
-    label: быстрее дизайн после дизайн-системы Webiz
+    label: "скорость дизайна в Webiz с его дизайн\u2011системой"
 projects:
   Ads Manager:
     type: Веб-приложение
