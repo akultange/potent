@@ -15,7 +15,8 @@ Russian page, /ru/, is the one to send) that this team is big, proven and worth 
 6. **How a project runs**: five steps (`PROCESS`).
 7. **What we sell**: everything digital, in pictures.
 8. **The market**: giant numbers, each with its source, and how we make money.
-9. **The growth engine**: the academy and podcast; the hero's "Here's the plan" leads here.
+9. **The plan**: the agency now, scale next, the academy after scale (`PHASES`), with 101SPOT
+   and the growth loop under phase three; the hero's "Here's the plan" leads here.
 10. **Next step**: the two founders. Their Telegram/WhatsApp buttons appear once `CONTACTS` in
     `src/data/blueprint.ts` is filled in.
 

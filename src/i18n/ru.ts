@@ -174,8 +174,19 @@ export const RU = {
     Podcast: 'Подкаст',
     'An audience that brings in clients and students.': 'Аудитория, которая приводит клиентов и студентов.',
 
-    // the growth engine
-    'Our academy will grow <em>our own people.</em>': 'Своя академия будет растить <em>своих людей.</em>',
+    // the plan: agency now, scale next, the academy after scale
+    'Agency first. <em>Academy after scale.</em>': 'Сначала агентство. <em>После роста — академия.</em>',
+    Now: 'Сейчас',
+    Next: 'Дальше',
+    'After scale': 'После роста',
+    Agency: 'Агентство',
+    Scale: 'Рост',
+    'Sites, apps and brands for companies, paid per project and every month.':
+      'Сайты, приложения и бренды для компаний — оплата за проект и каждый месяц.',
+    'More team leads and outsource partners; sales and marketing keep clients coming.':
+      'Больше тимлидов и партнёров на аутсорсе; продажи и маркетинг приводят клиентов.',
+    'Our own academy grows our own people, so the margin goes up.': 'Своя академия растит своих людей — и маржа растёт.',
+    'After scale: the academy': 'После роста: академия',
     'Seniors will lead, academy graduates will do the volume: more projects with the same team, and a higher margin.':
       'Проекты будут вести опытные специалисты, основную работу — выпускники академии. Больше проектов той же командой — и выше маржа.',
     'Academy co-founded by Giorgi Kheladze': 'Сооснователь академии — Гиорги Хеладзе',

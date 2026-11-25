@@ -11,8 +11,8 @@
   /ru/): Luka's reel as the hero with the big client names, proof numbers, "Selected work" as
   huge pictures plus a compact grid (`src/data/showcase.ts`, retina files in `public/hd/`),
   colour team portraits (never invented people) and a network card, team structure and process,
-  what we sell, market numbers with sources (`src/data/blueprint.ts`), academy/podcast engine as
-  the plan, next step. Big pictures, few words.
+  what we sell, market numbers with sources (`src/data/blueprint.ts`), the plan (agency now, scale
+  next, academy after scale), next step. Big pictures, few words.
 - Two founders push to `main` in parallel. Commit small and often, always `git pull --rebase`
   before `git push`, resolve conflicts by keeping both sides' intent, never force-push or rewrite
   pushed history. No branches or PRs.

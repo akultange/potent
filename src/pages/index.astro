@@ -2,8 +2,8 @@
 // Potent, a portfolio-style agency blueprint for an investor, in both languages: "/" renders
 // this file as is (English) and src/pages/ru/index.astro renders it with lang="ru".
 // The story: the film and the big names, proof, the work (big), the team, how the team is
-// built, how a project runs, what we sell, the market and how we make money, the growth engine
-// (the plan), and the next step. Text goes
+// built, how a project runs, what we sell, the market and how we make money, the plan (agency
+// now, scale next, the academy after scale), and the next step. Text goes
 // through t() (Russian in src/i18n/ru.ts); numbers and their sources live in
 // src/data/blueprint.ts, the work's order and sizes in src/data/showcase.ts.
 import { getCollection } from 'astro:content';
@@ -12,7 +12,7 @@ import Engine from '../components/Engine.astro';
 import PersonCard from '../components/PersonCard.astro';
 import Scope from '../components/Scope.astro';
 import Work from '../components/Work.astro';
-import { CONTACTS, MARKET, NETWORK, PROCESS, PROOF, STREAMS, STRUCTURE } from '../data/blueprint';
+import { CONTACTS, MARKET, NETWORK, PHASES, PROCESS, PROOF, STREAMS, STRUCTURE } from '../data/blueprint';
 import { CASES, MORE } from '../data/showcase';
 import { AREAS, SERVICES } from '../data/services';
 import { SITE } from '../data/site';
@@ -79,9 +79,9 @@ const REEL = 'https://skhiladze.com/media/film/reel.mp4';
         <a href="#work">{t('Work')}</a>
         <a href="#team">{t('Team')}</a>
         <a href="#market">{t('Market')}</a>
-        <a href="#engine">{t('Plan')}</a>
+        <a href="#plan">{t('Plan')}</a>
       </nav>
-      <a class="nav-plan" href="#engine">{t('Plan')} <span aria-hidden="true">↓</span></a>
+      <a class="nav-plan" href="#plan">{t('Plan')} <span aria-hidden="true">↓</span></a>
       <ul class="lang" aria-label={t('Language')}>
         {
           LANGS.map((l) => (
@@ -114,7 +114,7 @@ const REEL = 'https://skhiladze.com/media/film/reel.mp4';
         <h1>
           <span>{t('Big money is in digital.')}</span>{' '}
           <span>{t('We know how to earn it.')}</span>{' '}
-          <em><a href="#engine">{t("Here's the plan.")}</a></em>
+          <em><a href="#plan">{t("Here's the plan.")}</a></em>
         </h1>
         <div class="hero__brands">
           <p class="eyebrow" id="brands-title">{t('Our people have worked for')}</p>
@@ -301,7 +301,10 @@ const REEL = 'https://skhiladze.com/media/film/reel.mp4';
                 <span class="stream__n" aria-hidden="true">
                   {String(i + 1).padStart(2, '0')}
                 </span>
-                <span class="stream__title">{t(s.title)}</span>
+                <span class="stream__title">
+                  {t(s.title)}
+                  {s.later && <span class="tag">{t('After scale')}</span>}
+                </span>
                 <span class="stream__text">{t(s.text)}</span>
               </li>
             ))
@@ -310,14 +313,30 @@ const REEL = 'https://skhiladze.com/media/film/reel.mp4';
       </div>
     </section>
 
-    <section class="block" id="engine" aria-labelledby="engine-title">
+    <section class="block" id="plan" aria-labelledby="plan-title">
       <div class="wide">
         <header class="block-head" data-reveal>
-          <h2 id="engine-title" set:html={t('Our academy will grow <em>our own people.</em>')} />
-          <p class="block-head__text">
-            {t('Seniors will lead, academy graduates will do the volume: more projects with the same team, and a higher margin.')}
-          </p>
+          <h2 id="plan-title" set:html={t('Agency first. <em>Academy after scale.</em>')} />
         </header>
+        <ol class="phases" role="list">
+          {
+            PHASES.map((p, i) => (
+              <li class:list={['phase', { 'phase--now': i === 0 }]} data-reveal>
+                <span class="tag">{t(p.when)}</span>
+                <h3 class="phase__title">
+                  <span aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+                  {t(p.title)}
+                </h3>
+                <p class="phase__text">{t(p.text)}</p>
+              </li>
+            ))
+          }
+        </ol>
+
+        <h3 class="kicker">{t('After scale: the academy')}</h3>
+        <p class="block-head__text phase__lead" data-reveal>
+          {t('Seniors will lead, academy graduates will do the volume: more projects with the same team, and a higher margin.')}
+        </p>
         <div class="engine">
           {
             academy && (

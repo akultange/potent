@@ -60,15 +60,25 @@ export const MARKET: { value: string; label: string; source: Source }[] = [
   },
 ];
 
-/** How the agency earns. `id` picks the drawing. */
+/** How we make money. `later`: only after the agency has scaled (see PHASES). */
 export const STREAMS = [
-  { id: 'projects', title: 'Projects', text: 'Sites, apps and brands, paid per project.' },
-  { id: 'support', title: 'Monthly support', text: 'Clients pay every month for updates, ads and content.' },
-  { id: 'academy', title: 'Academy', text: 'Students pay to learn. The best join our team.' },
-  { id: 'podcast', title: 'Podcast', text: 'An audience that brings in clients and students.' },
-] as const;
+  { id: 'projects', title: 'Projects', text: 'Sites, apps and brands, paid per project.', later: false },
+  { id: 'support', title: 'Monthly support', text: 'Clients pay every month for updates, ads and content.', later: false },
+  { id: 'academy', title: 'Academy', text: 'Students pay to learn. The best join our team.', later: true },
+  { id: 'podcast', title: 'Podcast', text: 'An audience that brings in clients and students.', later: true },
+];
 
-/** The academy and podcast loop, clockwise from the top. Drawn by src/components/Engine.astro. */
+/**
+ * The plan, in order (founders, 2026-11-26): the agency is the business now; it scales next; the
+ * academy comes after scale. "Here's the plan" on the first screen leads here.
+ */
+export const PHASES = [
+  { when: 'Now', title: 'Agency', text: 'Sites, apps and brands for companies, paid per project and every month.' },
+  { when: 'Next', title: 'Scale', text: 'More team leads and outsource partners; sales and marketing keep clients coming.' },
+  { when: 'After scale', title: 'Academy', text: 'Our own academy grows our own people, so the margin goes up.' },
+];
+
+/** The academy and podcast loop (phase three), clockwise from the top. Drawn by src/components/Engine.astro. */
 export const ENGINE = ['Academy', 'Interns', 'Team', 'Projects', 'Revenue', 'Podcast'] as const;
 
 /**
