@@ -1,0 +1,47 @@
+# Russian for src/content/people/guram-svanidze.yaml. Projects are matched by their English name.
+name: Гурам Сванидзе
+title: Фулстек-разработчик в Bank of Georgia
+location: Тбилиси, Грузия
+bio: >-
+  Фулстек-разработчик, 5+ лет в корпоративных приложениях и SaaS-платформах (TypeScript, React,
+  Lit, Node.js, AWS). С 2024 года — веб-разработчик уровня Expert в Bank of Georgia; до этого —
+  SaaS для грузоперевозок в OMOFOX и корпоративные веб-приложения в Sweeft Digital.
+facts:
+  building enterprise apps and SaaS:
+    value: 5+ лет
+    label: в корпоративных приложениях и SaaS
+projects:
+  Micro frontend platform:
+    name: Микрофронтенд-платформа
+    type: Веб-архитектура
+    sector: Банки и финтех
+    summary: >-
+      Микрофронтенд-архитектура на Webpack Module Federation: монолитное приложение разделено на
+      модули, которые каждая команда выпускает сама.
+    role: Соавтор архитектуры
+  Ads Manager and B2B platform:
+    name: Ads Manager и B2B-платформа
+    type: Веб-платформа
+    sector: Банки и финтех
+    summary: >-
+      Сложные функции для корпоративной B2B-платформы банка и экосистемы Ads Manager, включая
+      генерацию картинок и текстов для маркетинга с помощью ИИ.
+    role: Разработка функций и генерация контента с ИИ
+  Move to AWS:
+    name: Переезд в AWS
+    type: Миграция в облако
+    sector: Банки и финтех
+    summary: Первый полный переезд веб-приложения банка в AWS вместе с командами DevOps.
+    role: Участие в миграции и архитектуре развёртывания
+  Freight-forwarding SaaS:
+    name: SaaS для грузоперевозок
+    type: SaaS-платформа
+    sector: Логистика
+    summary: >-
+      Платформа, на которой несколько компаний ведут перевозки, заказы, операции и финансы, плюс
+      приложение на React Native для отслеживания грузов в реальном времени.
+    role: Жизненный цикл перевозки, администрирование и финансовые функции; приложение для отслеживания
+  Enterprise web apps:
+    name: Корпоративные веб-приложения
+    type: Корпоративные веб-приложения
+    summary: Корпоративные веб-приложения, внутренние бизнес-платформы и переиспользуемые UI-компоненты на React и TypeScript.

@@ -1,0 +1,62 @@
+name: Guram Svanidze
+title: Full-stack engineer at Bank of Georgia
+order: 14
+location: Tbilisi, Georgia
+bio: >-
+  Full-stack engineer with 5+ years on enterprise applications and SaaS platforms (TypeScript,
+  React, Lit, Node.js, AWS). Expert web developer at Bank of Georgia since 2024; before that, a
+  freight-forwarding SaaS at OMOFOX and enterprise web apps at Sweeft Digital.
+facts:
+  - value: 5+ yrs
+    label: building enterprise apps and SaaS
+links:
+  linkedin: https://www.linkedin.com/in/gurami-svanidze-a953961ba/
+  github: https://github.com/FantasyBot
+services: [engineering, web]
+projects:
+  - name: Micro frontend platform
+    client: Bank of Georgia
+    type: Web architecture
+    sector: Banking & fintech
+    summary: >-
+      A micro frontend architecture on Webpack Module Federation that split a monolithic
+      application into modules each team can release on its own.
+    role: Co-architect
+    services: [engineering]
+    featured: true
+  - name: Ads Manager and B2B platform
+    client: Bank of Georgia
+    type: Web platform
+    sector: Banking & fintech
+    summary: >-
+      Complex features for the bank's enterprise B2B platform and Ads Manager ecosystem,
+      including AI-generated images and text for marketing materials.
+    role: Feature development and AI content generation
+    services: [engineering, web]
+    featured: true
+  - name: Move to AWS
+    client: Bank of Georgia
+    type: Cloud migration
+    sector: Banking & fintech
+    summary: The bank's first full web application migration to AWS, together with the DevOps teams.
+    role: Contributed to the migration and the deployment architecture
+    services: [engineering]
+  - name: Freight-forwarding SaaS
+    client: OMOFOX
+    type: SaaS platform
+    sector: Logistics
+    summary: >-
+      Platform several companies use to run shipments, orders, operations and finances, with a
+      React Native app for real-time shipment tracking.
+    role: Shipment lifecycle, administration and financial features; the tracking app
+    services: [engineering, web]
+    featured: true
+  - name: Enterprise web apps
+    client: Sweeft Digital
+    type: Enterprise web apps
+    summary: Enterprise web applications, internal business platforms and reusable UI components in React and TypeScript.
+    services: [engineering, web]
+toConfirm:
+  - Photo (his GitHub picture is WALL-E, and LinkedIn asks to sign in)
+  - Is his "Ads Manager ecosystem" the same Ads Manager Giorgi designed and Dimitri built? If so, show it as one project by three of our people
+  - Public screenshots of his Bank of Georgia or OMOFOX work (omofox.com now redirects to a spam site, so it is not linked)
