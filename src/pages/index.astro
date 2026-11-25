@@ -22,7 +22,13 @@ const services = SERVICES.map((s) => ({
   projectCount: projects.filter((p) => (p.services as string[]).includes(s.id)).length,
 })).filter((s) => s.people.length > 0);
 
-const clients = [...new Set(projects.filter((p) => p.featured && p.client).map((p) => p.client!))];
+const rank = (c: string) => {
+  const i = SITE.clientOrder.indexOf(c);
+  return i === -1 ? SITE.clientOrder.length : i;
+};
+const clients = [...new Set(projects.filter((p) => p.featured && p.client).map((p) => p.client!))].sort(
+  (a, b) => rank(a) - rank(b),
+);
 const matrixPeople = people.filter((p) => p.data.services.length > 0);
 const pad = (n: number) => String(n).padStart(2, '0');
 ---
@@ -51,9 +57,9 @@ const pad = (n: number) => String(n).padStart(2, '0');
           brands.
         </p>
         <dl class="stats">
-          <div class="stat"><dt>Specialists</dt><dd>{people.length}</dd></div>
+          <div class="stat"><dt>People</dt><dd>{people.length}</dd></div>
           <div class="stat"><dt>Services</dt><dd>{services.length}</dd></div>
-          <div class="stat"><dt>Projects shipped</dt><dd>{projects.length}</dd></div>
+          <div class="stat"><dt>Projects</dt><dd>{projects.length}</dd></div>
         </dl>
         {
           clients.length > 0 && (
