@@ -1,19 +1,24 @@
 ---
 import '../styles/fonts.css';
 import '../styles/global.css';
-import { SITE } from '../data/site';
+import interLatin from '../assets/fonts/inter-tight-latin.woff2?url';
+import interCyrillic from '../assets/fonts/inter-tight-cyrillic.woff2?url';
+import { LANGS, homePath, localSite, type Lang } from '../i18n';
 import { asset } from '../lib/util';
 
 interface Props {
+  lang?: Lang;
   title?: string;
   description?: string;
 }
 
-const { title = `${SITE.name} | ${SITE.tagline}`, description = SITE.description } = Astro.props;
+const { lang = 'en' } = Astro.props;
+const site = localSite(lang);
+const { title = `${site.name} | ${site.tagline}`, description = site.description } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={lang}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -23,7 +28,17 @@ const { title = `${SITE.name} | ${SITE.tagline}`, description = SITE.description
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
+    <meta property="og:locale" content={lang === 'ru' ? 'ru_RU' : 'en_US'} />
+    <meta property="og:url" content={new URL(homePath(lang), Astro.site)} />
+    <!-- the picture messengers show when the link is sent to someone -->
+    <meta property="og:image" content={new URL(asset('/og.jpg'), Astro.site)} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    {LANGS.map((l) => <link rel="alternate" hreflang={l} href={new URL(homePath(l), Astro.site)} />)}
     <link rel="icon" type="image/svg+xml" href={asset('/favicon.svg')} />
+    <link rel="preload" as="font" type="font/woff2" href={interLatin} crossorigin />
+    {lang === 'ru' && <link rel="preload" as="font" type="font/woff2" href={interCyrillic} crossorigin />}
   </head>
   <body>
     <slot />

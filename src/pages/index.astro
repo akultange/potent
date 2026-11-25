@@ -3,13 +3,36 @@ import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import PersonCard from '../components/PersonCard.astro';
 import Scope from '../components/Scope.astro';
-import { SERVICES } from '../data/services';
 import { SITE } from '../data/site';
+import {
+  LANGS,
+  LANG_LABELS,
+  counted,
+  homePath,
+  localPerson,
+  localServices,
+  localSite,
+  projectCount,
+  translator,
+  type Lang,
+} from '../i18n';
 import { asset, hue, initials } from '../lib/util';
 
-const people = (await getCollection('people')).sort(
-  (a, b) => a.data.order - b.data.order || a.data.name.localeCompare(b.data.name),
-);
+// This file is the page in both languages: "/" renders it as is (English), and
+// src/pages/ru/index.astro renders it with lang="ru". Text goes through t(): it is written here
+// in English and looked up in src/i18n/ru.ts for the Russian page.
+interface Props {
+  lang?: Lang;
+}
+
+const { lang = 'en' } = Astro.props;
+const t = translator(lang);
+const site = localSite(lang);
+
+const ruTexts = new Map(lang === 'ru' ? (await getCollection('peopleRu')).map((e) => [e.id, e.data]) : []);
+const people = (await getCollection('people'))
+  .sort((a, b) => a.data.order - b.data.order || a.data.name.localeCompare(b.data.name))
+  .map((p) => localPerson(p, ruTexts.get(p.id)));
 const founders = people.filter((p) => p.data.group === 'founder');
 const network = people.filter((p) => p.data.group === 'network');
 
@@ -29,7 +52,7 @@ for (let i = 0; i < longest; i++) {
 }
 const work = [...interleaved, ...featured.filter((p) => !p.image), ...projects.filter((p) => !p.featured)];
 
-const services = SERVICES.map((s) => ({
+const services = localServices(lang).map((s) => ({
   ...s,
   people: people.filter((p) => (p.data.services as string[]).includes(s.id)),
   projectCount: projects.filter((p) => (p.services as string[]).includes(s.id)).length,
@@ -39,22 +62,35 @@ const rank = (c: string) => {
   const i = SITE.clientOrder.indexOf(c);
   return i === -1 ? SITE.clientOrder.length : i;
 };
-const clients = [...new Set(projects.filter((p) => p.featured && p.client).map((p) => p.client!))].sort(
+const clients = [...new Set(projects.filter((p) => p.featured && p.en.client).map((p) => p.en.client!))].sort(
   (a, b) => rank(a) - rank(b),
 );
 const matrixPeople = people.filter((p) => p.data.services.length > 0);
 const pad = (n: number) => String(n).padStart(2, '0');
 ---
 
-<Base>
+<Base lang={lang}>
   <header class="site-header">
     <div class="container">
-      <a class="wordmark" href="#top"><i aria-hidden="true"></i>{SITE.name}</a>
-      <nav class="nav" aria-label="Sections">
-        <a href="#services">Services</a>
-        <a href="#who-does-what">Who does what</a>
-        <a href="#people">People</a>
-        <a href="#work">Work</a>
+      <a class="wordmark" href="#top"><i aria-hidden="true"></i>{site.name}</a>
+      <nav class="nav" aria-label={t('Sections')}>
+        <a href="#services">{t('Services')}</a>
+        <a href="#who-does-what">{t('Who does what')}</a>
+        <a href="#people">{t('People')}</a>
+        <a href="#work">{t('Work')}</a>
+        <span class="lang" role="group" aria-label={t('Language')}>
+          {
+            LANGS.map((l) =>
+              l === lang ? (
+                <span aria-current="true">{LANG_LABELS[l]}</span>
+              ) : (
+                <a href={homePath(l)} hreflang={l} lang={l}>
+                  {LANG_LABELS[l]}
+                </a>
+              ),
+            )
+          }
+        </span>
       </nav>
     </div>
   </header>
@@ -62,22 +98,25 @@ const pad = (n: number) => String(n).padStart(2, '0');
   <main id="top">
     <section class="hero">
       <div class="container">
-        <p class="eyebrow">Design &amp; engineering agency · {SITE.city}</p>
-        <h1>Product, brand and engineering, from <em>one senior team.</em></h1>
+        <p class="eyebrow">{t('Design & engineering agency · {city}', { city: site.city })}</p>
+        <h1 set:html={t('Product, brand and engineering, from <em>one senior team.</em>')} />
         <p class="lede">
-          {SITE.name} pairs a founder-led product design practice with a network of specialists in
-          Tbilisi. Between us, we've designed and built for banks, regulators, retailers and consumer
-          brands.
+          {
+            t(
+              "{name} pairs a founder-led product design practice with a network of specialists in Tbilisi. Between us, we've designed and built for banks, regulators, retailers and consumer brands.",
+              { name: site.name },
+            )
+          }
         </p>
         <dl class="stats">
-          <div class="stat"><dt>People</dt><dd>{people.length}</dd></div>
-          <div class="stat"><dt>Services</dt><dd>{services.length}</dd></div>
-          <div class="stat"><dt>Projects</dt><dd>{projects.length}</dd></div>
+          <div class="stat"><dt>{counted(lang, people.length, 'people')}</dt><dd>{people.length}</dd></div>
+          <div class="stat"><dt>{counted(lang, services.length, 'services')}</dt><dd>{services.length}</dd></div>
+          <div class="stat"><dt>{counted(lang, projects.length, 'projects')}</dt><dd>{projects.length}</dd></div>
         </dl>
         {
           clients.length > 0 && (
             <div class="clients">
-              <p class="label">Work for</p>
+              <p class="label">{t('Work for')}</p>
               <ul>
                 {clients.map((c) => (
                   <li>{c}</li>
@@ -89,13 +128,19 @@ const pad = (n: number) => String(n).padStart(2, '0');
       </div>
     </section>
 
-    <Scope />
+    <Scope lang={lang} people={people} />
 
     <section class="section" id="services" aria-labelledby="services-title">
       <div class="container">
         <div class="section-head">
-          <h2 id="services-title">What we <em>do</em></h2>
-          <p>Every service is backed by someone in the network who has already done it, with the projects to prove it.</p>
+          <h2 id="services-title" set:html={t('What we <em>do</em>')} />
+          <p>
+            {
+              t(
+                'Every service is backed by someone in the network who has already done it, with the projects to prove it.',
+              )
+            }
+          </p>
         </div>
         <div class="services">
           {
@@ -105,11 +150,11 @@ const pad = (n: number) => String(n).padStart(2, '0');
                 <h3>{s.name}</h3>
                 <p class="service__blurb">{s.blurb}</p>
                 <footer>
-                  <ul class="faces" aria-label="Delivered by">
+                  <ul class="faces" aria-label={t('Delivered by')}>
                     {s.people.map((p) => (
                       <li>
                         <a href={`#${p.id}`} title={p.data.name}>
-                          <span class="avatar avatar--sm" style={`--hue:${hue(p.data.name)}`} aria-hidden="true">
+                          <span class="avatar avatar--sm" style={`--hue:${hue(p.data.en.name)}`} aria-hidden="true">
                             {initials(p.data.name)}
                           </span>
                           <span class="face-name">{p.data.name}</span>
@@ -119,7 +164,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
                   </ul>
                   {s.projectCount > 0 && (
                     <a class="service__work" href="#work" data-goto-filter={s.id}>
-                      {s.projectCount} {s.projectCount === 1 ? 'project' : 'projects'} →
+                      {projectCount(lang, s.projectCount)} →
                     </a>
                   )}
                 </footer>
@@ -133,14 +178,14 @@ const pad = (n: number) => String(n).padStart(2, '0');
     <section class="section" id="who-does-what" aria-labelledby="matrix-title">
       <div class="container">
         <div class="section-head">
-          <h2 id="matrix-title">Who does <em>what</em></h2>
-          <p>Each person and the services they can lead.</p>
+          <h2 id="matrix-title" set:html={t('Who does <em>what</em>')} />
+          <p>{t('Each person and the services they can lead.')}</p>
         </div>
         <div class="matrix-wrap" tabindex="0" role="region" aria-labelledby="matrix-title">
           <table class="matrix">
             <thead>
               <tr>
-                <th scope="col" class="matrix__corner">Person</th>
+                <th scope="col" class="matrix__corner">{t('Person')}</th>
                 {services.map((s) => <th scope="col">{s.short}</th>)}
               </tr>
             </thead>
@@ -155,11 +200,11 @@ const pad = (n: number) => String(n).padStart(2, '0');
                     {services.map((s) =>
                       (p.data.services as string[]).includes(s.id) ? (
                         <td>
-                          <span class="dot" role="img" aria-label="Yes" />
+                          <span class="dot" role="img" aria-label={t('Yes')} />
                         </td>
                       ) : (
                         <td>
-                          <span class="sr-only">No</span>
+                          <span class="sr-only">{t('No')}</span>
                         </td>
                       ),
                     )}
@@ -175,18 +220,18 @@ const pad = (n: number) => String(n).padStart(2, '0');
     <section class="section" id="people" aria-labelledby="people-title">
       <div class="container">
         <div class="section-head">
-          <h2 id="people-title">The <em>people</em></h2>
-          <p>Founders and the specialists we bring in, with the work each of them has done.</p>
+          <h2 id="people-title" set:html={t('The <em>people</em>')} />
+          <p>{t('Founders and the specialists we bring in, with the work each of them has done.')}</p>
         </div>
 
-        <h3 class="label group-label">Founders</h3>
+        <h3 class="label group-label">{t('Founders')}</h3>
         <div class="people-grid people-grid--founders">
-          {founders.map((p) => <PersonCard person={p} />)}
+          {founders.map((p) => <PersonCard person={p} lang={lang} />)}
         </div>
 
-        <h3 class="label group-label">Network</h3>
+        <h3 class="label group-label">{t('Network')}</h3>
         <div class="people-grid">
-          {network.map((p) => <PersonCard person={p} />)}
+          {network.map((p) => <PersonCard person={p} lang={lang} />)}
         </div>
       </div>
     </section>
@@ -194,12 +239,12 @@ const pad = (n: number) => String(n).padStart(2, '0');
     <section class="section" id="work" aria-labelledby="work-title">
       <div class="container">
         <div class="section-head">
-          <h2 id="work-title">Selected <em>work</em></h2>
-          <p>Filter by service to see everything the network has shipped in that area.</p>
+          <h2 id="work-title" set:html={t('Selected <em>work</em>')} />
+          <p>{t('Filter by service to see everything the network has shipped in that area.')}</p>
         </div>
 
-        <div class="filters" role="group" aria-label="Filter work by service">
-          <button type="button" data-filter="all" aria-pressed="true">All</button>
+        <div class="filters" role="group" aria-label={t('Filter work by service')}>
+          <button type="button" data-filter="all" aria-pressed="true">{t('All')}</button>
           {
             services
               .filter((s) => s.projectCount > 0)
@@ -223,7 +268,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
                   data-featured={p.featured ? 'true' : 'false'}
                   hidden={!p.featured}
                 >
-                  <div class="work__thumb" style={`--hue:${hue(tile)}`}>
+                  <div class="work__thumb" style={`--hue:${hue(p.en.client ?? p.en.name)}`}>
                     {p.image ? <img src={asset(p.image)} alt="" loading="lazy" /> : <span class="work__mono">{tile}</span>}
                   </div>
                   <div class="work__body">
@@ -240,7 +285,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
                     </h3>
                     <p class="work__summary">{p.summary}</p>
                     <p class="work__by">
-                      by <a href={`#${p.person.id}`}>{p.person.data.name}</a>
+                      {t('by')} <a href={`#${p.person.id}`}>{p.person.data.name}</a>
                     </p>
                   </div>
                 </article>
@@ -254,8 +299,8 @@ const pad = (n: number) => String(n).padStart(2, '0');
 
   <footer class="site-footer">
     <div class="container">
-      <p><strong>{SITE.name}</strong> · {SITE.city}</p>
-      <p>Project credits come from each person's own portfolio and profiles.</p>
+      <p><strong>{site.name}</strong> · {site.city}</p>
+      <p>{t("Project credits come from each person's own portfolio and profiles.")}</p>
     </div>
   </footer>
 </Base>

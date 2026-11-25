@@ -1,17 +1,39 @@
 ---
-// "Everything digital": the full range in pictures, from a sound to the software a company runs on.
-// The text lives in src/data/scope.ts, the pictures and loops in public/scope/.
-import { SCOPE, SCOPE_WIDTHS } from '../data/scope';
-import { asset } from '../lib/util';
+// "Everything digital": the full range of what we make, from a sound to the software a company
+// runs on. Every tile says it three ways: a picture of the thing, one plain sentence, and real
+// projects where we did it. Phones come first here: one tile per row, real work in a strip
+// you swipe.
+// Texts and examples live in src/data/scope.ts (Russian in src/i18n/ru.ts), the pictures and
+// loops in public/scope/, the small project screenshots in public/scope/work/.
+import { existsSync } from 'node:fs';
+import path from 'node:path';
+import { SCOPE_WIDTHS } from '../data/scope';
+import { localScope, translator, type Lang, type LocalPerson } from '../i18n';
+import { asset, hue, initials } from '../lib/util';
+
+interface Props {
+  lang?: Lang;
+  /** Everyone on the page, in the page's language: the examples are looked up in their projects. */
+  people: LocalPerson[];
+}
+
+const { lang = 'en', people } = Astro.props;
+const t = translator(lang);
 
 // How wide each tile is drawn, so the browser picks the right picture file.
 const SIZES = {
-  square: '(min-width: 900px) 364px, 50vw',
+  square: '(min-width: 900px) 364px, (min-width: 600px) 50vw, 100vw',
   wide: '(min-width: 900px) 553px, 100vw',
   hero: '(min-width: 900px) 1120px, 100vw',
 } as const;
 
-const items = SCOPE.map((item) => {
+/** The small copy of a project screenshot if it exists, the full screenshot if it does not. */
+function thumb(image: string): string {
+  const small = `/scope/work/${image.split('/').pop()!.replace(/\.\w+$/, '')}.webp`;
+  return asset(existsSync(path.join(process.cwd(), 'public', small)) ? small : image);
+}
+
+const items = localScope(lang).map((item) => {
   const [small, large] = SCOPE_WIDTHS[item.size];
   const ratio = item.size === 'square' ? 1 : 9 / 16;
   return {
@@ -22,6 +44,28 @@ const items = SCOPE.map((item) => {
     width: large,
     height: Math.round(large * ratio),
     film: item.loop ? asset(`/scope/${item.id}.mp4`) : null,
+    examples: item.examples.map((ex) => {
+      const person = people.find((p) => p.id === ex.person);
+      const project = person?.data.projects.find((p) => p.en.name === ex.project);
+      if (!person || !project) {
+        throw new Error(
+          `src/data/scope.ts: the "${item.id}" tile lists the project "${ex.project}" by "${ex.person}", ` +
+            `but src/content/people/${ex.person}.yaml has no project with that name.`,
+        );
+      }
+      const label = project.client ?? project.name;
+      return {
+        name: project.name,
+        note: ex.note,
+        href: project.url ?? project.caseStudy,
+        image: project.image ? thumb(project.image) : null,
+        label,
+        short: initials(project.en.client ?? project.en.name),
+        hue: hue(project.en.client ?? project.en.name),
+        by: person.data.name,
+        byHref: `#${person.id}`,
+      };
+    }),
   };
 });
 ---
@@ -29,20 +73,34 @@ const items = SCOPE.map((item) => {
 <section class="section scope" id="scope" aria-labelledby="scope-title">
   <div class="container">
     <div class="section-head">
-      <h2 id="scope-title">Everything <em>digital</em></h2>
+      <h2 id="scope-title" set:html={t('Everything <em>digital</em>')} />
       <div>
         <p>
-          From a ten-second sound to the software a whole company runs on. One team takes it from the idea to
-          the finished thing.
+          {
+            t(
+              'From a ten-second sound to the software a whole company runs on. One team takes it from the idea to the finished thing.',
+            )
+          }
         </p>
-        <button class="scope__pause" type="button" hidden>Pause the pictures</button>
+        <button
+          class="scope__pause"
+          type="button"
+          data-pause={t('Pause the pictures')}
+          data-play={t('Play the pictures')}
+          hidden
+        >
+          {t('Pause the pictures')}
+        </button>
       </div>
     </div>
 
     <ul class="scope__grid">
       {
         items.map((item) => (
-          <li class:list={['scope__item', `scope__item--${item.size}`]}>
+          <li
+            class:list={['scope__item', `scope__item--${item.size}`]}
+            style={item.focus === undefined ? undefined : `--focus:${item.focus}%`}
+          >
             <div class="scope__media">
               <img
                 src={item.src}
@@ -68,10 +126,51 @@ const items = SCOPE.map((item) => {
                 />
               )}
             </div>
+
             <div class="scope__body">
               <h3>{item.title}</h3>
               <p>{item.text}</p>
             </div>
+
+            {item.examples.length > 0 && (
+              <div class="scope__proof">
+                <p class="label">{t('From our work')}</p>
+                <ul class="scope__examples">
+                  {item.examples.map((ex) => (
+                    <li class="scope__ex">
+                      <div class="scope__thumb" style={`--hue:${ex.hue}`}>
+                        {ex.image ? (
+                          <img src={ex.image} width="640" height="400" alt="" loading="lazy" decoding="async" />
+                        ) : (
+                          <>
+                            <span class="scope__mono scope__mono--full">{ex.label}</span>
+                            <span class="scope__mono scope__mono--short" aria-hidden="true">
+                              {ex.short}
+                            </span>
+                          </>
+                        )}
+                      </div>
+                      <div class="scope__ex-text">
+                        <p class="scope__ex-name">
+                          {ex.href ? (
+                            <a href={ex.href} target="_blank" rel="noopener noreferrer">
+                              {ex.name}
+                              <span aria-hidden="true"> ↗</span>
+                            </a>
+                          ) : (
+                            ex.name
+                          )}
+                        </p>
+                        <p class="scope__ex-note">{ex.note}</p>
+                        <p class="scope__ex-by">
+                          {t('by')} <a href={ex.byHref}>{ex.by}</a>
+                        </p>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </li>
         ))
       }
@@ -80,9 +179,11 @@ const items = SCOPE.map((item) => {
 </section>
 
 <style>
+  /* ---------- phones first: one tile per row ---------- */
+
   .scope__grid {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: minmax(0, 1fr);
     gap: 14px;
   }
 
@@ -95,15 +196,10 @@ const items = SCOPE.map((item) => {
     border-radius: var(--radius);
   }
 
-  .scope__item--wide,
-  .scope__item--hero {
-    grid-column: 1 / -1;
-  }
-
   /* The pictures are shot on warm paper; the tile keeps that paper in both themes. */
   .scope__media {
     position: relative;
-    aspect-ratio: 1;
+    aspect-ratio: 4 / 3;
     overflow: hidden;
     background: #efe9e2;
     border-bottom: 1px solid var(--line);
@@ -121,6 +217,7 @@ const items = SCOPE.map((item) => {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: 50% var(--focus, 50%);
   }
 
   /* The loop sits on top of the still and fades in once it is really playing. */
@@ -136,29 +233,136 @@ const items = SCOPE.map((item) => {
   .scope__body {
     display: flex;
     flex-direction: column;
-    gap: 6px;
-    padding: 14px 14px 16px;
+    gap: 8px;
+    padding: 18px 18px 0;
   }
 
   .scope__body h3 {
-    font-size: 16px;
-    letter-spacing: -0.015em;
+    font-size: 21px;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
   }
 
   .scope__body p {
-    font-size: 13.5px;
-    line-height: 1.45;
+    font-size: 15.5px;
+    line-height: 1.5;
     color: var(--muted);
   }
 
-  .scope__item--wide .scope__body h3,
-  .scope__item--hero .scope__body h3 {
-    font-size: 19px;
+  /* Real projects under the tile. On a phone they sit in a strip that is swiped sideways;
+     the next one always peeks in from the right, so it is clear there is more. */
+  .scope__proof {
+    padding: 18px 0 20px;
   }
 
-  .scope__item--wide .scope__body p,
-  .scope__item--hero .scope__body p {
+  .scope__proof .label {
+    margin-bottom: 10px;
+    padding: 0 18px;
+  }
+
+  .scope__examples {
+    display: flex;
+    gap: 12px;
+    padding: 0 18px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x proximity;
+    scroll-padding: 0 18px;
+    scrollbar-width: none;
+  }
+
+  .scope__examples::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* keeps the space after the last project when the strip is scrolled to its end */
+  .scope__examples::after {
+    content: '';
+    flex: 0 0 6px;
+  }
+
+  .scope__ex {
+    display: flex;
+    flex: 0 0 66%;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 0;
+    scroll-snap-align: start;
+  }
+
+  /* a single project has the row to itself: screenshot on the left, words on the right */
+  .scope__ex:only-child {
+    flex: 1 1 auto;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .scope__ex:only-child .scope__thumb {
+    flex: 0 0 44%;
+  }
+
+  .scope__thumb {
+    display: grid;
+    place-items: center;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    background: hsl(var(--hue) 24% var(--tile-l));
+    border: 1px solid var(--line);
+    border-radius: 10px;
+  }
+
+  .scope__thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+  }
+
+  /* a project without a screenshot gets its client's name on a tinted tile, as in Selected work */
+  .scope__mono {
+    padding: 10px;
+    font-family: var(--font-serif);
+    font-size: 21px;
+    line-height: 1.05;
+    text-align: center;
+    color: hsl(var(--hue) 30% var(--avatar-ink-l));
+  }
+
+  .scope__mono--short {
+    display: none;
+  }
+
+  .scope__ex-text {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+  }
+
+  .scope__ex-name {
     font-size: 14.5px;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
+  .scope__ex-name a {
+    text-decoration: none;
+  }
+
+  .scope__ex-name a:hover {
+    text-decoration: underline;
+  }
+
+  .scope__ex-note {
+    font-size: 13.5px;
+    line-height: 1.4;
+    color: var(--muted);
+  }
+
+  .scope__ex-by {
+    font-size: 12.5px;
+    color: var(--faint);
   }
 
   /* Moving pictures that never stop need a way to stop them. */
@@ -199,20 +403,90 @@ const items = SCOPE.map((item) => {
     border-inline-end-width: 0;
   }
 
+  /* ---------- from 600px: two tiles per row, the real projects as a list ---------- */
+
   @media (min-width: 600px) {
+    .scope__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .scope__item--wide,
+    .scope__item--hero {
+      grid-column: 1 / -1;
+    }
+
+    .scope__item--square .scope__media {
+      aspect-ratio: 1;
+    }
+
     .scope__body {
-      gap: 8px;
-      padding: 18px 20px 20px;
+      padding: 20px 20px 0;
     }
 
-    .scope__body h3 {
-      font-size: 19px;
+    .scope__proof {
+      padding: 18px 20px 22px;
     }
 
-    .scope__body p {
-      font-size: 14.5px;
+    .scope__proof .label {
+      padding: 0;
+    }
+
+    .scope__examples {
+      display: grid;
+      gap: 14px;
+      padding: 0;
+      overflow: visible;
+    }
+
+    .scope__examples::after {
+      content: none;
+    }
+
+    /* small tiles: screenshot on the left, words on the right */
+    .scope__item--square .scope__ex,
+    .scope__item--square .scope__ex:only-child {
+      flex-direction: row;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .scope__item--square .scope__thumb,
+    .scope__item--square .scope__ex:only-child .scope__thumb {
+      flex: 0 0 104px;
+      border-radius: 8px;
+    }
+
+    .scope__item--square .scope__mono--full {
+      display: none;
+    }
+
+    .scope__item--square .scope__mono--short {
+      display: block;
+      font-size: 22px;
+    }
+
+    /* big tiles: the projects side by side, screenshot on top */
+    .scope__item--wide .scope__examples {
+      grid-auto-columns: minmax(0, 1fr);
+      grid-auto-flow: column;
+    }
+
+    .scope__item--hero .scope__examples {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .scope__item--wide .scope__ex:only-child,
+    .scope__item--hero .scope__ex:only-child {
+      flex-direction: column;
+    }
+
+    .scope__item--wide .scope__mono,
+    .scope__item--hero .scope__mono {
+      font-size: 18px;
     }
   }
+
+  /* ---------- from 900px: three small, two wide, one across ---------- */
 
   @media (min-width: 900px) {
     .scope__grid {
@@ -232,12 +506,11 @@ const items = SCOPE.map((item) => {
     }
 
     .scope__item--wide .scope__body h3 {
-      font-size: 23px;
+      font-size: 24px;
     }
 
     .scope__item--wide .scope__body p {
-      max-width: 44ch;
-      font-size: 15px;
+      max-width: 46ch;
     }
 
     /* The last tile is the biggest job: title on the left, the plain explanation on the right. */
@@ -246,11 +519,11 @@ const items = SCOPE.map((item) => {
       grid-template-columns: 1fr 1fr;
       align-items: end;
       gap: 24px;
-      padding: 26px 28px 28px;
+      padding: 28px 28px 0;
     }
 
     .scope__item--hero .scope__body h3 {
-      max-width: 14ch;
+      max-width: 20ch;
       font-size: clamp(28px, 3vw, 38px);
       letter-spacing: -0.03em;
     }
@@ -258,6 +531,15 @@ const items = SCOPE.map((item) => {
     .scope__item--hero .scope__body p {
       max-width: 46ch;
       font-size: 17px;
+    }
+
+    .scope__item--hero .scope__proof {
+      padding: 26px 28px 28px;
+    }
+
+    .scope__item--hero .scope__examples {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 18px;
     }
   }
 
@@ -327,7 +609,7 @@ const items = SCOPE.map((item) => {
       pause.addEventListener('click', () => {
         stopped = !stopped;
         pause.toggleAttribute('data-paused', stopped);
-        pause.textContent = stopped ? 'Play the pictures' : 'Pause the pictures';
+        pause.textContent = (stopped ? pause.dataset.play : pause.dataset.pause) ?? '';
         for (const film of onScreen) {
           if (stopped) film.pause();
           else start(film);

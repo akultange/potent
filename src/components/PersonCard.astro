@@ -1,19 +1,21 @@
 ---
-import type { CollectionEntry } from 'astro:content';
-import { SERVICES } from '../data/services';
+import { localServices, translator, type Lang, type LocalPerson } from '../i18n';
 import { hue, initials } from '../lib/util';
 
 interface Props {
-  person: CollectionEntry<'people'>;
+  /** A person from src/content/people/, already in the page's language (see localPerson). */
+  person: LocalPerson;
+  lang?: Lang;
 }
 
-const { person } = Astro.props;
+const { person, lang = 'en' } = Astro.props;
+const t = translator(lang);
 const d = person.data;
 const isFounder = d.group === 'founder';
 
 const LINK_LABELS = {
   linkedin: 'LinkedIn',
-  portfolio: 'Portfolio',
+  portfolio: t('Portfolio'),
   behance: 'Behance',
   instagram: 'Instagram',
   github: 'GitHub',
@@ -23,7 +25,8 @@ const links = (Object.keys(LINK_LABELS) as (keyof typeof LINK_LABELS)[])
   .filter((k) => d.links[k])
   .map((k) => ({ label: LINK_LABELS[k], href: d.links[k]! }));
 
-const serviceName = (id: string) => SERVICES.find((s) => s.id === id)?.name ?? id;
+const services = localServices(lang);
+const serviceName = (id: string) => services.find((s) => s.id === id)?.name ?? id;
 const isEmpty = !d.bio && d.services.length === 0 && d.projects.length === 0;
 ---
 
@@ -33,7 +36,7 @@ const isEmpty = !d.bio && d.services.length === 0 && d.projects.length === 0;
   data-services={d.services.join(' ')}
 >
   <header class="person__head">
-    <div class="avatar" style={`--hue:${hue(d.name)}`} aria-hidden="true">{initials(d.name)}</div>
+    <div class="avatar" style={`--hue:${hue(d.en.name)}`} aria-hidden="true">{initials(d.name)}</div>
     <div class="person__id">
       <h3>{d.name}</h3>
       <p class="person__title">{d.title}</p>
@@ -42,11 +45,11 @@ const isEmpty = !d.bio && d.services.length === 0 && d.projects.length === 0;
   </header>
 
   {d.bio && <p class="person__bio">{d.bio}</p>}
-  {isEmpty && <p class="pending">Profile coming soon.</p>}
+  {isEmpty && <p class="pending">{t('Profile coming soon.')}</p>}
 
   {
     links.length > 0 && (
-      <ul class="links" aria-label={`${d.name} online`}>
+      <ul class="links" aria-label={t('{name} online', { name: d.name })}>
         {links.map((l) => (
           <li>
             <a href={l.href} target="_blank" rel="noopener noreferrer">
@@ -61,7 +64,7 @@ const isEmpty = !d.bio && d.services.length === 0 && d.projects.length === 0;
 
   {
     d.services.length > 0 && (
-      <ul class="chips" aria-label="Services">
+      <ul class="chips" aria-label={t('Services')}>
         {d.services.map((s) => (
           <li class="chip">{serviceName(s)}</li>
         ))}
@@ -71,8 +74,8 @@ const isEmpty = !d.bio && d.services.length === 0 && d.projects.length === 0;
 
   {
     d.projects.length > 0 && (
-      <section class="projects" aria-label={`${d.name}'s projects`}>
-        <h4 class="label">Projects</h4>
+      <section class="projects" aria-label={t("{name}'s projects", { name: d.name })}>
+        <h4 class="label">{t('Projects')}</h4>
         <ul>
           {d.projects.map((p) => (
             <li>
@@ -92,12 +95,12 @@ const isEmpty = !d.bio && d.services.length === 0 && d.projects.length === 0;
               <p class="proj-summary">{p.summary}</p>
               {p.role && (
                 <p class="proj-role">
-                  <span>Role</span> {p.role}
+                  <span>{t('Role')}</span> {p.role}
                 </p>
               )}
               {p.caseStudy && (
                 <a class="proj-case" href={p.caseStudy} target="_blank" rel="noopener noreferrer">
-                  Case study <span aria-hidden="true">↗</span>
+                  {t('Case study')} <span aria-hidden="true">↗</span>
                 </a>
               )}
             </li>

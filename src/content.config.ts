@@ -55,4 +55,32 @@ const people = defineCollection({
   }),
 });
 
-export const collections = { people };
+/**
+ * Russian for the people above: one file per person with the same file name, holding only the
+ * texts. Every field is optional; whatever is missing is shown in English on the Russian page.
+ * Projects are matched by their English name.
+ */
+const peopleRu = defineCollection({
+  loader: glob({ pattern: '*.{yaml,yml}', base: './src/content/people-ru' }),
+  schema: z.object({
+    name: z.string().optional(),
+    title: z.string().optional(),
+    location: z.string().optional(),
+    bio: z.string().optional(),
+    projects: z
+      .record(
+        z.string(),
+        z.object({
+          name: z.string().optional(),
+          client: z.string().optional(),
+          type: z.string().optional(),
+          sector: z.string().optional(),
+          summary: z.string().optional(),
+          role: z.string().optional(),
+        }),
+      )
+      .default({}),
+  }),
+});
+
+export const collections = { people, peopleRu };

@@ -1,0 +1,33 @@
+# Russian for src/content/people/maggie-oniani.yaml. Projects are matched by their English name.
+name: Мэгги Ониани
+title: Графический дизайнер и иллюстратор
+location: Тбилиси, Грузия
+bio: >-
+  Графический дизайнер и иллюстратор: постеры, оформление соцсетей и иллюстрации для анимации и
+  видео.
+projects:
+  SOCAR Instagram feed:
+    name: Лента Instagram для SOCAR
+    type: Дизайн для соцсетей
+    sector: Энергетика
+    summary: Дизайн ленты Instagram для SOCAR.
+  GAMO social media:
+    name: Соцсети GAMO
+    type: Дизайн для соцсетей
+    summary: Оформление соцсетей для GAMO.
+  MZESUMZIRA posters:
+    name: Постеры MZESUMZIRA
+    type: Серия постеров
+    summary: Серия постеров для MZESUMZIRA.
+  Laline video designs:
+    name: Дизайн для видео Laline
+    type: Дизайн для видео
+    summary: Дизайн для видео Laline, сделан вместе с другими дизайнерами.
+  FIGUREBI illustrations:
+    name: Иллюстрации FIGUREBI
+    type: Иллюстрации для анимации
+    summary: Иллюстрации для анимации FIGUREBI.
+  "Women's Day motion video":
+    name: Ролик к 8 Марта
+    type: Анимационный ролик
+    summary: Анимационный ролик к Международному женскому дню.

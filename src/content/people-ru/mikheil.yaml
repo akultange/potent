@@ -1,0 +1,16 @@
+# Russian for src/content/people/mikheil.yaml. Projects are matched by their English name.
+name: Михеил
+title: Продуктовый дизайнер в Bank of Georgia
+bio: Продуктовый дизайнер mBank — мобильного банка Bank of Georgia.
+projects:
+  mBank:
+    type: Мобильный банк
+    sector: Банки и финтех
+    summary: Мобильное банковское приложение Bank of Georgia.
+    role: Продуктовый дизайн
+  Sachemo:
+    type: Маркетплейс
+    sector: Торговля и ремёсла
+    summary: >-
+      Маркетплейс отборных грузинских изделий ручной работы: кожа, керамика, украшения, текстиль
+      и многое другое от независимых мастеров, на грузинском и английском.
