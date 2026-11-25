@@ -421,6 +421,9 @@ em {
 /* ---------- matrix ---------- */
 
 .matrix-wrap {
+  /* positioned, so the screen-reader-only "No" labels in the cells scroll with the table
+     instead of widening the whole page on phones */
+  position: relative;
   overflow-x: auto;
   background: var(--surface);
   border: 1px solid var(--line);
