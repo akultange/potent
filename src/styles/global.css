@@ -419,9 +419,9 @@ html[lang='ru'] h2 em {
 }
 
 /* Russian words are longer. On phones narrower than 380px the type shrinks with the screen, so
-   "в цифровой сфере." stays on one line instead of leaving one word alone on the next. */
+   no line of the promise is left with one word. */
 :lang(ru) .hero h1 {
-  font-size: clamp(min(38px, 10vw), calc(6.4 * var(--u)), 112px);
+  font-size: clamp(min(38px, 10vw), calc(7.6 * var(--u)), 132px);
 }
 
 .hero h1 span,

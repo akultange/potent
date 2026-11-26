@@ -77,10 +77,9 @@ export const RU = {
       'Сведения о проектах взяты из портфолио и профилей самих специалистов.',
 
     // the agency blueprint
-    "{name}: big money is in digital. Here's the plan.": '{name}: большие деньги — в цифровой сфере. Вот план.',
-    'Big money is in digital.': 'Большие\u00a0деньги — в цифровой сфере.',
-    'We know how to earn it.': 'Мы знаем, как их зарабатывать.',
-    "Here's the plan.": 'Вот план.',
+    '{name}: we make businesses run themselves.': '{name}: делаем так, чтобы бизнес работал сам.',
+    'We make businesses run themselves.': 'Делаем так, чтобы бизнес работал\u00a0сам.',
+    "Here's how.": 'Вот как.',
     'Our people have worked for': 'С кем работала команда',
     'Film by co-founder Luka Skhiladze': 'Видео: сооснователь Лука Схиладзе',
     'Pause the film': 'Остановить видео',
