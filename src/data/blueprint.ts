@@ -137,8 +137,6 @@ export const STRUCTURE = {
     { person: 'giorgi-kheladze', role: 'Head of Digital' },
     { person: 'luka-skhiladze', role: 'CTO' },
   ],
-  /** Each head has 2 to 3 team leads; the third box is drawn lighter. */
-  leads: 3,
   sales: ['Sales manager', 'Marketer', 'Marketer & influencer'],
 };
 
@@ -150,12 +148,12 @@ export const STRUCTURE = {
  * client before Luka and Giorgi have checked it.
  */
 export const PROCESS = [
-  { title: 'Brief', text: 'Sales brings the client; Luka and Giorgi set the scope, timeline and price.', pic: 'brief' },
+  { title: 'Brief', text: 'Sales brings the client; Giorgi and Luka set the scope, timeline and price.', pic: 'brief' },
   { title: 'Design', text: 'Design teams shape the product, brand and motion before anything is built.', pic: 'design' },
   { title: 'Build', text: 'Our network builds it; when there is a lot of work, partner teams join.', pic: 'build' },
   {
     title: 'Quality check',
-    text: 'Luka and Giorgi check every result before the client sees it. Anything below our bar goes back for fixes.',
+    text: 'Giorgi and Luka check every result before the client sees it. Anything below our bar goes back for fixes.',
     pic: 'check',
   },
   { title: 'Launch', text: 'Release, measure, fix.', pic: 'launch' },

@@ -12,6 +12,7 @@ import ArtLoop from '../components/ArtLoop.astro';
 import Base from '../layouts/Base.astro';
 import Build from '../components/Build.astro';
 import Engine from '../components/Engine.astro';
+import Flow from '../components/Flow.astro';
 import PersonCard from '../components/PersonCard.astro';
 import Journey from '../components/Journey.astro';
 import Work from '../components/Work.astro';
@@ -221,55 +222,13 @@ const REEL = asset('/hero/reel.mp4');
     <section class="block" id="structure" aria-labelledby="structure-title">
       <div class="wide">
         <header class="block-head" data-reveal>
-          <h2 id="structure-title" set:html={t('How the team <em>is built.</em>')} />
+          <h2 id="structure-title" set:html={t('Every order goes <em>through {a} and {b}.</em>', { a: first!, b: second! })} />
           <p class="block-head__text">
-            {t('Luka and Giorgi take every job, hand out the work and check every result before the client sees it.')}
+            {t('Two directors, a network of specialists, and partner teams when there is a lot of work. This is the path of one order.')}
           </p>
         </header>
-        <div class="org" data-reveal>
-          <div class="org__branches">
-            {
-              heads.map((h) => (
-                <div class="org__branch">
-                  <a class="org__head" href={`#${h.id}`}>
-                    {h.photo && <img src={h.photo} alt="" width="56" height="56" loading="lazy" decoding="async" />}
-                    <span>
-                      <b>{h.name}</b>
-                      {t(h.role)}
-                    </span>
-                  </a>
-                  <ul class="org__leads" role="list">
-                    {Array.from({ length: STRUCTURE.leads }, (_, i) => (
-                      <li class:list={['org__lead', { 'org__lead--maybe': i === STRUCTURE.leads - 1 }]}>
-                        {t('Team lead')}
-                        <span class="org__team" aria-hidden="true">
-                          <i />
-                          <i />
-                          <i />
-                          <i />
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
-                  <p class="org__note">{t('2–3 team leads, each with a team')}</p>
-                </div>
-              ))
-            }
-          </div>
-          <div class="org__shared">
-            <div class="org__unit">
-              <h3 class="org__label">{t('Outsource')}</h3>
-              <p>{t('Partner teams for extra hands')}</p>
-            </div>
-            <div class="org__unit">
-              <h3 class="org__label">{t('Sales & marketing')}</h3>
-              <ul role="list">
-                {STRUCTURE.sales.map((r) => (
-                  <li>{t(r)}</li>
-                ))}
-              </ul>
-            </div>
-          </div>
+        <div data-reveal>
+          <Flow lang={lang} heads={heads} specialists={specialists} more={NETWORK.n * NETWORK.groups.length} sales={STRUCTURE.sales} />
         </div>
       </div>
     </section>

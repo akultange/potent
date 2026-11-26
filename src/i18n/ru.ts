@@ -97,14 +97,9 @@ export const RU = {
     // how the team is built
     // Plain words for a reader who is not from our trade: "руководитель команды", not "тимлид";
     // "подрядчики", not "аутсорс"; "блогер", not "инфлюенсер".
-    'How the team <em>is built.</em>': 'Как устроена <em>команда.</em>',
     'Head of Digital': 'Руководитель цифрового направления',
     CTO: 'Технический директор',
     'Team lead': 'Руководитель команды',
-    '2–3 team leads, each with a team': '2–3 руководителя, у каждого своя команда',
-    Outsource: 'Подрядчики',
-    'Partner teams for extra hands': 'Команды-партнёры — когда нужно больше рук',
-    'Sales & marketing': 'Продажи и маркетинг',
     'Sales manager': 'Менеджер по продажам',
     Marketer: 'Маркетолог',
     'Marketer & influencer': 'Маркетолог и блогер',
@@ -112,10 +107,8 @@ export const RU = {
     // how a project runs
     'How a project <em>runs.</em>': 'Как мы ведём <em>проект.</em>',
     Brief: 'Задача',
-    'Sales brings the client; Luka and Giorgi set the scope, timeline and price.':
-      'Продажи приводят клиента, Лука и Гиорги определяют объём работ, сроки и цену.',
-    'Luka and Giorgi take every job, hand out the work and check every result before the client sees it.':
-      'Лука и Гиорги берут каждый заказ, распределяют работу и проверяют результат до того, как его увидит клиент.',
+    'Sales brings the client; Giorgi and Luka set the scope, timeline and price.':
+      'Продажи приводят клиента, Гиорги и Лука определяют объём работ, сроки и цену.',
     Design: 'Дизайн',
     'Design teams shape the product, brand and motion before anything is built.':
       'Дизайнеры продумывают продукт, бренд и анимацию до начала разработки.',
@@ -123,8 +116,8 @@ export const RU = {
     'Our network builds it; when there is a lot of work, partner teams join.':
       'Делает наша сеть специалистов, а когда работы много — команды-партнёры.',
     'Quality check': 'Проверка',
-    'Luka and Giorgi check every result before the client sees it. Anything below our bar goes back for fixes.':
-      'Лука и Гиорги проверяют каждый результат до того, как его увидит клиент. Всё, что ниже нашего уровня, уходит на доработку.',
+    'Giorgi and Luka check every result before the client sees it. Anything below our bar goes back for fixes.':
+      'Гиорги и Лука проверяют каждый результат до того, как его увидит клиент. Всё, что ниже нашего уровня, уходит на доработку.',
     Launch: 'Запуск',
     'Release, measure, fix.': 'Запускаем, измеряем результат, дорабатываем.',
     Support: 'Поддержка',
@@ -205,6 +198,25 @@ export const RU = {
     'orders overnight': 'заказов за ночь',
     'customers left without an answer': 'клиентов без ответа',
     'against last week': 'к прошлой неделе',
+
+    // the path of one order (src/components/Flow.astro)
+    'Every order goes <em>through {a} and {b}.</em>': 'Каждый заказ проходит <em>через Гиорги и Луку.</em>',
+    'Two directors, a network of specialists, and partner teams when there is a lot of work. This is the path of one order.':
+      'Двое руководителей, сеть специалистов и команды-партнёры, когда работы много. Вот путь одного заказа.',
+    'An order comes in': 'Приходит заказ',
+    'Sales and marketing bring the client.': 'Клиента приводят продажи и маркетинг.',
+    '<em>{a} and {b}</em> take it': '<em>{a} и {b}</em> берут заказ',
+    'They agree what will be done, by when and for how much, choose who will do it and set the bar.':
+      'Договариваются, что, к какому сроку и за сколько будет сделано, выбирают исполнителей и задают планку качества.',
+    'Our network does the work': 'Работу делает наша сеть',
+    'Team leads and their people: {a} on this page and {b} more from our circle in Tbilisi. When there is a lot of work, partner teams join.':
+      'Руководители команд и их люди: {a} с этой страницы и ещё {b} из нашего круга в Тбилиси. Когда работы много, подключаются команды-партнёры.',
+    '<em>{a} and {b}</em> check it': '<em>{a} и {b}</em> проверяют',
+    'Every result, before the client sees it.': 'Каждый результат — до того, как его увидит клиент.',
+    'Anything below the bar goes back to step 03 for fixes.': 'Всё, что не дотягивает, возвращается на шаг 03 — на доработку.',
+    'The client gets it': 'Клиент получает результат',
+    'Finished work at our level, and support every month after launch.':
+      'Готовую работу нашего уровня — и поддержку каждый месяц после запуска.',
 
     // what we sell, the market, how we make money
     'Every business pays for digital. <em>More every year.</em>':
