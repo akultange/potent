@@ -107,8 +107,8 @@ export const RU = {
     // how a project runs
     'How a project <em>runs.</em>': 'Как мы ведём <em>проект.</em>',
     Brief: 'Задача',
-    'Sales brings the client; Giorgi and Luka set the scope, timeline and price.':
-      'Продажи приводят клиента, Гиорги и Лука определяют объём работ, сроки и цену.',
+    'Giorgi and Luka bring the client with our marketing, then set the scope, timeline and price.':
+      'Гиорги и Лука вместе с нашим маркетингом приводят клиента, затем определяют объём работ, сроки и цену.',
     Design: 'Дизайн',
     'Design teams shape the product, brand and motion before anything is built.':
       'Дизайнеры продумывают продукт, бренд и анимацию до начала разработки.',
@@ -203,8 +203,9 @@ export const RU = {
     'Every order goes <em>through {a} and {b}.</em>': 'Каждый заказ проходит <em>через Гиорги и Луку.</em>',
     'Two directors, a network of specialists, and partner teams when there is a lot of work. This is the path of one order.':
       'Двое руководителей, сеть специалистов и команды-партнёры, когда работы много. Вот путь одного заказа.',
-    'An order comes in': 'Приходит заказ',
-    'Sales and marketing bring the client.': 'Клиента приводят продажи и маркетинг.',
+    '<em>{a} and {b}</em> bring the clients': '<em>{a} и {b}</em> приводят клиентов',
+    'They run our social media themselves, launch ads to different audiences and see what works. With them:':
+      'Сами ведут наши соцсети, запускают рекламу на разные аудитории и смотрят, что работает. Вместе с ними:',
     '<em>{a} and {b}</em> take it': '<em>{a} и {b}</em> берут заказ',
     'They agree what will be done, by when and for how much, choose who will do it and set the bar.':
       'Договариваются, что, к какому сроку и за сколько будет сделано, выбирают исполнителей и задают планку качества.',

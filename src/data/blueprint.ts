@@ -143,12 +143,13 @@ export const STRUCTURE = {
 /**
  * How a project runs, start to finish. `pic`: the step's picture, public/art/step-<pic>-{480,960}.webp
  * (and its loop, step-<pic>.mp4, where there is one): one little paper shop from drawing to
- * opening night and after. How the founders work (Luka, 2026-11-26): they take the job, the
- * network does the work, partner teams join when there is a lot of it, and nothing reaches the
- * client before Luka and Giorgi have checked it.
+ * opening night and after. How the founders work (Luka, 2026-11-26): they bring the clients
+ * themselves with the marketing people (social media, ads), take the job, the network does the
+ * work, partner teams join when there is a lot of it, and nothing reaches the client before
+ * Giorgi and Luka have checked it.
  */
 export const PROCESS = [
-  { title: 'Brief', text: 'Sales brings the client; Giorgi and Luka set the scope, timeline and price.', pic: 'brief' },
+  { title: 'Brief', text: 'Giorgi and Luka bring the client with our marketing, then set the scope, timeline and price.', pic: 'brief' },
   { title: 'Design', text: 'Design teams shape the product, brand and motion before anything is built.', pic: 'design' },
   { title: 'Build', text: 'Our network builds it; when there is a lot of work, partner teams join.', pic: 'build' },
   {

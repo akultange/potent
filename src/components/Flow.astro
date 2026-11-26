@@ -1,8 +1,9 @@
 ---
-// How the team works, told as the path of one order (Luka, 2026-11-26): sales and marketing bring
-// the client; Luka and Giorgi take the order; the network does the work, partner teams joining
-// when there is a lot of it; Luka and Giorgi check every result and send back what is below the
-// bar; the client gets the finished work. Faces, not boxes: the reader sees who does what.
+// How the team works, told as the path of one order (Luka, 2026-11-26): Giorgi and Luka bring the
+// clients themselves (they run our social media and test ads on different audiences, with the
+// sales and marketing people), take the order, hand the work to the network (partner teams join
+// when there is a lot of it), check every result and send back what is below the bar; the client
+// gets the finished work. Faces, not boxes: the reader sees who does what.
 // The founders' roles and the sales roles live in STRUCTURE (src/data/blueprint.ts).
 import { counted, translator, type Lang, type LocalPerson } from '../i18n';
 import { asset, hue, initials } from '../lib/util';
@@ -41,11 +42,11 @@ const onPage = lang === 'ru' ? `${n} ${counted(lang, n, 'specialists')}` : `${n}
 ---
 
 <ol class="flow" role="list" data-flow>
-  <li class="flow__step">
+  <li class="flow__step flow__step--us">
     <span class="flow__n" aria-hidden="true">01</span>
     <div class="flow__body">
-      <h3>{t('An order comes in')}</h3>
-      <p>{t('Sales and marketing bring the client.')}</p>
+      <h3 set:html={t('<em>{a} and {b}</em> bring the clients', { a: names[0]!, b: names[1]! })} />
+      <p>{t('They run our social media themselves, launch ads to different audiences and see what works. With them:')}</p>
       <ul class="flow__roles" role="list">
         {sales.map((r) => <li>{t(r)}</li>)}
       </ul>
