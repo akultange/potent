@@ -309,12 +309,7 @@ const REEL = asset('/hero/reel.mp4');
                 />
                 <span class="price__title">{t(p.title)}</span>
                 <span class="price__value">{t(p.value)}</span>
-                <span class="price__note">
-                  {t(p.note)}{' '}
-                  <a class="source" href={p.source.url} {...external}>
-                    {t('Source')}: {p.source.name}
-                  </a>
-                </span>
+                <span class="price__note">{t(p.note)}</span>
               </li>
             ))
           }

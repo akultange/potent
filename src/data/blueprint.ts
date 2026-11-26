@@ -63,7 +63,8 @@ export const MARKET: { value: string; label: string; source: Source }[] = [
 /**
  * What one project costs a business, cheapest first, so the reader sees the money grow: Clutch's
  * 2026 pricing guides, built from projects clients reviewed on Clutch worldwide (checked
- * 2026-11-26). `pic` is a picture from public/scope/.
+ * 2026-11-26). `pic` is a picture from public/scope/. The page names Clutch once, under the list;
+ * `source` keeps each guide's address for checking.
  */
 export const PRICES = [
   {
