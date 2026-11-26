@@ -208,7 +208,6 @@ export const RU = {
     "Next step: <em>let's talk.</em>": 'Следующий шаг: <em>давайте поговорим.</em>',
     '{a} and {b} will answer any question.': '{a} и {b} ответят на любые вопросы.',
     'Co-founder': 'Сооснователь',
-    'Reply to the message this link came in.': 'Просто ответьте на сообщение с этой ссылкой.',
   } as Record<string, string>,
 
   /** Words that follow a number: one, a few (2 to 4), many. */

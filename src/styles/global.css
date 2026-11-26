@@ -1776,16 +1776,6 @@ html[lang='ru'] h2 em {
   color: var(--ink);
 }
 
-.next__hint {
-  margin-top: clamp(32px, 4vw, 48px);
-  max-width: 30ch;
-  text-wrap: balance;
-  font-size: clamp(24px, calc(2.6 * var(--u)), 40px);
-  font-weight: 600;
-  line-height: 1.15;
-  letter-spacing: -0.035em;
-}
-
 .next__actions {
   display: flex;
   flex-wrap: wrap;

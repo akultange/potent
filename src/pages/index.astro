@@ -406,7 +406,7 @@ const REEL = 'https://skhiladze.com/media/film/reel.mp4';
           }
         </ul>
         {
-          CONTACTS.length > 0 ? (
+          CONTACTS.length > 0 && (
             <ul class="next__actions" role="list" data-reveal>
               {CONTACTS.map((c) => (
                 <li>
@@ -416,10 +416,6 @@ const REEL = 'https://skhiladze.com/media/film/reel.mp4';
                 </li>
               ))}
             </ul>
-          ) : (
-            <p class="next__hint" data-reveal>
-              {t('Reply to the message this link came in.')}
-            </p>
           )
         }
       </div>

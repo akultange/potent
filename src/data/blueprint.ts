@@ -111,7 +111,6 @@ export const PROCESS = [
 /**
  * How to reach the founders, shown as buttons under "Next step". Founders' handles only, for
  * example { label: 'Telegram', href: 'https://t.me/<handle>' } or { label: 'WhatsApp', href:
- * 'https://wa.me/<number>' }. While it is empty the page asks him to reply to the message the
- * link came in.
+ * 'https://wa.me/<number>' }. While it is empty the section shows the two founders and no button.
  */
 export const CONTACTS: { label: string; href: string }[] = [];
