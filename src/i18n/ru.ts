@@ -13,62 +13,30 @@ export const RU = {
     // header
     Sections: 'Разделы',
     Services: 'Услуги',
-    'Who does what': 'Кто что делает',
     People: 'Люди',
     Work: 'Работы',
     Language: 'Язык',
-
-    // top of the page
-    'Design & engineering agency · {city}': 'Агентство дизайна и разработки · {city}',
-    'Product, brand and engineering, from <em>one senior team.</em>':
-      'Продукт, бренд и разработка — от <em>одной опытной команды.</em>',
-    "{name} pairs a founder-led product design practice with a network of specialists in Tbilisi. Between us, we've designed and built for banks, regulators, retailers and consumer brands.":
-      '{name} объединяет студию продуктового дизайна, которую ведут сами основатели, и сеть специалистов в Тбилиси. Вместе мы проектировали и разрабатывали для банков, регуляторов, ритейла и потребительских брендов.',
-    'Work for': 'Среди клиентов',
 
     // everything digital
     // "Digital" as a noun is never "цифра" (it reads as "a number"): say "цифровая сфера",
     // "цифровые продукты", "цифровые услуги". The trade's own name for us is "digital-агентство".
     // Keep long words such as "цифровизация" out of headings: on a 360px phone one word is one line.
-    'Everything <em>digital</em>': 'Делаем всё <em>в цифровой сфере</em>',
-    'From a ten-second sound to the software a whole company runs on. One team takes it from the idea to the finished thing.':
-      'От десятисекундной мелодии до системы, на которой работает вся компания. Одна команда ведёт проект от идеи до результата — под ключ.',
     'Pause the pictures': 'Остановить анимацию',
     'Play the pictures': 'Включить анимацию',
-    'From our work': 'Из наших работ',
-
-    // what we do
-    'What we <em>do</em>': 'Что мы <em>делаем</em>',
-    'Every service is backed by someone in the network who has already done it, with the projects to prove it.':
-      'За каждой услугой стоит человек из нашей сети, который уже делал такую работу, — и проекты, которые это подтверждают.',
-    'Delivered by': 'Кто делает',
 
     // who does what
-    'Who does <em>what</em>': 'Кто что <em>делает</em>',
-    'Each person and the services they can lead.': 'Каждый человек и услуги, которые он может вести.',
     Person: 'Человек',
-    Yes: 'Да',
     No: 'Нет',
 
     // the people
-    'The <em>people</em>': 'Наши <em>люди</em>',
-    'Founders and the specialists we bring in, with the work each of them has done.':
-      'Основатели и специалисты, которых мы подключаем, — и работы каждого из них.',
     Founders: 'Основатели',
-    Network: 'Сеть специалистов',
     Portfolio: 'Портфолио',
-    'Profile coming soon.': 'Профиль скоро появится.',
     '{name} online': 'Профили: {name}',
-    "{name}'s projects": 'Проекты: {name}',
     Projects: 'Проекты',
     Role: 'Роль',
     'Case study': 'Разбор проекта',
 
     // selected work
-    'Selected <em>work</em>': 'Избранные <em>работы</em>',
-    'Filter by service to see everything the network has shipped in that area.':
-      'Выберите услугу, чтобы увидеть всё, что наша сеть сделала в этой области.',
-    'Filter work by service': 'Фильтр работ по услугам',
     All: 'Все',
     by: 'Автор:',
 
@@ -144,14 +112,19 @@ export const RU = {
     // how a project runs
     'How a project <em>runs.</em>': 'Как мы ведём <em>проект.</em>',
     Brief: 'Задача',
-    'Sales brings the client; a team lead sets the scope, timeline and price.':
-      'Продажи приводят клиента, руководитель команды определяет объём работ, сроки и цену.',
+    'Sales brings the client; Luka and Giorgi set the scope, timeline and price.':
+      'Продажи приводят клиента, Лука и Гиорги определяют объём работ, сроки и цену.',
+    'Luka and Giorgi take every job, hand out the work and check every result before the client sees it.':
+      'Лука и Гиорги берут каждый заказ, распределяют работу и проверяют результат до того, как его увидит клиент.',
     Design: 'Дизайн',
     'Design teams shape the product, brand and motion before anything is built.':
       'Дизайнеры продумывают продукт, бренд и анимацию до начала разработки.',
     Build: 'Разработка',
-    'Engineering teams build it; outsource partners add hands at peaks.':
-      'Разработчики создают продукт; в пиковые периоды подключаем подрядчиков.',
+    'Our network builds it; when there is a lot of work, partner teams join.':
+      'Делает наша сеть специалистов, а когда работы много — команды-партнёры.',
+    'Quality check': 'Проверка',
+    'Luka and Giorgi check every result before the client sees it. Anything below our bar goes back for fixes.':
+      'Лука и Гиорги проверяют каждый результат до того, как его увидит клиент. Всё, что ниже нашего уровня, уходит на доработку.',
     Launch: 'Запуск',
     'Release, measure, fix.': 'Запускаем, измеряем результат, дорабатываем.',
     Support: 'Поддержка',
@@ -234,7 +207,6 @@ export const RU = {
     'against last week': 'к прошлой неделе',
 
     // what we sell, the market, how we make money
-    'What we sell': 'Что мы продаём',
     'Every business pays for digital. <em>More every year.</em>':
       'Каждый бизнес платит за цифровые услуги. <em>С каждым годом — всё больше.</em>',
     '$3.9 trillion': '$3,9 трлн',
@@ -245,6 +217,24 @@ export const RU = {
     '0% profit tax': '0% налога на прибыль',
     'on IT that Georgian companies with Virtual Zone status build and sell abroad':
       'от продажи собственных IT-разработок за рубеж — для грузинских компаний со статусом Virtual Zone',
+    'What one project costs a business': 'Сколько бизнес платит за один проект',
+    'Prices of projects clients reviewed on Clutch, worldwide, 2026.':
+      'Цены проектов по отзывам клиентов на Clutch, по всему миру, 2026 год.',
+    Website: 'Сайт',
+    'usually up to $10,000': 'обычно до\u00a0$10\u00a0000',
+    'studios charge $100–149 an hour': 'студии берут $100–149 в\u00a0час',
+    'Brand and identity': 'Бренд и фирменный стиль',
+    'usually $10,000–50,000': 'обычно $10\u00a0000–50\u00a0000',
+    'the same $100–149 an hour': 'те же $100–149 в\u00a0час',
+    'Product design': 'Дизайн продукта',
+    '$56,000 on average': 'в среднем $56\u00a0000',
+    'per design agency project': 'за проект дизайн-студии',
+    'Mobile app': 'Мобильное приложение',
+    '$91,000 on average': 'в среднем $91\u00a0000',
+    'about 11 months of work': 'около 11 месяцев работы',
+    'Software for the whole company': 'Система для всей компании',
+    '$132,000 on average': 'в среднем $132\u00a0000',
+    'about 13 months of work': 'около 13 месяцев работы',
     'How we make money': 'Как мы зарабатываем',
     'Sites, apps and brands, paid per project.': 'Сайты, приложения и бренды — оплата за каждый проект.',
     'Monthly support': 'Ежемесячная поддержка',

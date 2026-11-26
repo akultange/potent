@@ -48,6 +48,7 @@ function tile(id: string, stepId: string) {
     width: large,
     height: big ? Math.round((large * 9) / 16) : large,
     film: item.loop ? asset(`/scope/${id}.mp4`) : null,
+    filmSm: item.loop && inPublic(`/scope/${id}-sm.mp4`) ? asset(`/scope/${id}-sm.mp4`) : null,
   };
 }
 
@@ -86,12 +87,14 @@ const night = {
   srcset: `${asset('/scope/night-640.webp')} 640w, ${asset('/scope/night-1280.webp')} 1280w`,
   sizes: '(min-width: 900px) min(54vw, 780px), 100vw',
   film: inPublic('/scope/night.mp4') ? asset('/scope/night.mp4') : null,
+  filmSm: inPublic('/scope/night-sm.mp4') ? asset('/scope/night-sm.mp4') : null,
 };
 const dawn = {
   src: asset('/scope/dawn-1280.webp'),
   srcset: `${asset('/scope/dawn-640.webp')} 640w, ${asset('/scope/dawn-1280.webp')} 1280w`,
   sizes: night.sizes,
   film: inPublic('/scope/dawn.mp4') ? asset('/scope/dawn.mp4') : null,
+  filmSm: inPublic('/scope/dawn-sm.mp4') ? asset('/scope/dawn-sm.mp4') : null,
 };
 const external = { target: '_blank', rel: 'noopener noreferrer' };
 ---
@@ -157,6 +160,7 @@ const external = { target: '_blank', rel: 'noopener noreferrer' };
                             {tl.film && (
                               <video
                                 data-src={tl.film}
+                                data-src-sm={tl.filmSm}
                                 muted
                                 loop
                                 playsinline
@@ -190,6 +194,7 @@ const external = { target: '_blank', rel: 'noopener noreferrer' };
                         {night.film && (
                           <video
                             data-src={night.film}
+                            data-src-sm={night.filmSm}
                             muted
                             loop
                             playsinline
@@ -233,6 +238,7 @@ const external = { target: '_blank', rel: 'noopener noreferrer' };
                         {dawn.film && (
                           <video
                             data-src={dawn.film}
+                            data-src-sm={dawn.filmSm}
                             muted
                             loop
                             playsinline
@@ -452,13 +458,13 @@ const external = { target: '_blank', rel: 'noopener noreferrer' };
     grid-column: 1 / -1;
   }
 
-  /* The pictures are shot on warm paper; a little dimmer so they sit in the dark page. */
+  /* Paper models lit in the dark, like the rest of the page's pictures. */
   .tile__media {
     position: relative;
     aspect-ratio: 1;
     overflow: hidden;
     border-radius: 14px;
-    background: #e4ded6;
+    background: var(--surface);
   }
 
   .tile--big .tile__media {
@@ -474,11 +480,6 @@ const external = { target: '_blank', rel: 'noopener noreferrer' };
     width: 100%;
     height: 100%;
     object-fit: cover;
-  }
-
-  .tile__media img,
-  .tile__media video {
-    filter: brightness(0.93);
   }
 
   /* A loop sits on top of its still and fades in once it is really playing. */
@@ -960,16 +961,17 @@ const external = { target: '_blank', rel: 'noopener noreferrer' };
     section.querySelectorAll('[data-step]').forEach((step) => steps.observe(step));
   }
 
-  // Each loop loads when its picture comes near the screen and plays only while it is on screen.
-  // Pictures that arrive together wake up one after another. With reduced motion or data saver
-  // the stills stay as they are.
+  // Each loop loads when its picture comes near the screen and plays only while it is on screen;
+  // screens under 700px wide get the smaller copy (scripts/loop-small.sh). Pictures that arrive
+  // together wake up one after another. With reduced motion or data saver the stills stay.
   const films = [...document.querySelectorAll<HTMLVideoElement>('.journey video')];
   const pause = document.querySelector<HTMLButtonElement>('.journey__pause');
   if (section && films.length > 0 && !calm && !saver && 'IntersectionObserver' in window) {
     const onScreen = new Set<HTMLVideoElement>();
     let stopped = false;
+    const phone = window.matchMedia('(max-width: 699px)').matches;
     const start = (film: HTMLVideoElement) => {
-      if (!film.src) film.src = film.dataset.src!;
+      if (!film.src) film.src = (phone && film.dataset.srcSm) || film.dataset.src!;
       film.play().catch(() => {});
     };
     const watcher = new IntersectionObserver(

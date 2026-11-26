@@ -66,14 +66,16 @@ const stages = PHASES.map((_, i) => {
     display: grid;
   }
 
-  /* Phones: the picture runs edge to edge and stays under the page header while the phases
-     scroll beneath it. Each stage lies over the one before, so going back never shows black. */
+  /* Phones and tablets held upright: the picture runs edge to edge and stays under the page
+     header while the phases scroll beneath it. It never takes more than 44% of the screen's
+     height, so the phase being read always shows below it (the picture shrinks inside its box on
+     tablets). Each stage lies over the one before, so going back never shows black. */
   .build__art {
     position: sticky;
     top: 56px;
     z-index: 1;
+    height: min(75vw, 44svh);
     margin-inline: calc(var(--gutter) * -1);
-    aspect-ratio: 4 / 3;
     background: var(--bg);
   }
 
@@ -90,7 +92,7 @@ const stages = PHASES.map((_, i) => {
     inset: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
     opacity: 0;
     transition: opacity 0.9s var(--ease);
   }
@@ -130,8 +132,9 @@ const stages = PHASES.map((_, i) => {
     border-top-color: var(--accent);
   }
 
-  /* From 900px: the phases on the left, the picture beside them in the middle of the screen. */
-  @media (min-width: 900px) {
+  /* From 900px, and on phones lying sideways: the phases on the left, the picture beside them,
+     never taller than the screen. */
+  @media (min-width: 900px), (orientation: landscape) and (min-width: 600px) {
     .build {
       grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
       column-gap: clamp(40px, 6vw, 110px);
@@ -141,7 +144,10 @@ const stages = PHASES.map((_, i) => {
     .build__art {
       grid-column: 2;
       grid-row: 1;
-      top: max(80px, calc(50vh - 21vw));
+      top: max(72px, calc(50vh - 21vw));
+      height: auto;
+      max-height: calc(100svh - 88px);
+      aspect-ratio: 4 / 3;
       margin: 0;
       overflow: hidden;
       border-radius: 14px;
@@ -175,12 +181,12 @@ const stages = PHASES.map((_, i) => {
 
 <script>
   // The phase being read is the last one whose top has passed a line on the screen: 62% of its
-  // height on phones (below the picture stuck at the top), 42% from 900px (the picture is beside
-  // the phases). The picture shows that phase's stage.
+  // height when the picture is stuck above the phases, 42% when it stands beside them. The
+  // picture shows that phase's stage.
   const build = document.querySelector<HTMLElement>('[data-build]');
   if (build) {
     const phases = [...build.querySelectorAll<HTMLElement>('[data-phase]')];
-    const beside = window.matchMedia('(min-width: 900px)');
+    const beside = window.matchMedia('(min-width: 900px), (orientation: landscape) and (min-width: 600px)');
     let waiting = false;
     const place = () => {
       waiting = false;

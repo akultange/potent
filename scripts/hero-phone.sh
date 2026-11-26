@@ -36,8 +36,8 @@ ffmpeg -v error -y -i "$SRC" -filter_complex "
 [x1][line]xfade=transition=fade:duration=0.2:offset=3.4667[x2];
 [x2][plane]xfade=transition=fade:duration=0.3333:offset=11.7333[x3];
 [x3][block]xfade=transition=fade:duration=0.3:offset=18.3667[x4];
-[x4]scale=800:-2:flags=lanczos[v]" \
-  -map "[v]" -an -c:v libx264 -preset veryslow -crf 27 -maxrate 800k -bufsize 1600k \
+[x4]scale=720:-2:flags=lanczos[v]" \
+  -map "[v]" -an -c:v libx264 -preset veryslow -crf 28 -maxrate 560k -bufsize 1120k \
   -profile:v high -level 4.0 -refs 4 -pix_fmt yuv420p \
   -color_primaries bt709 -color_trc bt709 -colorspace bt709 -movflags +faststart "$OUT/one-point-phone.tmp.mp4"
 mv "$OUT/one-point-phone.tmp.mp4" "$OUT/one-point-phone.mp4"

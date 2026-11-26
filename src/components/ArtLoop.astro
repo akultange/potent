@@ -23,7 +23,10 @@ interface Props {
 const { name, lang = 'en', widths, ratio, sizes, class: extra } = Astro.props;
 const t = translator(lang);
 const [small, large] = widths;
-const film = existsSync(path.join(process.cwd(), 'public', 'art', `${name}.mp4`)) ? asset(`/art/${name}.mp4`) : null;
+const inArt = (file: string) => existsSync(path.join(process.cwd(), 'public', 'art', file));
+const film = inArt(`${name}.mp4`) ? asset(`/art/${name}.mp4`) : null;
+// Screens under 700px wide play the smaller copy, made by scripts/loop-small.sh.
+const filmSm = inArt(`${name}-sm.mp4`) ? asset(`/art/${name}-sm.mp4`) : null;
 ---
 
 <div class:list={['art', extra]} data-art>
@@ -41,6 +44,7 @@ const film = existsSync(path.join(process.cwd(), 'public', 'art', `${name}.mp4`)
     film && (
       <video
         data-src={film}
+        data-src-sm={filmSm}
         muted
         loop
         playsinline
@@ -150,8 +154,9 @@ const film = existsSync(path.join(process.cwd(), 'public', 'art', `${name}.mp4`)
   if (!calm && !saver && 'IntersectionObserver' in window) {
     const seen = new WeakMap<HTMLVideoElement, boolean>();
     const stopped = new WeakSet<HTMLVideoElement>();
+    const phone = window.matchMedia('(max-width: 699px)').matches;
     const start = (film: HTMLVideoElement) => {
-      if (!film.src) film.src = film.dataset.src!;
+      if (!film.src) film.src = (phone && film.dataset.srcSm) || film.dataset.src!;
       film.play().catch(() => {});
     };
     const watcher = new IntersectionObserver(

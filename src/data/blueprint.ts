@@ -60,6 +60,49 @@ export const MARKET: { value: string; label: string; source: Source }[] = [
   },
 ];
 
+/**
+ * What one project costs a business, cheapest first, so the reader sees the money grow: Clutch's
+ * 2026 pricing guides, built from projects clients reviewed on Clutch worldwide (checked
+ * 2026-11-26). `pic` is a picture from public/scope/.
+ */
+export const PRICES = [
+  {
+    pic: 'web-640',
+    title: 'Website',
+    value: 'usually up to $10,000',
+    note: 'studios charge $100–149 an hour',
+    source: { name: 'Clutch', url: 'https://clutch.co/web-designers/pricing' },
+  },
+  {
+    pic: 'brand-640',
+    title: 'Brand and identity',
+    value: 'usually $10,000–50,000',
+    note: 'the same $100–149 an hour',
+    source: { name: 'Clutch', url: 'https://www.clutch.co/agencies/branding/pricing' },
+  },
+  {
+    pic: 'design-640',
+    title: 'Product design',
+    value: '$56,000 on average',
+    note: 'per design agency project',
+    source: { name: 'Clutch', url: 'https://clutch.co/agencies/design/pricing' },
+  },
+  {
+    pic: 'app-800',
+    title: 'Mobile app',
+    value: '$91,000 on average',
+    note: 'about 11 months of work',
+    source: { name: 'Clutch', url: 'https://clutch.co/directory/mobile-application-developers/pricing' },
+  },
+  {
+    pic: 'company-1120',
+    title: 'Software for the whole company',
+    value: '$132,000 on average',
+    note: 'about 13 months of work',
+    source: { name: 'Clutch', url: 'https://clutch.co/developers/pricing' },
+  },
+];
+
 /** How we make money. `later`: only after the agency has scaled (see PHASES). */
 export const STREAMS = [
   { id: 'projects', title: 'Projects', text: 'Sites, apps and brands, paid per project.', later: false },
@@ -84,9 +127,7 @@ export const ENGINE = ['Academy', 'Interns', 'Team', 'Projects', 'Revenue', 'Pod
 /**
  * The card after the specialists: how many more people our network brings. Founders' numbers
  * (Giorgi, 2026-11-26); keep them true. The picture is a paper-craft Tbilisi hillside at night,
- * lit windows with desks joined by light lines, so no face reads as a team member. The earlier
- * stand-in photo from Unsplash (Tai Bui, unsplash.com/photos/mdeT5gewa3Q) is still in
- * public/people/network.webp.
+ * lit windows with desks joined by light lines, so no face reads as a team member.
  */
 export const NETWORK = { photo: '/people/network-art.webp', groups: ['+{n} developers', '+{n} designers'], n: 10 };
 
@@ -104,12 +145,19 @@ export const STRUCTURE = {
 /**
  * How a project runs, start to finish. `pic`: the step's picture, public/art/step-<pic>-{480,960}.webp
  * (and its loop, step-<pic>.mp4, where there is one): one little paper shop from drawing to
- * opening night and after.
+ * opening night and after. How the founders work (Luka, 2026-11-26): they take the job, the
+ * network does the work, partner teams join when there is a lot of it, and nothing reaches the
+ * client before Luka and Giorgi have checked it.
  */
 export const PROCESS = [
-  { title: 'Brief', text: 'Sales brings the client; a team lead sets the scope, timeline and price.', pic: 'brief' },
+  { title: 'Brief', text: 'Sales brings the client; Luka and Giorgi set the scope, timeline and price.', pic: 'brief' },
   { title: 'Design', text: 'Design teams shape the product, brand and motion before anything is built.', pic: 'design' },
-  { title: 'Build', text: 'Engineering teams build it; outsource partners add hands at peaks.', pic: 'build' },
+  { title: 'Build', text: 'Our network builds it; when there is a lot of work, partner teams join.', pic: 'build' },
+  {
+    title: 'Quality check',
+    text: 'Luka and Giorgi check every result before the client sees it. Anything below our bar goes back for fixes.',
+    pic: 'check',
+  },
   { title: 'Launch', text: 'Release, measure, fix.', pic: 'launch' },
   { title: 'Support', text: 'Monthly updates, ads and content keep the client with us.', pic: 'support' },
 ];

@@ -15,7 +15,7 @@ import Engine from '../components/Engine.astro';
 import PersonCard from '../components/PersonCard.astro';
 import Journey from '../components/Journey.astro';
 import Work from '../components/Work.astro';
-import { CONTACTS, MARKET, NETWORK, PROCESS, PROOF, STREAMS, STRUCTURE } from '../data/blueprint';
+import { CONTACTS, MARKET, NETWORK, PRICES, PROCESS, PROOF, STREAMS, STRUCTURE } from '../data/blueprint';
 import { CASES, MORE } from '../data/showcase';
 import { AREAS, SERVICES } from '../data/services';
 import { SITE } from '../data/site';
@@ -71,7 +71,7 @@ const heads = STRUCTURE.heads.map((h) => {
 const academy = founders.flatMap((p) => p.data.projects).find((p) => p.en.name === '101SPOT');
 const [first, second] = founders.map((p) => p.data.name.split(' ')[0]);
 const external = { target: '_blank', rel: 'noopener noreferrer' };
-const REEL = 'https://skhiladze.com/media/film/reel.mp4';
+const REEL = asset('/hero/reel.mp4');
 ---
 
 <Base lang={lang} title={t('{name}: we make businesses run themselves.', { name: site.name })}>
@@ -222,6 +222,9 @@ const REEL = 'https://skhiladze.com/media/film/reel.mp4';
       <div class="wide">
         <header class="block-head" data-reveal>
           <h2 id="structure-title" set:html={t('How the team <em>is built.</em>')} />
+          <p class="block-head__text">
+            {t('Luka and Giorgi take every job, hand out the work and check every result before the client sees it.')}
+          </p>
         </header>
         <div class="org" data-reveal>
           <div class="org__branches">
@@ -330,6 +333,34 @@ const REEL = 'https://skhiladze.com/media/film/reel.mp4';
             ))
           }
         </ul>
+
+        <h3 class="kicker">{t('What one project costs a business')}</h3>
+        <ol class="prices" role="list">
+          {
+            PRICES.map((p) => (
+              <li class="price" data-reveal>
+                <img
+                  class="price__pic"
+                  src={asset(`/scope/${p.pic}.webp`)}
+                  alt=""
+                  width="640"
+                  height="480"
+                  loading="lazy"
+                  decoding="async"
+                />
+                <span class="price__title">{t(p.title)}</span>
+                <span class="price__value">{t(p.value)}</span>
+                <span class="price__note">
+                  {t(p.note)}{' '}
+                  <a class="source" href={p.source.url} {...external}>
+                    {t('Source')}: {p.source.name}
+                  </a>
+                </span>
+              </li>
+            ))
+          }
+        </ol>
+        <p class="prices__about">{t('Prices of projects clients reviewed on Clutch, worldwide, 2026.')}</p>
 
         <h3 class="kicker">{t('How we make money')}</h3>
         <ol class="streams" role="list">
@@ -467,13 +498,14 @@ const REEL = 'https://skhiladze.com/media/film/reel.mp4';
     for (const startOrRest of films) startOrRest();
   });
 
-  // The reel starts at the still's frame (the aurora, 31.3 s) and then loops from the EV film to
-  // just before the name card: the reel's opening (cartoons with placeholder logos) and its
-  // ending are skipped.
+  // The reel starts at the still's frame (the aurora) and then loops from the EV film to just
+  // before the name card. public/hero/reel.mp4 is that stretch of Luka's reel
+  // (skhiladze.com/media/film/reel.mp4, 15.5 s to 52.3 s, cut without re-encoding), so 15.8 s
+  // here is 31.3 s in the reel.
   if (film && toggle && !calm && !saver && roomy) {
-    const START = 31.3;
-    const FROM = 15.6;
-    const TO = 51.9;
+    const START = 15.8;
+    const FROM = 0.1;
+    const TO = 36.4;
     let onScreen = true;
     const play = () => film.play().catch(() => {});
     film.src = `${film.dataset.film}#t=${START}`;
@@ -548,7 +580,9 @@ const REEL = 'https://skhiladze.com/media/film/reel.mp4';
       }).observe(loop);
       play();
     };
-    setUp();
+    // Fetched once the page itself has loaded, so the headline, fonts and still come first.
+    if (document.readyState === 'complete') setUp();
+    else window.addEventListener('load', setUp, { once: true });
     upright.addEventListener('change', () => {
       setUp();
       if (upright.matches) play();

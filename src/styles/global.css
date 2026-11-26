@@ -1469,7 +1469,8 @@ html[lang='ru'] h2 em {
 
 @media (min-width: 1000px) {
   .process {
-    grid-template-columns: repeat(5, minmax(0, 1fr));
+    grid-auto-columns: minmax(0, 1fr);
+    grid-auto-flow: column;
     gap: 0 clamp(14px, 1.6vw, 24px);
   }
 }
@@ -1580,6 +1581,85 @@ html[lang='ru'] h2 em {
   font-size: 17px;
   line-height: 1.45;
   color: var(--muted);
+}
+
+/* What one project costs a business, cheapest first: a picture from the same paper world, the
+   thing, its price. Phones: rows; from 900px: five columns. */
+.prices {
+  display: grid;
+  gap: 0 clamp(14px, 1.6vw, 24px);
+}
+
+.price {
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr);
+  grid-template-rows: auto auto 1fr;
+  column-gap: 16px;
+  align-items: start;
+  padding: 16px 0;
+  border-top: 1px solid var(--line);
+}
+
+.price__pic {
+  grid-row: 1 / span 3;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  object-fit: contain;
+}
+
+.price__title {
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--muted);
+}
+
+.price__value {
+  margin-top: 4px;
+  font-size: clamp(24px, 6.4vw, 30px);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+}
+
+.price:last-child .price__value {
+  color: var(--accent);
+}
+
+.price__note {
+  margin-top: 6px;
+  font-size: 13.5px;
+  line-height: 1.4;
+  color: var(--faint);
+}
+
+.prices__about {
+  margin: 14px 0 clamp(48px, 6vw, 88px);
+  font-size: 13.5px;
+  color: var(--faint);
+}
+
+@media (min-width: 900px) {
+  .prices {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+
+  .price {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: none;
+    padding-top: 0;
+    border-top: 0;
+  }
+
+  .price__pic {
+    grid-row: auto;
+    margin-bottom: 14px;
+  }
+
+  .price__value {
+    font-size: clamp(26px, 2.4vw, 36px);
+  }
 }
 
 .streams {

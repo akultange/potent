@@ -7,9 +7,6 @@
         [--speed 1.0]               source frames per output frame at full speed
         [--thresh 14] [--grow 1.3]  how much a pixel must change to count as moving; mask growth (% of width)
         [--crf 23] [--sheet out.png] [--mask out.png]
-        [--full]                    use the whole film frame (everything moves, e.g. the night)
-        [--no-gain]                 keep the film's own brightness (dark pictures: the tone match
-                                    goes wrong when the edges are near black)
 
 What it does:
   1. lines the clip up with the still (the generator crops and scales by a hair);
@@ -99,6 +96,7 @@ def main():
     ap.add_argument('--crf', default='23')
     ap.add_argument('--sheet')
     ap.add_argument('--mask')
+    ap.add_argument('--stabilize', action='store_true', help='line up every frame with the still (the camera drifted)')
     ap.add_argument('--no-gain', action='store_true', help='keep the film frames as bright as they are')
     ap.add_argument('--full', action='store_true', help='use the whole film frame, no still underneath')
     args = ap.parse_args()
@@ -117,6 +115,10 @@ def main():
     frames = np.empty((b - a + 1, H, W, 3), np.float32)
     gains = []
     for i in range(a, b + 1):
+        if args.stabilize and i > 0:
+            # line every frame up with the still, not only the first: takes out a camera that
+            # creeps or pushes in, and keeps only what moves inside the picture
+            m = align(ref, src[i])[2]
         f = cv2.warpAffine(src[i], m, (W, H), flags=cv2.INTER_CUBIC | cv2.WARP_INVERSE_MAP,
                            borderMode=cv2.BORDER_REPLICATE).astype(np.float32)
         g = 1.0 if args.no_gain else ref_med / border_median(f)
