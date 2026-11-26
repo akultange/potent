@@ -282,16 +282,13 @@ const REEL = 'https://skhiladze.com/media/film/reel.mp4';
             PROCESS.map((step, i) => (
               <li class="process__step" data-reveal>
                 {step.pic && (
-                  <img
-                    class="process__pic"
-                    src={asset(`/art/step-${step.pic}-960.webp`)}
-                    srcset={`${asset(`/art/step-${step.pic}-480.webp`)} 480w, ${asset(`/art/step-${step.pic}-960.webp`)} 960w`}
+                  <ArtLoop
+                    name={`step-${step.pic}`}
+                    lang={lang}
+                    widths={[480, 960]}
+                    ratio={[1, 1]}
                     sizes="(min-width: 1440px) 256px, (min-width: 1000px) 18vw, min(74vw, 300px)"
-                    width="960"
-                    height="960"
-                    alt=""
-                    loading="lazy"
-                    decoding="async"
+                    class="process__pic"
                   />
                 )}
                 <span class="process__n" aria-hidden="true">

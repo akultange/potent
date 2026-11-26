@@ -83,10 +83,12 @@ export const ENGINE = ['Academy', 'Interns', 'Team', 'Projects', 'Revenue', 'Pod
 
 /**
  * The card after the specialists: how many more people our network brings. Founders' numbers
- * (Giorgi, 2026-11-26); keep them true. The photo is a stand-in from Unsplash (Tai Bui,
- * unsplash.com/photos/mdeT5gewa3Q), chosen so no stranger's face reads as a team member.
+ * (Giorgi, 2026-11-26); keep them true. The picture is a paper-craft Tbilisi hillside at night,
+ * lit windows with desks joined by light lines, so no face reads as a team member. The earlier
+ * stand-in photo from Unsplash (Tai Bui, unsplash.com/photos/mdeT5gewa3Q) is still in
+ * public/people/network.webp.
  */
-export const NETWORK = { photo: '/people/network.webp', groups: ['+{n} developers', '+{n} designers'], n: 10 };
+export const NETWORK = { photo: '/people/network-art.webp', groups: ['+{n} developers', '+{n} designers'], n: 10 };
 
 /** How the agency is organised, from the founders (2026-11-26). Roles only, no names. */
 export const STRUCTURE = {
@@ -100,8 +102,9 @@ export const STRUCTURE = {
 };
 
 /**
- * How a project runs, start to finish. `pic`: the step's picture, public/art/step-<pic>-{480,960}.webp,
- * one little paper shop from drawing to opening night and after.
+ * How a project runs, start to finish. `pic`: the step's picture, public/art/step-<pic>-{480,960}.webp
+ * (and its loop, step-<pic>.mp4, where there is one): one little paper shop from drawing to
+ * opening night and after.
  */
 export const PROCESS = [
   { title: 'Brief', text: 'Sales brings the client; a team lead sets the scope, timeline and price.', pic: 'brief' },
