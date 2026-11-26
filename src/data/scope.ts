@@ -36,8 +36,8 @@ export const SCOPE: ScopeItem[] = [
     size: 'square',
     focus: 43,
     loop: true,
-    title: 'Sound and music',
-    text: 'Music, voice-over and sound effects for films, ads and apps.',
+    title: 'Music and sound',
+    text: 'Music, voice and sound for your ads and videos.',
     examples: [
       {
         person: 'luka-skhiladze',
@@ -51,8 +51,8 @@ export const SCOPE: ScopeItem[] = [
     size: 'square',
     focus: 57,
     loop: true,
-    title: 'Editing and colour',
-    text: 'Raw footage cut into a finished film, with the colour done right.',
+    title: 'Video',
+    text: 'Footage turned into a finished ad or film.',
     examples: [
       {
         person: 'mariam-kokaia',
@@ -72,7 +72,7 @@ export const SCOPE: ScopeItem[] = [
     focus: 42,
     loop: true,
     title: 'Animation and 3D',
-    text: 'Animated ads, explainer videos and product films, in 2D and 3D.',
+    text: 'Ads and product films that move, in 2D and 3D.',
     examples: [
       {
         person: 'luka-skhiladze',
@@ -96,8 +96,8 @@ export const SCOPE: ScopeItem[] = [
     size: 'square',
     focus: 62,
     loop: true,
-    title: 'Brand and graphics',
-    text: 'A logo, colours and a look people recognise at a glance.',
+    title: 'Brand identity',
+    text: 'Logo, colours, packaging and signage people remember.',
     examples: [
       {
         person: 'lazare-londaridze',
@@ -121,8 +121,8 @@ export const SCOPE: ScopeItem[] = [
     size: 'square',
     focus: 65,
     loop: true,
-    title: 'Product design',
-    text: 'How a site or an app looks and works, tested before it is built.',
+    title: 'Screen design',
+    text: 'How every screen of your site or app looks and works.',
     examples: [
       {
         person: 'giorgi-kheladze',
@@ -146,8 +146,8 @@ export const SCOPE: ScopeItem[] = [
     size: 'square',
     focus: 55,
     loop: true,
-    title: 'Websites',
-    text: 'For a company, a product or a campaign. Designed and built by one team.',
+    title: 'Website',
+    text: 'Your company online: who you are, what you sell, how to reach you.',
     examples: [
       {
         person: 'luka-liparteliani',
@@ -170,8 +170,8 @@ export const SCOPE: ScopeItem[] = [
     id: 'store',
     size: 'wide',
     loop: true,
-    title: 'Online stores',
-    text: 'A shop that shows the goods, takes the order and the payment, and sends it on its way.',
+    title: 'Online store',
+    text: 'Catalogue, cart and card payment: you sell around the clock.',
     examples: [
       {
         person: 'luka-liparteliani',
@@ -189,8 +189,8 @@ export const SCOPE: ScopeItem[] = [
     id: 'app',
     size: 'wide',
     loop: true,
-    title: 'Mobile apps',
-    text: 'An app for phones, from the first idea to the day it is in the App Store.',
+    title: 'Mobile app',
+    text: "Your own app on your customers' phones.",
     examples: [
       {
         person: 'luka-skhiladze',
@@ -213,8 +213,8 @@ export const SCOPE: ScopeItem[] = [
     id: 'company',
     size: 'hero',
     loop: true,
-    title: 'Software that runs a whole company',
-    text: 'Orders, clients, stock, staff and money in one system instead of ten spreadsheets, with every number on one screen.',
+    title: 'Software for the whole company',
+    text: 'Orders, stock, staff and money in one place.',
     examples: [
       {
         person: 'lazare-londaridze',

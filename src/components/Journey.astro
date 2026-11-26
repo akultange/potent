@@ -42,6 +42,7 @@ function tile(id: string, stepId: string) {
     id,
     big,
     title: item.title,
+    text: item.text,
     src: asset(`/scope/${id}-${large}.webp`),
     srcset: `${asset(`/scope/${id}-${small}.webp`)} ${small}w, ${asset(`/scope/${id}-${large}.webp`)} ${large}w`,
     sizes: big ? SIZES.big : SIZES.small,
@@ -172,7 +173,10 @@ const external = { target: '_blank', rel: 'noopener noreferrer' };
                               />
                             )}
                           </div>
-                          <figcaption>{tl.title}</figcaption>
+                          <figcaption>
+                            <b>{tl.title}</b>
+                            {step.tiles.length > 1 && <span>{tl.text}</span>}
+                          </figcaption>
                         </figure>
                       ))}
                     </div>
@@ -492,12 +496,32 @@ const external = { target: '_blank', rel: 'noopener noreferrer' };
     opacity: 1;
   }
 
+  /* What the picture is, named the way a business owner would say it, big enough to read at a
+     glance; under it, when a step shows several things, one line on what it gives the business. */
   .tile figcaption {
-    margin-top: 9px;
-    font-size: 14.5px;
-    font-weight: 600;
-    line-height: 1.2;
-    letter-spacing: -0.02em;
+    margin-top: 12px;
+  }
+
+  .tile figcaption b {
+    display: block;
+    font-size: clamp(19px, 5.2vw, 24px);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.035em;
+    text-wrap: balance;
+  }
+
+  .tile--big figcaption b {
+    font-size: clamp(26px, 7.4vw, 36px);
+  }
+
+  .tile figcaption span {
+    display: block;
+    max-width: 34ch;
+    margin-top: 6px;
+    font-size: 14px;
+    line-height: 1.4;
+    color: var(--muted);
   }
 
   /* ---------- the company at night ---------- */
@@ -841,8 +865,8 @@ const external = { target: '_blank', rel: 'noopener noreferrer' };
       gap: 22px 14px;
     }
 
-    .tile figcaption {
-      font-size: 16px;
+    .tile figcaption span {
+      font-size: 15px;
     }
 
     .night,
