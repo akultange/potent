@@ -101,12 +101,30 @@ const REEL = 'https://skhiladze.com/media/film/reel.mp4';
   </header>
 
   <main id="top">
-    <!-- A still from Luka's reel; on big screens the reel itself fades in over it (see the script). -->
+    <!-- Big screens: a still from Luka's reel fills the first screen, and the reel itself fades in
+         over it. Phones: his film "One Point", cut to a loop without words (scripts/hero-phone.sh),
+         plays in the space above the headline; the picture is that loop's first frame. Both are
+         started by the script at the end of this file. -->
     <section class="hero">
-      <picture class="hero__still">
-        <source media="(max-width: 699px)" srcset={asset('/hd/reel-still-phone.webp')} />
-        <img src={asset('/hd/reel-still.webp')} alt="" fetchpriority="high" decoding="async" />
-      </picture>
+      <div class="hero__art">
+        <div class="hero__stage">
+          <picture class="hero__still">
+            <source media="(max-width: 699px) and (min-height: 501px)" srcset={asset('/hero/one-point-phone.webp')} />
+            <img src={asset('/hd/reel-still.webp')} alt="" fetchpriority="high" decoding="async" />
+          </picture>
+          <video
+            class="hero__loop"
+            data-loop={asset('/hero/one-point-phone.mp4')}
+            muted
+            loop
+            playsinline
+            preload="none"
+            disablepictureinpicture
+            disableremoteplayback
+            aria-hidden="true"
+            tabindex="-1"></video>
+        </div>
+      </div>
       <video class="hero__film" data-film={REEL} muted playsinline preload="none" aria-hidden="true" tabindex="-1"></video>
       <div class="hero__shade" aria-hidden="true"></div>
       <div class="wide hero__content">
@@ -426,20 +444,33 @@ const REEL = 'https://skhiladze.com/media/film/reel.mp4';
   onScroll();
   window.addEventListener('scroll', onScroll, { passive: true });
 
-  // The film plays only on big screens (not phones, either way up), without data saver or
-  // reduced motion; everyone else keeps the still. It starts at the still's frame (the aurora,
-  // 31.3 s) and then loops from the EV film to just before the name card: the reel's opening
-  // (cartoons with placeholder logos) and its ending are skipped.
+  // The first screen has two films, and a screen shows one of them at most. Big screens: Luka's
+  // reel, behind everything. Phones held upright: his film "One Point", cut to a loop without
+  // words, above the headline. Neither plays with data saver or reduced motion, or on a phone
+  // lying on its side: there the still stays. One button stops and starts whichever is showing.
   const film = document.querySelector<HTMLVideoElement>('[data-film]');
+  const loop = document.querySelector<HTMLVideoElement>('[data-loop]');
   const toggle = document.querySelector<HTMLButtonElement>('.hero__toggle');
   const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const saver = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData;
   const roomy = window.matchMedia('(min-width: 700px) and (min-height: 500px)').matches;
+  const upright = window.matchMedia('(max-width: 699px) and (min-height: 501px)');
+  let stopped = false;
+  const films: (() => void)[] = [];
+  toggle?.addEventListener('click', () => {
+    stopped = !stopped;
+    toggle.setAttribute('aria-pressed', String(stopped));
+    for (const startOrRest of films) startOrRest();
+  });
+
+  // The reel starts at the still's frame (the aurora, 31.3 s) and then loops from the EV film to
+  // just before the name card: the reel's opening (cartoons with placeholder logos) and its
+  // ending are skipped.
   if (film && toggle && !calm && !saver && roomy) {
     const START = 31.3;
     const FROM = 15.6;
     const TO = 51.9;
-    let stopped = false;
+    let onScreen = true;
     const play = () => film.play().catch(() => {});
     film.src = `${film.dataset.film}#t=${START}`;
     film.addEventListener(
@@ -460,17 +491,67 @@ const REEL = 'https://skhiladze.com/media/film/reel.mp4';
     play();
     // A way to stop the motion, and a rest while the film is off screen.
     toggle.hidden = false;
-    toggle.addEventListener('click', () => {
-      stopped = !stopped;
-      toggle.setAttribute('aria-pressed', String(stopped));
-      if (stopped) film.pause();
+    films.push(() => {
+      if (stopped || !onScreen) film.pause();
       else play();
     });
     new IntersectionObserver(([e]) => {
+      onScreen = Boolean(e?.isIntersecting);
       if (stopped) return;
-      if (e?.isIntersecting) play();
+      if (onScreen) play();
       else film.pause();
     }).observe(film);
+  }
+
+  // The loop is fetched only once a phone is held upright, and rests while it is off screen. A
+  // phone that will not start a video by itself (Low Power Mode) starts it at the first touch;
+  // until then the picture stays, and the button appears only once there is something to stop.
+  if (loop && toggle && !calm && !saver) {
+    const hero = loop.closest('.hero');
+    let ready = false;
+    let onScreen = true;
+    const play = () => {
+      if (ready && !stopped && onScreen && upright.matches) loop.play().catch(() => {});
+    };
+    const wake = () => {
+      if (loop.paused) play();
+    };
+    const setUp = () => {
+      if (ready || !upright.matches) return;
+      ready = true;
+      loop.muted = true;
+      loop.src = loop.dataset.loop!;
+      loop.addEventListener(
+        'playing',
+        () => {
+          hero?.setAttribute('data-loop-on', '');
+          toggle.hidden = false;
+          window.removeEventListener('touchend', wake);
+          window.removeEventListener('click', wake);
+        },
+        { once: true },
+      );
+      window.addEventListener('touchend', wake, { passive: true });
+      window.addEventListener('click', wake);
+      films.push(() => {
+        if (stopped) loop.pause();
+        else play();
+      });
+      new IntersectionObserver(([e]) => {
+        onScreen = Boolean(e?.isIntersecting);
+        if (onScreen) play();
+        else loop.pause();
+      }).observe(loop);
+      play();
+    };
+    setUp();
+    upright.addEventListener('change', () => {
+      setUp();
+      if (upright.matches) play();
+      else loop.pause();
+      // A phone on its side shows neither film, so it has nothing to stop.
+      if (!roomy) toggle.hidden = !(upright.matches && hero?.hasAttribute('data-loop-on'));
+    });
   }
 
   // Things rise into place as they come into view.

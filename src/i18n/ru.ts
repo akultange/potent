@@ -82,7 +82,7 @@ export const RU = {
     'We know how to earn it.': 'Мы знаем, как их зарабатывать.',
     "Here's the plan.": 'Вот план.',
     'Our people have worked for': 'С кем работала команда',
-    'Film by co-founder Luka Skhiladze': 'Автор видео — сооснователь Лука Схиладзе',
+    'Film by co-founder Luka Skhiladze': 'Видео: сооснователь Лука Схиладзе',
     'Pause the film': 'Остановить видео',
     Scroll: 'Листайте',
     Market: 'Рынок',

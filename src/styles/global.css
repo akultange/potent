@@ -349,6 +349,17 @@ html[lang='ru'] h2 em {
   background: #000;
 }
 
+/* Two boxes around the still that only phones use (see "hero on phones" below). On big screens
+   they do nothing: the still and the film fill the whole first screen. */
+.hero__art,
+.hero__stage {
+  display: contents;
+}
+
+.hero__loop {
+  display: none;
+}
+
 .hero__still img,
 .hero__film {
   position: absolute;
@@ -544,6 +555,131 @@ html[lang='ru'] h2 em {
 
   .hero__foot {
     margin-top: 16px;
+  }
+}
+
+/* ---------- hero on phones: the film sits above the headline ---------- */
+
+/* A phone held upright has no room for a film behind the words, and the reel is cut for wide
+   screens. So phones get Luka's film "One Point" as a loop (public/hero/, made by
+   scripts/hero-phone.sh) in the free space between the header and the headline. It runs the full
+   width of the screen and fades out at its edges, so no frame shows. The picture is the loop's
+   first frame; where a phone will not play video it stays, breathing slowly. */
+@media (max-width: 699px) and (min-height: 501px) {
+  .hero {
+    flex-direction: column;
+    align-items: stretch;
+    background: var(--bg);
+  }
+
+  /* All the height the words leave free. On short phones the film is taller than this and runs
+     under the header and the first words, where it has already faded out. */
+  .hero__art {
+    display: block;
+    position: relative;
+    flex: 1 1 0;
+    min-height: calc(45vw + 28px);
+    overflow: hidden;
+  }
+
+  /* Whatever the film shows, the header's row stays readable and nothing bright reaches the
+     words below. */
+  .hero__art::before,
+  .hero__art::after {
+    content: '';
+    position: absolute;
+    z-index: 1;
+    left: 0;
+    width: 100%;
+    pointer-events: none;
+  }
+
+  .hero__art::before {
+    top: 0;
+    height: 84px;
+    background: linear-gradient(to bottom, var(--bg) 0, rgb(11 11 12 / 0.7) 50%, transparent 100%);
+  }
+
+  .hero__art::after {
+    bottom: 0;
+    height: 48px;
+    background: linear-gradient(to top, var(--bg) 0, transparent 100%);
+  }
+
+  .hero__stage {
+    display: block;
+    position: absolute;
+    top: calc(50% + 14px);
+    left: 0;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    transform: translateY(-50%);
+    -webkit-mask-image:
+      linear-gradient(to bottom, transparent 0, #000 18%, #000 78%, transparent 100%),
+      linear-gradient(to right, transparent 0, #000 5%, #000 95%, transparent 100%);
+    -webkit-mask-composite: source-in;
+    mask-image:
+      linear-gradient(to bottom, transparent 0, #000 18%, #000 78%, transparent 100%),
+      linear-gradient(to right, transparent 0, #000 5%, #000 95%, transparent 100%);
+    mask-composite: intersect;
+  }
+
+  .hero__loop {
+    display: block;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+
+  .hero[data-loop-on] .hero__loop {
+    opacity: 1;
+  }
+
+  /* Until the film runs (or if it never does), the picture is not dead still. It waits a moment
+     first, so a film that starts at once takes over from a picture at rest. */
+  .hero__still img {
+    transition: none;
+    animation: hero-breathe 3.6s ease-in-out 2.4s infinite alternate;
+  }
+
+  .hero[data-loop-on] .hero__still img {
+    animation: none;
+  }
+
+  /* A wide window made narrow after the reel has run: the picture is still wanted here. */
+  .hero[data-film-on] .hero__still img {
+    opacity: 1;
+  }
+
+  .hero__film,
+  .hero__shade {
+    display: none;
+  }
+
+  .hero__content {
+    padding-top: 0;
+  }
+}
+
+@keyframes hero-breathe {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  to {
+    opacity: 0.82;
+    transform: scale(1.035);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__still img {
+    animation: none;
   }
 }
 
