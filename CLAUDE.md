@@ -16,11 +16,19 @@
 - The page is a dark, portfolio-style agency blueprint for one non-digital investor (send him
   /ru/): Luka's film as the hero with the big client names (wide screens: his reel behind
   everything; phones held upright: his film "One Point" cut to a wordless loop above the headline,
-  `public/hero/`, made by `scripts/hero-phone.sh`), proof numbers, "Selected work" as
-  huge pictures plus a compact grid (`src/data/showcase.ts`, retina files in `public/hd/`),
-  colour team portraits (never invented people) and a network card, team structure and process,
-  what we sell, market numbers with sources (`src/data/blueprint.ts`), the plan (agency now, scale
-  next, academy after scale), next step. Big pictures, few words.
+  `public/hero/`, made by `scripts/hero-phone.sh`), proof numbers, "Everything digital a business
+  needs" (outside, inside, from above: six steps, each with a moving picture and the real projects
+  where we did it; `src/data/journey.ts`, `src/components/Journey.astro`), every project as a
+  compact grid (`src/data/showcase.ts`; `Work.astro` without `compact` brings back the huge
+  pictures from `public/hd/`), colour team portraits (never invented people) and a network card,
+  team structure, the process (one paper shop from drawing to opening), market numbers with sources
+  (`src/data/blueprint.ts`), the plan as one picture of our studio that builds itself as you read
+  (agency now, scale next, academy after scale; `Build.astro`), next step over Tbilisi at dusk. Big
+  pictures, few words.
+- The pictures are one paper-craft world (generated, warm paper, orange light lines): `public/scope/`
+  for the business steps, `public/art/` for the rest. A loop is a short generated clip laid over its
+  sharp still and played back and forth (`scripts/loop.py`); loops play only on screen, never with
+  reduced motion or data saver, and each can be stopped.
 - Two founders push to `main` in parallel. Commit small and often, always `git pull --rebase`
   before `git push`, resolve conflicts by keeping both sides' intent, never force-push or rewrite
   pushed history. No branches or PRs.

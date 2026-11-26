@@ -1,7 +1,9 @@
 ---
 // Selected work: the best projects as large pictures, each with its name, one line on why it
 // matters and the face of the person who made it; then the rest as a compact grid. Order, sizes
-// and the one-liners live in src/data/showcase.ts.
+// and the one-liners live in src/data/showcase.ts. With `compact` every project, the big ones
+// first, goes in the compact grid (the page shows the work that way since the "Everything
+// digital a business needs" section took over the big pictures; drop `compact` to go back).
 import { CASES, MORE, type Case } from '../data/showcase';
 import { translator, type Lang, type LocalPerson } from '../i18n';
 import { asset, initials, keep, thumbOf } from '../lib/util';
@@ -10,9 +12,11 @@ interface Props {
   /** Everyone on the page, in the page's language. */
   people: LocalPerson[];
   lang?: Lang;
+  /** Every project in the compact grid, without the large pictures. */
+  compact?: boolean;
 }
 
-const { people, lang = 'en' } = Astro.props;
+const { people, lang = 'en', compact = false } = Astro.props;
 const t = translator(lang);
 
 // How wide each picture is drawn (16px page gutters on phones, 3vw up to 1333px, 1360px of
@@ -65,13 +69,14 @@ const cases = CASES.map((c: Case, i) => {
   };
 });
 
-const more = MORE.map((m) => {
+const more = (compact ? [...CASES, ...MORE] : MORE).map((m) => {
   const { person, project, href } = find(m);
   return { name: project.name, href, src: project.image ? thumbOf(project.image) : null, by: person.data.name };
 });
 const external = { target: '_blank', rel: 'noopener noreferrer' };
 ---
 
+{!compact && (
 <div class="work-grid">
   {
     cases.map((c) => (
@@ -109,10 +114,13 @@ const external = { target: '_blank', rel: 'noopener noreferrer' };
     ))
   }
 </div>
+)}
 
+{!compact && (
 <h3 class="kicker">
   {t('More work')} <span>{more.length}</span>
 </h3>
+)}
 <ul class="more" role="list">
   {
     more.map((m) => (

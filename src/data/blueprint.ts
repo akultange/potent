@@ -99,13 +99,16 @@ export const STRUCTURE = {
   sales: ['Sales manager', 'Marketer', 'Marketer & influencer'],
 };
 
-/** How a project runs, start to finish. */
+/**
+ * How a project runs, start to finish. `pic`: the step's picture, public/art/step-<pic>-{480,960}.webp,
+ * one little paper shop from drawing to opening night and after.
+ */
 export const PROCESS = [
-  { title: 'Brief', text: 'Sales brings the client; a team lead sets the scope, timeline and price.' },
-  { title: 'Design', text: 'Design teams shape the product, brand and motion before anything is built.' },
-  { title: 'Build', text: 'Engineering teams build it; outsource partners add hands at peaks.' },
-  { title: 'Launch', text: 'Release, measure, fix.' },
-  { title: 'Support', text: 'Monthly updates, ads and content keep the client with us.' },
+  { title: 'Brief', text: 'Sales brings the client; a team lead sets the scope, timeline and price.', pic: 'brief' },
+  { title: 'Design', text: 'Design teams shape the product, brand and motion before anything is built.', pic: 'design' },
+  { title: 'Build', text: 'Engineering teams build it; outsource partners add hands at peaks.', pic: 'build' },
+  { title: 'Launch', text: 'Release, measure, fix.', pic: 'launch' },
+  { title: 'Support', text: 'Monthly updates, ads and content keep the client with us.', pic: 'support' },
 ];
 
 /**

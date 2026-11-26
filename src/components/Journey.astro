@@ -1,0 +1,1014 @@
+---
+// "The whole digital business": what we build, shown as three views of one company (outside,
+// inside, from above) so that a reader who is not from our trade sees the full range. Each step
+// is a headline in the owner's words, a moving picture, one plain sentence and the real projects
+// where someone on the team has already done it.
+// Steps, proofs and the notes over the night picture live in src/data/journey.ts (Russian in
+// src/i18n/ru.ts); the pictures and loops are the ones in public/scope/ (src/data/scope.ts).
+// Phones come first: this is read on a phone.
+import { existsSync } from 'node:fs';
+import path from 'node:path';
+import { JOURNEY, NIGHT_NOTES, REPORT } from '../data/journey';
+import { SCOPE_WIDTHS } from '../data/scope';
+import { localScope, translator, type Lang, type LocalPerson } from '../i18n';
+import { asset, hue, initials, thumbOf } from '../lib/util';
+
+interface Props {
+  lang?: Lang;
+  /** Everyone on the page, in the page's language: the proofs are looked up in their projects. */
+  people: LocalPerson[];
+}
+
+const { lang = 'en', people } = Astro.props;
+const t = translator(lang);
+const inPublic = (file: string) => existsSync(path.join(process.cwd(), 'public', file));
+
+// How wide the pictures are drawn, so the browser picks the right file: on phones a big picture
+// runs the width of the page and small ones go two to a row; from 900px the pictures sit in a
+// column beside the words.
+const SIZES = {
+  big: '(min-width: 900px) min(54vw, 780px), calc(100vw - 32px)',
+  small: '(min-width: 900px) min(27vw, 385px), calc(50vw - 21px)',
+};
+
+const scope = new Map(localScope(lang).map((item) => [item.id, item]));
+
+function tile(id: string, stepId: string) {
+  const item = scope.get(id);
+  if (!item) throw new Error(`src/data/journey.ts: the "${stepId}" step shows the picture "${id}", which is not in src/data/scope.ts.`);
+  const [small, large] = SCOPE_WIDTHS[item.size];
+  const big = item.size !== 'square';
+  return {
+    id,
+    big,
+    title: item.title,
+    src: asset(`/scope/${id}-${large}.webp`),
+    srcset: `${asset(`/scope/${id}-${small}.webp`)} ${small}w, ${asset(`/scope/${id}-${large}.webp`)} ${large}w`,
+    sizes: big ? SIZES.big : SIZES.small,
+    width: large,
+    height: big ? Math.round((large * 9) / 16) : large,
+    film: item.loop ? asset(`/scope/${id}.mp4`) : null,
+  };
+}
+
+let n = 0;
+const views = JOURNEY.map((view) => ({
+  ...view,
+  steps: view.steps.map((step) => ({
+    ...step,
+    n: String(++n).padStart(2, '0'),
+    tiles: (step.tiles ?? []).map((id) => tile(id, step.id)),
+    proofs: step.proofs.map((proof) => {
+      const person = people.find((p) => p.id === proof.person);
+      const project = person?.data.projects.find((p) => p.en.name === proof.project);
+      if (!person || !project) {
+        throw new Error(
+          `src/data/journey.ts: the "${step.id}" step names the project "${proof.project}" by "${proof.person}", ` +
+            `but src/content/people/${proof.person}.yaml has no project with that name.`,
+        );
+      }
+      return {
+        name: project.name,
+        note: t(proof.note),
+        href: project.caseStudy ?? project.url,
+        image: project.image ? thumbOf(project.image) : null,
+        client: project.client ?? project.name,
+        hue: hue(project.en.client ?? project.en.name),
+        by: person.data.name,
+        photo: person.data.photo ? asset(person.data.photo) : null,
+      };
+    }),
+  })),
+}));
+
+const night = {
+  src: asset('/scope/night-1280.webp'),
+  srcset: `${asset('/scope/night-640.webp')} 640w, ${asset('/scope/night-1280.webp')} 1280w`,
+  sizes: '(min-width: 900px) min(54vw, 780px), 100vw',
+  film: inPublic('/scope/night.mp4') ? asset('/scope/night.mp4') : null,
+};
+const dawn = {
+  src: asset('/scope/dawn-1280.webp'),
+  srcset: `${asset('/scope/dawn-640.webp')} 640w, ${asset('/scope/dawn-1280.webp')} 1280w`,
+  sizes: night.sizes,
+  film: inPublic('/scope/dawn.mp4') ? asset('/scope/dawn.mp4') : null,
+};
+const external = { target: '_blank', rel: 'noopener noreferrer' };
+---
+
+<section class="block journey" id="scope" aria-labelledby="journey-title">
+  <div class="wide">
+    <header class="block-head" data-reveal>
+      <h2 id="journey-title" set:html={t('Everything digital a business needs. <em>Outside, inside, from above.</em>')} />
+      <div>
+        <p class="block-head__text">
+          {
+            t(
+              'What the customer sees, how the company runs and what the owner sees. Under every step: where we have already done it.',
+            )
+          }
+        </p>
+        <button class="journey__pause" type="button" data-pause={t('Pause the pictures')} data-play={t('Play the pictures')} hidden>
+          {t('Pause the pictures')}
+        </button>
+      </div>
+    </header>
+
+    <div class="journey__track" data-journey>
+      <div class="journey__rail" aria-hidden="true">
+        <i class="journey__fill"></i>
+        <i class="journey__dot"></i>
+      </div>
+
+      {
+        views.map((view) => (
+          <div class:list={['view', `view--${view.id}`]}>
+            <p class="view__label" data-reveal>
+              <b>{t(view.name)}</b>
+              <span>{t(view.text)}</span>
+            </p>
+
+            {view.steps.map((step) => (
+              <article class:list={['step', `step--${step.id}`]} data-step>
+                <header class="step__head" data-reveal>
+                  <p class="step__n" aria-hidden="true">
+                    {step.n}
+                  </p>
+                  <h3 set:html={t(step.title)} />
+                  <p class="step__text">{t(step.text)}</p>
+                </header>
+
+                <div class="step__visual" data-reveal>
+                  {step.tiles.length > 0 && (
+                    <div class="tiles">
+                      {step.tiles.map((tl) => (
+                        <figure class:list={['tile', { 'tile--big': tl.big }]}>
+                          <div class="tile__media">
+                            <img
+                              src={tl.src}
+                              srcset={tl.srcset}
+                              sizes={tl.sizes}
+                              width={tl.width}
+                              height={tl.height}
+                              alt=""
+                              loading="lazy"
+                              decoding="async"
+                            />
+                            {tl.film && (
+                              <video
+                                data-src={tl.film}
+                                muted
+                                loop
+                                playsinline
+                                preload="none"
+                                disablepictureinpicture
+                                disableremoteplayback
+                                aria-hidden="true"
+                                tabindex="-1"
+                              />
+                            )}
+                          </div>
+                          <figcaption>{tl.title}</figcaption>
+                        </figure>
+                      ))}
+                    </div>
+                  )}
+
+                  {step.special === 'night' && (
+                    <div class="night">
+                      <div class="scene">
+                        <img
+                          src={night.src}
+                          srcset={night.srcset}
+                          sizes={night.sizes}
+                          width="1280"
+                          height="720"
+                          alt=""
+                          loading="lazy"
+                          decoding="async"
+                        />
+                        {night.film && (
+                          <video
+                            data-src={night.film}
+                            muted
+                            loop
+                            playsinline
+                            preload="none"
+                            disablepictureinpicture
+                            disableremoteplayback
+                            aria-hidden="true"
+                            tabindex="-1"
+                          />
+                        )}
+                      </div>
+                      <ul class="night__notes" aria-hidden="true">
+                        {NIGHT_NOTES.map((note, i) => (
+                          <li
+                            style={
+                              note.right === undefined
+                                ? `left:${note.left ?? 0}%;top:${note.top}%;--i:${i}`
+                                : `right:${note.right}%;top:${note.top}%;--i:${i}`
+                            }
+                          >
+                            <span>{t(note.text)}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
+                  {step.special === 'report' && (
+                    <div class="dawn">
+                      <div class="scene">
+                        <img
+                          src={dawn.src}
+                          srcset={dawn.srcset}
+                          sizes={dawn.sizes}
+                          width="1280"
+                          height="720"
+                          alt=""
+                          loading="lazy"
+                          decoding="async"
+                        />
+                        {dawn.film && (
+                          <video
+                            data-src={dawn.film}
+                            muted
+                            loop
+                            playsinline
+                            preload="none"
+                            disablepictureinpicture
+                            disableremoteplayback
+                            aria-hidden="true"
+                            tabindex="-1"
+                          />
+                        )}
+                      </div>
+                    <div class="report">
+                      <p class="report__head">
+                        <span>{t('Morning report')}</span>
+                        <span class="report__tag">{t('example')}</span>
+                      </p>
+                      <dl class="report__nums">
+                        {REPORT.map((r) => (
+                          <div>
+                            <dt>{t(r.label)}</dt>
+                            <dd data-count={r.value}>{r.value}</dd>
+                          </div>
+                        ))}
+                      </dl>
+                      <svg class="report__chart" viewBox="0 0 360 104" preserveAspectRatio="none" aria-hidden="true">
+                        <defs>
+                          <linearGradient id="report-fill" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0" stop-color="#ff5a1f" stop-opacity="0.34" />
+                            <stop offset="1" stop-color="#ff5a1f" stop-opacity="0" />
+                          </linearGradient>
+                        </defs>
+                        <path
+                          class="report__area"
+                          d="M0,86 C26,82 40,66 68,68 S108,80 140,58 S190,56 220,42 S268,48 300,26 S340,16 360,12 L360,104 L0,104 Z"
+                          fill="url(#report-fill)"
+                        />
+                        <path
+                          class="report__line"
+                          d="M0,86 C26,82 40,66 68,68 S108,80 140,58 S190,56 220,42 S268,48 300,26 S340,16 360,12"
+                          fill="none"
+                          stroke="#ff5a1f"
+                          stroke-width="2"
+                          vector-effect="non-scaling-stroke"
+                          pathLength="1"
+                        />
+                      </svg>
+                    </div>
+                    </div>
+                  )}
+                </div>
+
+                <div class="step__proof" data-reveal>
+                  <p class="label">{t('Already done')}</p>
+                  <ul class="done-list" role="list">
+                    {step.proofs.map((p) => {
+                      const Row = p.href ? 'a' : 'div';
+                      return (
+                        <li>
+                          <Row class="done" {...(p.href ? { href: p.href, ...external } : {})}>
+                            <span class="done__pic" style={`--hue:${p.hue}`}>
+                              {p.image ? (
+                                <img src={p.image} width="640" height="400" alt="" loading="lazy" decoding="async" />
+                              ) : (
+                                <span class="done__client" aria-hidden="true">{p.client}</span>
+                              )}
+                            </span>
+                            <span class="done__text">
+                              <b>
+                                {p.name}
+                                {p.href && <span aria-hidden="true"> ↗</span>}
+                              </b>
+                              <span>{p.note}</span>
+                            </span>
+                            {p.photo ? (
+                              <img class="done__by" src={p.photo} alt={p.by} title={p.by} width="56" height="56" loading="lazy" decoding="async" />
+                            ) : (
+                              <span class="done__by done__by--mono" title={p.by}>
+                                <span aria-hidden="true">{initials(p.by)}</span>
+                                <span class="sr-only">{p.by}</span>
+                              </span>
+                            )}
+                          </Row>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+              </article>
+            ))}
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  /* ---------- the rail: a line down the page edge with the orange point riding it ---------- */
+
+  .journey__track {
+    position: relative;
+    display: grid;
+    gap: clamp(84px, 11vw, 150px);
+  }
+
+  .journey__rail {
+    position: absolute;
+    top: 4px;
+    bottom: 0;
+    left: calc(var(--gutter) * -0.56);
+    width: 1px;
+    background: color-mix(in srgb, var(--ink) 13%, transparent);
+  }
+
+  .journey__fill {
+    position: absolute;
+    inset: 0;
+    background: var(--accent);
+    transform: scaleY(var(--p, 0));
+    transform-origin: top;
+  }
+
+  .journey__dot {
+    position: absolute;
+    top: calc(var(--p, 0) * 100%);
+    left: 50%;
+    width: 9px;
+    height: 9px;
+    margin: -4.5px 0 0 -4.5px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow:
+      0 0 0 4px rgb(255 90 31 / 0.16),
+      0 0 18px 3px rgb(255 90 31 / 0.55);
+  }
+
+  /* ---------- a view: outside, inside, from above ---------- */
+
+  .view {
+    display: grid;
+    gap: clamp(64px, 8vw, 120px);
+  }
+
+  .view__label {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 4px 12px;
+    margin-bottom: clamp(-36px, -3vw, -20px);
+    padding-top: 16px;
+    border-top: 1px solid var(--line);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--faint);
+  }
+
+  .view__label b {
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  /* ---------- a step ---------- */
+
+  .step {
+    display: grid;
+    gap: 22px;
+  }
+
+  .step__n {
+    margin-bottom: 10px;
+    font-family: var(--font-serif);
+    font-size: 22px;
+    font-style: italic;
+    line-height: 1;
+    color: var(--accent);
+  }
+
+  .step h3 {
+    max-width: 13ch;
+    font-size: clamp(38px, calc(4.8 * var(--u)), 72px);
+    line-height: 0.95;
+    letter-spacing: -0.052em;
+    text-wrap: balance;
+  }
+
+  .step h3 :global(em) {
+    color: var(--accent);
+  }
+
+  :global(html[lang='ru']) .step h3 :global(em) {
+    font-size: 1.08em;
+  }
+
+  .step__text {
+    max-width: 34ch;
+    margin-top: 16px;
+    font-size: 17px;
+    line-height: 1.45;
+    color: var(--muted);
+  }
+
+  /* ---------- the pictures ---------- */
+
+  .tiles {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px 10px;
+  }
+
+  .tile {
+    margin: 0;
+  }
+
+  .tile--big {
+    grid-column: 1 / -1;
+  }
+
+  /* The pictures are shot on warm paper; a little dimmer so they sit in the dark page. */
+  .tile__media {
+    position: relative;
+    aspect-ratio: 1;
+    overflow: hidden;
+    border-radius: 14px;
+    background: #e4ded6;
+  }
+
+  .tile--big .tile__media {
+    aspect-ratio: 16 / 9;
+  }
+
+  .tile__media img,
+  .tile__media video,
+  .scene img,
+  .scene video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .tile__media img,
+  .tile__media video {
+    filter: brightness(0.93);
+  }
+
+  /* A loop sits on top of its still and fades in once it is really playing. */
+  .journey video {
+    opacity: 0;
+    transition: opacity 0.6s ease;
+  }
+
+  .journey video.is-playing {
+    opacity: 1;
+  }
+
+  .tile figcaption {
+    margin-top: 9px;
+    font-size: 14.5px;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+
+  /* ---------- the company at night ---------- */
+
+  /* On phones the night and the dawn run edge to edge and melt into the page above and below. */
+  .night,
+  .dawn {
+    position: relative;
+    margin-inline: calc(var(--gutter) * -1);
+  }
+
+  .night {
+    overflow-x: clip;
+  }
+
+  .scene {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 13%, #000 86%, transparent 100%);
+    mask-image: linear-gradient(to bottom, transparent 0, #000 13%, #000 86%, transparent 100%);
+  }
+
+  /* What the system has just done: short notes that come and go, one after another. */
+  .night__notes li {
+    position: absolute;
+    opacity: 0;
+  }
+
+  .night__notes span {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 5px 10px 5px 8px;
+    border: 1px solid rgb(255 255 255 / 0.16);
+    border-radius: 999px;
+    background: rgb(11 11 12 / 0.74);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.2;
+    white-space: nowrap;
+    color: var(--ink);
+  }
+
+  .night__notes span::before {
+    content: '';
+    flex: none;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 8px 1px rgb(255 90 31 / 0.8);
+  }
+
+  .step.is-live .night__notes li {
+    animation: night-note 12.5s linear calc(var(--i) * 2.5s) infinite;
+  }
+
+  @keyframes night-note {
+    0% {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+
+    3%,
+    19% {
+      opacity: 1;
+      transform: none;
+    }
+
+    23%,
+    100% {
+      opacity: 0;
+      transform: translateY(-4px);
+    }
+  }
+
+  /* ---------- the morning report, lying over the dawn ---------- */
+
+  .dawn .report {
+    position: relative;
+    z-index: 1;
+    margin: -28px var(--gutter) 0;
+    background: linear-gradient(180deg, rgb(22 22 25 / 0.84), rgb(13 13 15 / 0.94));
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 30px 60px -24px rgb(0 0 0 / 0.9);
+  }
+
+  .report {
+    overflow: hidden;
+    padding: 18px 18px 0;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    background: linear-gradient(180deg, #151518, #0e0e10);
+  }
+
+  .report__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--faint);
+  }
+
+  .report__tag {
+    padding: 3px 9px;
+    border: 1px solid color-mix(in srgb, var(--ink) 22%, transparent);
+    border-radius: 999px;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+  }
+
+  .report__nums {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    margin-top: 22px;
+  }
+
+  .report__nums div {
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: flex-end;
+    gap: 7px;
+  }
+
+  .report__nums dd {
+    font-size: clamp(32px, 9.4vw, 50px);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    line-height: 0.95;
+    letter-spacing: -0.055em;
+  }
+
+  .report__nums div:first-child dd {
+    color: var(--accent);
+  }
+
+  .report__nums dt {
+    font-size: 12.5px;
+    line-height: 1.3;
+    color: var(--muted);
+  }
+
+  .report__chart {
+    display: block;
+    width: calc(100% + 36px);
+    height: clamp(84px, 24vw, 150px);
+    margin: 14px -18px 0;
+  }
+
+  .report__line {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+  }
+
+  .report__area {
+    opacity: 0;
+  }
+
+  .step.is-drawn .report__line {
+    stroke-dashoffset: 0;
+    transition: stroke-dashoffset 1.9s var(--ease) 0.2s;
+  }
+
+  .step.is-drawn .report__area {
+    opacity: 1;
+    transition: opacity 1.2s ease 1.2s;
+  }
+
+  /* ---------- where we have already done it ---------- */
+
+  .step__proof .label {
+    margin-bottom: 4px;
+  }
+
+  .done-list li {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .done {
+    display: grid;
+    grid-template-columns: 76px minmax(0, 1fr) 28px;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 0;
+    text-decoration: none;
+  }
+
+  .done__pic {
+    display: grid;
+    place-items: center;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    border-radius: 7px;
+    background: hsl(var(--hue) 22% 17%);
+    color: hsl(var(--hue) 30% 78%);
+  }
+
+  /* No screenshot yet: the client's name stands in for it. */
+  .done__client {
+    padding: 0 6px;
+    font-size: 10.5px;
+    font-weight: 600;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    text-align: center;
+  }
+
+  .done__pic img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+  }
+
+  .done__text {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+  }
+
+  .done__text b {
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+
+  .done__text b span {
+    font-weight: 400;
+    color: var(--faint);
+  }
+
+  .done__text > span {
+    font-size: 13.5px;
+    line-height: 1.35;
+    color: var(--muted);
+  }
+
+  .done__by {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .done__by--mono {
+    display: grid;
+    place-items: center;
+    background: var(--surface-2);
+    font-size: 10.5px;
+    font-weight: 600;
+    color: var(--muted);
+  }
+
+  a.done:hover b {
+    text-decoration: underline;
+    text-decoration-color: var(--accent);
+    text-underline-offset: 3px;
+  }
+
+  /* ---------- the stop button ---------- */
+
+  .journey__pause {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    margin-top: 12px;
+    padding: 6px 0;
+    border: 0;
+    background: none;
+    font: inherit;
+    font-size: 14px;
+    color: var(--faint);
+    cursor: pointer;
+  }
+
+  .journey__pause[hidden] {
+    display: none;
+  }
+
+  .journey__pause::before {
+    content: '';
+    width: 9px;
+    height: 11px;
+    border-inline: 3px solid currentColor;
+  }
+
+  .journey__pause[data-paused]::before {
+    width: 0;
+    height: 0;
+    border-block: 6px solid transparent;
+    border-inline: 9px solid currentColor;
+    border-inline-end-width: 0;
+  }
+
+  .journey.is-paused .night__notes li {
+    animation-play-state: paused;
+  }
+
+  /* ---------- from 900px: words on the left, the picture on the right ---------- */
+
+  @media (min-width: 900px) {
+    .journey__rail {
+      left: calc(var(--gutter) * -0.5);
+    }
+
+    .step {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      grid-template-rows: auto 1fr;
+      column-gap: clamp(40px, 6vw, 110px);
+      row-gap: 36px;
+      align-items: start;
+    }
+
+    .step__head {
+      grid-column: 1;
+      grid-row: 1;
+    }
+
+    .step__proof {
+      grid-column: 1;
+      grid-row: 2;
+    }
+
+    .step__visual {
+      grid-column: 2;
+      grid-row: 1 / span 2;
+    }
+
+    .tiles {
+      gap: 22px 14px;
+    }
+
+    .tile figcaption {
+      font-size: 16px;
+    }
+
+    .night,
+    .dawn {
+      margin-inline: 0;
+    }
+
+    .dawn .report {
+      width: min(480px, 78%);
+      margin: -112px 24px 0 auto;
+    }
+
+    .report__nums dd {
+      font-size: clamp(34px, 3.3vw, 50px);
+    }
+
+    .scene {
+      border-radius: 14px;
+      -webkit-mask-image: none;
+      mask-image: none;
+    }
+
+    .night__notes span {
+      font-size: 13.5px;
+    }
+
+    .report {
+      padding: 26px 26px 0;
+    }
+
+    .report__chart {
+      width: calc(100% + 52px);
+      margin-inline: -26px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .journey video {
+      display: none;
+    }
+
+    /* two notes stay where they are instead of coming and going */
+    .night__notes li:nth-child(-n + 2) {
+      opacity: 1;
+    }
+
+    .step.is-live .night__notes li {
+      animation: none;
+    }
+
+    .report__line {
+      stroke-dashoffset: 0;
+    }
+
+    .report__area {
+      opacity: 1;
+    }
+  }
+</style>
+
+<script>
+  const section = document.querySelector<HTMLElement>('.journey');
+  const track = document.querySelector<HTMLElement>('[data-journey]');
+  const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const saver = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData;
+
+  // The orange point rides the rail: it sits level with the middle of the screen.
+  if (track) {
+    let waiting = false;
+    const place = () => {
+      waiting = false;
+      const box = track.getBoundingClientRect();
+      const p = Math.min(1, Math.max(0, (window.innerHeight * 0.5 - box.top) / box.height));
+      track.style.setProperty('--p', p.toFixed(4));
+    };
+    const ask = () => {
+      if (waiting) return;
+      waiting = true;
+      requestAnimationFrame(place);
+    };
+    window.addEventListener('scroll', ask, { passive: true });
+    window.addEventListener('resize', ask);
+    place();
+  }
+
+  // A step is "live" while it is on screen (the notes over the night picture run only then), and
+  // "drawn" from the first time it is seen (the report counts up and its line is drawn once).
+  if (section && 'IntersectionObserver' in window) {
+    const count = (el: HTMLElement) => {
+      const text = el.dataset.count ?? '';
+      const target = Number.parseInt(text.replace(/[^\d]/g, ''), 10);
+      if (calm || !target) return;
+      const prefix = text.match(/^\D*/)?.[0] ?? '';
+      const suffix = text.match(/\D*$/)?.[0] ?? '';
+      const from = performance.now();
+      const tick = (now: number) => {
+        const k = Math.min(1, (now - from) / 1300);
+        el.textContent = `${prefix}${Math.round(target * (1 - (1 - k) ** 3))}${suffix}`;
+        if (k < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    };
+    const steps = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          const step = entry.target as HTMLElement;
+          step.classList.toggle('is-live', entry.isIntersecting);
+          if (entry.isIntersecting && !step.classList.contains('is-drawn')) {
+            step.classList.add('is-drawn');
+            step.querySelectorAll<HTMLElement>('[data-count]').forEach(count);
+          }
+        }
+      },
+      { rootMargin: '-18% 0px' },
+    );
+    section.querySelectorAll('[data-step]').forEach((step) => steps.observe(step));
+  }
+
+  // Each loop loads when its picture comes near the screen and plays only while it is on screen.
+  // Pictures that arrive together wake up one after another. With reduced motion or data saver
+  // the stills stay as they are.
+  const films = [...document.querySelectorAll<HTMLVideoElement>('.journey video')];
+  const pause = document.querySelector<HTMLButtonElement>('.journey__pause');
+  if (section && films.length > 0 && !calm && !saver && 'IntersectionObserver' in window) {
+    const onScreen = new Set<HTMLVideoElement>();
+    let stopped = false;
+    const start = (film: HTMLVideoElement) => {
+      if (!film.src) film.src = film.dataset.src!;
+      film.play().catch(() => {});
+    };
+    const watcher = new IntersectionObserver(
+      (entries) => {
+        let fresh = 0;
+        for (const entry of entries) {
+          const film = entry.target as HTMLVideoElement;
+          if (!entry.isIntersecting) {
+            onScreen.delete(film);
+            film.pause();
+            continue;
+          }
+          onScreen.add(film);
+          if (stopped) continue;
+          if (film.src) start(film);
+          else
+            window.setTimeout(() => {
+              if (!stopped && onScreen.has(film)) start(film);
+            }, fresh++ * 320);
+        }
+      },
+      { rootMargin: '12% 0px' },
+    );
+    for (const film of films) {
+      film.addEventListener('playing', () => film.classList.add('is-playing'), { once: true });
+      watcher.observe(film);
+    }
+    if (pause) {
+      pause.hidden = false;
+      pause.addEventListener('click', () => {
+        stopped = !stopped;
+        pause.toggleAttribute('data-paused', stopped);
+        pause.textContent = (stopped ? pause.dataset.play : pause.dataset.pause) ?? '';
+        section.classList.toggle('is-paused', stopped);
+        for (const film of onScreen) {
+          if (stopped) film.pause();
+          else start(film);
+        }
+      });
+    }
+  }
+</script>

@@ -1,18 +1,21 @@
 ---
 // Potent, a portfolio-style agency blueprint for an investor, in both languages: "/" renders
 // this file as is (English) and src/pages/ru/index.astro renders it with lang="ru".
-// The story: the film and the big names, proof, the work (big), the team, how the team is
-// built, how a project runs, what we sell, the market and how we make money, the plan (agency
-// now, scale next, the academy after scale), and the next step. Text goes
-// through t() (Russian in src/i18n/ru.ts); numbers and their sources live in
-// src/data/blueprint.ts, the work's order and sizes in src/data/showcase.ts.
+// The story: the film and the big names, proof, everything digital a business needs (outside,
+// inside, from above, each step with the projects where we have done it: src/data/journey.ts),
+// all the work as a compact grid, the team, how the team is built, how a project runs, the
+// market and how we make money, the plan (agency now, scale next, the academy after scale),
+// and the next step. Text goes through t() (Russian in src/i18n/ru.ts); numbers and their
+// sources live in src/data/blueprint.ts, the work's order in src/data/showcase.ts.
 import { getCollection } from 'astro:content';
+import ArtLoop from '../components/ArtLoop.astro';
 import Base from '../layouts/Base.astro';
+import Build from '../components/Build.astro';
 import Engine from '../components/Engine.astro';
 import PersonCard from '../components/PersonCard.astro';
-import Scope from '../components/Scope.astro';
+import Journey from '../components/Journey.astro';
 import Work from '../components/Work.astro';
-import { CONTACTS, MARKET, NETWORK, PHASES, PROCESS, PROOF, STREAMS, STRUCTURE } from '../data/blueprint';
+import { CONTACTS, MARKET, NETWORK, PROCESS, PROOF, STREAMS, STRUCTURE } from '../data/blueprint';
 import { CASES, MORE } from '../data/showcase';
 import { AREAS, SERVICES } from '../data/services';
 import { SITE } from '../data/site';
@@ -175,13 +178,15 @@ const REEL = 'https://skhiladze.com/media/film/reel.mp4';
       </div>
     </section>
 
+    <Journey lang={lang} people={people} />
+
     <section class="block" id="work" aria-labelledby="work-title">
       <div class="wide">
         <header class="block-head" data-reveal>
           <h2 id="work-title">{t('Selected work')}</h2>
           <p class="block-head__count">{projectCount(lang, CASES.length + MORE.length)}</p>
         </header>
-        <Work people={people} lang={lang} />
+        <Work people={people} lang={lang} compact />
       </div>
     </section>
 
@@ -272,10 +277,23 @@ const REEL = 'https://skhiladze.com/media/film/reel.mp4';
         <header class="block-head" data-reveal>
           <h2 id="process-title" set:html={t('How a project <em>runs.</em>')} />
         </header>
-        <ol class="process" role="list">
+        <ol class="process" role="list" tabindex="0" aria-labelledby="process-title">
           {
             PROCESS.map((step, i) => (
               <li class="process__step" data-reveal>
+                {step.pic && (
+                  <img
+                    class="process__pic"
+                    src={asset(`/art/step-${step.pic}-960.webp`)}
+                    srcset={`${asset(`/art/step-${step.pic}-480.webp`)} 480w, ${asset(`/art/step-${step.pic}-960.webp`)} 960w`}
+                    sizes="(min-width: 1440px) 256px, (min-width: 1000px) 18vw, min(74vw, 300px)"
+                    width="960"
+                    height="960"
+                    alt=""
+                    loading="lazy"
+                    decoding="async"
+                  />
+                )}
                 <span class="process__n" aria-hidden="true">
                   {String(i + 1).padStart(2, '0')}
                 </span>
@@ -288,13 +306,19 @@ const REEL = 'https://skhiladze.com/media/film/reel.mp4';
       </div>
     </section>
 
-    <Scope lang={lang} people={people} label={t('What we sell')} compact />
-
     <section class="block" id="market" aria-labelledby="market-title">
       <div class="wide">
         <header class="block-head" data-reveal>
           <h2 id="market-title" set:html={t('Every business pays for digital. <em>More every year.</em>')} />
         </header>
+        <ArtLoop
+          name="market"
+          lang={lang}
+          widths={[960, 1920]}
+          ratio={[16, 9]}
+          sizes="(min-width: 1440px) 1360px, (min-width: 700px) 94vw, 100vw"
+          class="market__art"
+        />
         <ul class="money" role="list">
           {
             MARKET.map((m) => (
@@ -336,20 +360,7 @@ const REEL = 'https://skhiladze.com/media/film/reel.mp4';
         <header class="block-head" data-reveal>
           <h2 id="plan-title" set:html={t('Agency first. <em>Academy after scale.</em>')} />
         </header>
-        <ol class="phases" role="list">
-          {
-            PHASES.map((p, i) => (
-              <li class:list={['phase', { 'phase--now': i === 0 }]} data-reveal>
-                <span class="tag">{t(p.when)}</span>
-                <h3 class="phase__title">
-                  <span aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
-                  {t(p.title)}
-                </h3>
-                <p class="phase__text">{t(p.text)}</p>
-              </li>
-            ))
-          }
-        </ol>
+        <Build lang={lang} />
 
         <h3 class="kicker">{t('After scale: the academy')}</h3>
         <p class="block-head__text phase__lead" data-reveal>
@@ -385,6 +396,7 @@ const REEL = 'https://skhiladze.com/media/film/reel.mp4';
     </section>
 
     <section class="block next" id="next" aria-labelledby="next-title">
+      <ArtLoop name="tbilisi" lang={lang} widths={[960, 1920]} ratio={[16, 9]} sizes="100vw" class="next__art" />
       <div class="wide">
         <header class="block-head" data-reveal>
           <h2 id="next-title" set:html={t("Next step: <em>let's talk.</em>")} />

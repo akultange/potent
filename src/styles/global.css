@@ -1428,6 +1428,45 @@ html[lang='ru'] h2 em {
   display: grid;
 }
 
+/* Each step has its picture: one little paper shop, from the drawing to opening night and
+   after. Below 1000px the steps are cards in a row the reader swipes through. */
+.process__pic {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+  margin-bottom: 14px;
+  border-radius: 14px;
+  object-fit: cover;
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 999px) {
+  .process {
+    grid-auto-flow: column;
+    grid-auto-columns: min(74%, 300px);
+    gap: 14px;
+    margin-inline: calc(var(--gutter) * -1);
+    padding: 0 var(--gutter) 10px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--gutter);
+    scrollbar-width: none;
+  }
+
+  .process::-webkit-scrollbar {
+    display: none;
+  }
+
+  .process .process__step {
+    align-content: start;
+    padding: 0;
+    border-top: 0;
+    scroll-snap-align: start;
+  }
+}
+
 @media (min-width: 1000px) {
   .process {
     grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -1484,6 +1523,28 @@ html[lang='ru'] h2 em {
 }
 
 /* ---------- the market ---------- */
+
+/* A street of businesses rising like a chart, above the numbers: edge to edge on phones,
+   melting into the page above and below. */
+.market__art {
+  aspect-ratio: 16 / 9;
+  margin: 0 calc(var(--gutter) * -1) clamp(24px, 4vw, 56px);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 12%, #000 86%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0, #000 12%, #000 86%, transparent 100%);
+}
+
+/* The stop button sits inside the part of the picture that is not faded out. */
+#market .market__art .art__pause {
+  bottom: 16%;
+}
+
+@media (min-width: 700px) {
+  .market__art {
+    --focus: 50% 56%;
+    aspect-ratio: 2 / 1;
+    margin-inline: 0;
+  }
+}
 
 .money {
   display: grid;
@@ -1742,6 +1803,39 @@ html[lang='ru'] h2 em {
 }
 
 /* ---------- next step ---------- */
+
+/* Tbilisi at dusk, one window lit: the picture opens the section, the words sit on its lower
+   edge. On phones it is cut around the lit window. */
+.next {
+  padding-top: 0;
+}
+
+.next__art {
+  --focus: 70% 50%;
+  aspect-ratio: 4 / 3;
+  margin-bottom: clamp(-96px, -9vw, -32px);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 16%, #000 64%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0, #000 16%, #000 64%, transparent 100%);
+}
+
+.next__art + .wide {
+  position: relative;
+  z-index: 1;
+}
+
+.next .next__art .art__pause {
+  top: 19%;
+  bottom: auto;
+}
+
+@media (min-width: 700px) {
+  .next__art {
+    --focus: 50% 58%;
+    aspect-ratio: 21 / 9;
+    max-height: 78vh;
+    margin-inline: auto;
+  }
+}
 
 .next__people {
   display: flex;

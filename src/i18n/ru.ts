@@ -159,6 +159,81 @@ export const RU = {
     'Monthly updates, ads and content keep the client with us.':
       'Ежемесячные обновления, реклама и контент — клиент остаётся с нами.',
 
+    // everything a business needs: outside, inside, from above (src/components/Journey.astro,
+    // src/data/journey.ts). Headings keep to words of 11 letters or fewer.
+    'Everything digital a business needs. <em>Outside, inside, from above.</em>':
+      'Всё цифровое, что нужно бизнесу. <em>Снаружи, внутри и сверху.</em>',
+    'What the customer sees, how the company runs and what the owner sees. Under every step: where we have already done it.':
+      'Что видит клиент, как работает компания и что видит владелец. Под каждым шагом — где мы это уже делали.',
+    Outside: 'Снаружи',
+    'what the customer sees': 'что видит клиент',
+    Inside: 'Внутри',
+    'how the company runs': 'как работает компания',
+    'From above': 'Сверху',
+    'what the owner sees': 'что видит владелец',
+    'Already done': 'Уже делали',
+    'People <em>notice you</em>': 'О вас <em>узнают</em>',
+    'A name and a look, ads, 3D films and the music under them, so that you are seen and remembered.':
+      'Имя и фирменный стиль, реклама, 3D-ролики и музыка к ним — чтобы вас увидели и запомнили.',
+    'Video banners for a logistics park, in every ad format.':
+      'Видеобаннеры для логистического парка — во всех рекламных форматах.',
+    'A series of posters.': 'Серия постеров.',
+    'Explainer videos and social content, edited and animated.':
+      'Объясняющие ролики и видео для соцсетей: монтаж и анимация.',
+    'They <em>buy from you</em>': 'У вас <em>покупают</em>',
+    'A site and an online store that show the goods and take the order and the payment, day and night.':
+      'Сайт и интернет-магазин показывают товар, принимают заказ и оплату — днём и ночью.',
+    "Kärcher's official online store for Georgia.": 'Официальный интернет-магазин Kärcher в Грузии.',
+    'A store for EV chargers with a map of charging stations.':
+      'Магазин зарядных устройств для электромобилей — с картой зарядных станций.',
+    'A marketplace for Georgian handmade goods.': 'Маркетплейс грузинских товаров ручной работы.',
+    'They <em>come back</em>': 'К вам <em>приходят снова</em>',
+    "An app in the customer's phone: an order in two taps, bonuses, reminders.":
+      'Приложение в телефоне клиента: заказ в два касания, бонусы, напоминания.',
+    "Bank of Georgia's mobile bank: 1.8M active users. Our designer works on it.":
+      'Мобильный банк Bank of Georgia: 1,8 млн активных пользователей. Над ним работает наш дизайнер.',
+    'An app where creators earn from subscriptions and paid posts.':
+      'Приложение, где авторы зарабатывают на подписках и платных публикациях.',
+    "Luka's own app for building sites, live on the App Store.":
+      'Собственное приложение Луки для строительных площадок — уже в App Store.',
+    'The company runs <em>as one</em>': 'Компания работает <em>как одно целое</em>',
+    'Orders, stock, staff and money in one system instead of ten spreadsheets.':
+      'Заказы, склад, сотрудники и деньги — в одной системе, а не в десяти таблицах.',
+    "One system for Yamaha's 1,500+ dealers in 40+ European markets.":
+      'Одна система для 1 500+ дилеров Yamaha на 40+ рынках Европы.',
+    'Staff shifts and workload planned across countries in one place.':
+      'Смены и нагрузка сотрудников в разных странах — в одном месте.',
+    'A hiring platform: candidate portal, company dashboard, admin panel.':
+      'Платформа для найма: кабинет кандидата, кабинет компании и панель управления.',
+    'At night <em>the system works</em>': 'Ночью <em>работает система</em>',
+    'The same company after dark. It answers customers, sends invoices and watches the stock by itself. AI already does part of this work.':
+      'Та же компания после закрытия. Система сама отвечает клиентам, выставляет счета и следит за складом. Часть этой работы уже делает ИИ.',
+    "In Bank of Georgia's ad manager, AI writes the texts and draws the pictures for ads.":
+      'В рекламном кабинете Bank of Georgia ИИ пишет тексты и рисует картинки для рекламы.',
+    'Companies run shipments, orders and money on it; an app tracks every load live.':
+      'На ней компании ведут перевозки, заказы и финансы; приложение показывает каждый груз в пути.',
+    'Builds AI into products. Luka Liparteliani works through this studio.':
+      'Встраивает ИИ в продукты. Через эту студию работает Лука Липартелиани.',
+    '02:14 · order taken': '02:14 · заказ принят',
+    'The AI assistant answered a customer': 'ИИ-помощник ответил клиенту',
+    'Invoice sent': 'Счёт выставлен',
+    'Stock reordered': 'Склад пополнен',
+    'Courier assigned': 'Курьер назначен',
+    'In the morning <em>you see it all</em>': 'Утром вы <em>видите всё</em>',
+    'Revenue, orders and stock on one screen instead of ten reports.':
+      'Выручка, заказы и склад — на одном экране, а не в десяти отчётах.',
+    'Reporting software for central banks and regulators in 14 countries.':
+      'Система отчётности для центральных банков и регуляторов в 14 странах.',
+    'Screens of a cybersecurity monitoring platform: dashboards and analytics.':
+      'Экраны платформы, которая следит за кибербезопасностью: панели и аналитика.',
+    "Bank of Georgia's ad manager for business clients, with results after every campaign.":
+      'Рекламный кабинет Bank of Georgia для бизнес-клиентов — с результатами после каждой кампании.',
+    'Morning report': 'Утренний отчёт',
+    example: 'пример',
+    'orders overnight': 'заказов за ночь',
+    'customers left without an answer': 'клиентов без ответа',
+    'against last week': 'к прошлой неделе',
+
     // what we sell, the market, how we make money
     'What we sell': 'Что мы продаём',
     'Every business pays for digital. <em>More every year.</em>':

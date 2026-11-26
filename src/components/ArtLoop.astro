@@ -1,0 +1,190 @@
+---
+// A big picture that plays its short loop while it is on screen: public/art/<name>-<small>.webp,
+// <name>-<large>.webp and, if it exists, <name>.mp4 (made like the loops in public/scope/: the
+// generated clip over the sharp still, back and forth). The loop never loads with reduced motion
+// or data saver on, and a small button in the corner stops it.
+import { existsSync } from 'node:fs';
+import path from 'node:path';
+import { translator, type Lang } from '../i18n';
+import { asset } from '../lib/util';
+
+interface Props {
+  name: string;
+  lang?: Lang;
+  /** The two widths the still is saved in. */
+  widths: [number, number];
+  /** Width and height of the picture, for its shape before it loads. */
+  ratio: [number, number];
+  /** How wide the picture is drawn, for the browser to pick the file. */
+  sizes: string;
+  class?: string;
+}
+
+const { name, lang = 'en', widths, ratio, sizes, class: extra } = Astro.props;
+const t = translator(lang);
+const [small, large] = widths;
+const film = existsSync(path.join(process.cwd(), 'public', 'art', `${name}.mp4`)) ? asset(`/art/${name}.mp4`) : null;
+---
+
+<div class:list={['art', extra]} data-art>
+  <img
+    src={asset(`/art/${name}-${large}.webp`)}
+    srcset={`${asset(`/art/${name}-${small}.webp`)} ${small}w, ${asset(`/art/${name}-${large}.webp`)} ${large}w`}
+    sizes={sizes}
+    width={large}
+    height={Math.round((large * ratio[1]) / ratio[0])}
+    alt=""
+    loading="lazy"
+    decoding="async"
+  />
+  {
+    film && (
+      <video
+        data-src={film}
+        muted
+        loop
+        playsinline
+        preload="none"
+        disablepictureinpicture
+        disableremoteplayback
+        aria-hidden="true"
+        tabindex="-1"
+      />
+    )
+  }
+  {
+    film && (
+      <button
+        class="art__pause"
+        type="button"
+        aria-label={t('Pause the pictures')}
+        data-pause={t('Pause the pictures')}
+        data-play={t('Play the pictures')}
+        hidden
+      />
+    )
+  }
+</div>
+
+<style>
+  .art {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .art img,
+  .art video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: var(--focus, 50% 50%);
+  }
+
+  .art video {
+    opacity: 0;
+    transition: opacity 0.6s ease;
+  }
+
+  .art video.is-playing {
+    opacity: 1;
+  }
+
+  .art__pause {
+    position: absolute;
+    right: 12px;
+    bottom: 12px;
+    z-index: 2;
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border: 1px solid rgb(255 255 255 / 0.18);
+    border-radius: 50%;
+    background: rgb(11 11 12 / 0.55);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+    color: var(--ink);
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+  }
+
+  .art__pause[hidden] {
+    display: none;
+  }
+
+  .art__pause:hover,
+  .art__pause:focus-visible {
+    opacity: 1;
+  }
+
+  .art__pause::before {
+    content: '';
+    width: 8px;
+    height: 10px;
+    border-inline: 2.5px solid currentColor;
+  }
+
+  .art__pause[data-paused]::before {
+    width: 0;
+    height: 0;
+    margin-left: 2px;
+    border-block: 5.5px solid transparent;
+    border-inline: 8px solid currentColor;
+    border-inline-end-width: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .art video {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const saver = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData;
+  const arts = [...document.querySelectorAll<HTMLElement>('[data-art]')];
+  if (!calm && !saver && 'IntersectionObserver' in window) {
+    const seen = new WeakMap<HTMLVideoElement, boolean>();
+    const stopped = new WeakSet<HTMLVideoElement>();
+    const start = (film: HTMLVideoElement) => {
+      if (!film.src) film.src = film.dataset.src!;
+      film.play().catch(() => {});
+    };
+    const watcher = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          const film = entry.target as HTMLVideoElement;
+          seen.set(film, entry.isIntersecting);
+          if (!entry.isIntersecting) film.pause();
+          else if (!stopped.has(film)) start(film);
+        }
+      },
+      { rootMargin: '10% 0px' },
+    );
+    for (const art of arts) {
+      const film = art.querySelector('video');
+      const button = art.querySelector<HTMLButtonElement>('.art__pause');
+      if (!film) continue;
+      film.addEventListener('playing', () => film.classList.add('is-playing'), { once: true });
+      watcher.observe(film);
+      if (!button) continue;
+      button.hidden = false;
+      button.addEventListener('click', () => {
+        const stop = !stopped.has(film);
+        if (stop) {
+          stopped.add(film);
+          film.pause();
+        } else {
+          stopped.delete(film);
+          if (seen.get(film)) start(film);
+        }
+        button.toggleAttribute('data-paused', stop);
+        button.setAttribute('aria-label', (stop ? button.dataset.play : button.dataset.pause) ?? '');
+      });
+    }
+  }
+</script>
