@@ -9,12 +9,12 @@ bio: >-
 facts:
   dealers on the Yamaha CRM:
     value: 1 500+
-    label: дилеров в CRM Yamaha
+    label: дилеров в системе Yamaha
   European markets it covers:
     label: европейских рынков
 projects:
   Yamaha Motor Europe CRM:
-    name: CRM Yamaha Motor Europe
+    name: Дилерская система Yamaha Motor Europe
     type: Корпоративная система для дилеров
     sector: Мототехника
     summary: >-

@@ -27,9 +27,12 @@ export const RU = {
     'Work for': 'Среди клиентов',
 
     // everything digital
-    'Everything <em>digital</em>': 'Делаем всё в <em>цифре</em>',
+    // "Digital" as a noun is never "цифра" (it reads as "a number"): say "цифровая сфера",
+    // "цифровые продукты", "цифровые услуги". The trade's own name for us is "digital-агентство".
+    // Keep long words such as "цифровизация" out of headings: on a 360px phone one word is one line.
+    'Everything <em>digital</em>': 'Делаем всё <em>в цифровой сфере</em>',
     'From a ten-second sound to the software a whole company runs on. One team takes it from the idea to the finished thing.':
-      'От десятисекундного звука до системы, на которой работает целая компания. Одна команда ведёт проект от идеи до готового результата.',
+      'От десятисекундной мелодии до системы, на которой работает вся компания. Одна команда ведёт проект от идеи до результата — под ключ.',
     'Pause the pictures': 'Остановить анимацию',
     'Play the pictures': 'Включить анимацию',
     'From our work': 'Из наших работ',
@@ -74,11 +77,11 @@ export const RU = {
       'Сведения о проектах взяты из портфолио и профилей самих специалистов.',
 
     // the agency blueprint
-    "{name}: big money is in digital. Here's the plan.": '{name}: большие деньги — в цифре. Вот план.',
-    'Big money is in digital.': 'Большие\u00a0деньги — в цифре.',
+    "{name}: big money is in digital. Here's the plan.": '{name}: большие деньги — в цифровой сфере. Вот план.',
+    'Big money is in digital.': 'Большие\u00a0деньги — в цифровой сфере.',
     'We know how to earn it.': 'Мы знаем, как их зарабатывать.',
     "Here's the plan.": 'Вот план.',
-    'Our people have worked for': 'С кем работали наши люди',
+    'Our people have worked for': 'С кем работала команда',
     'Film by co-founder Luka Skhiladze': 'Автор видео — сооснователь Лука Схиладзе',
     'Pause the film': 'Остановить видео',
     Scroll: 'Листайте',
@@ -88,13 +91,14 @@ export const RU = {
 
     // proof
     'Four of us have built products for Bank of Georgia. Two are CTOs of other companies.':
-      'Четверо из нас делали продукты для Bank of Georgia. Двое — технические директора других компаний.',
+      'Четверо из нас создавали цифровые продукты для Bank of Georgia. Двое — технические директора других компаний.',
     '1.8M': '1,8 млн',
     'people use the Bank of Georgia app our designer works on':
       'человек пользуются приложением Bank of Georgia — над ним работает наш дизайнер',
+    // No "CRM" on the Russian page: the reader is not from our trade.
     "European markets covered by Yamaha's dealer CRM, designed by our designer":
-      'рынков Европы охватывает дилерская CRM Yamaha — её дизайн сделал наш дизайнер',
-    "works in our people's portfolios": 'работ в портфолио наших людей',
+      'рынков Европы охватывает дилерская система Yamaha — её спроектировал наш дизайнер',
+    "works in our people's portfolios": 'работ в портфолио нашей команды',
     Source: 'Источник',
 
     // selected work
@@ -102,52 +106,55 @@ export const RU = {
     'View project': 'Смотреть проект',
     'More work': 'Ещё работы',
     "Ad platform for the bank's business customers": 'Рекламный кабинет для бизнес-клиентов банка',
-    'One CRM for 1,500+ dealers in 40+ European markets': 'Одна CRM для 1500+ дилеров на 40+ рынках Европы',
+    'One CRM for 1,500+ dealers in 40+ European markets': 'Одна на 1 500+ дилеров и 40+ рынков Европы',
     "The bank's app: 1.8M active users": 'Приложение банка: 1,8 млн активных пользователей',
-    "Kärcher's official online store in Georgia": 'Официальный интернет-магазин Kärcher в Грузии',
+    "Kärcher's official online store in Georgia": 'Официальный магазин бренда в Грузии — с каталогом и оплатой картой',
     'Online store for EV chargers, with a map of charging stations':
-      'Магазин зарядок для электромобилей с картой зарядных станций',
-    'Reporting software for regulators in 14 countries': 'Система отчётности для регуляторов 14 стран',
+      'Магазин для владельцев электромобилей: зарядные устройства и карта зарядных станций',
+    'Reporting software for regulators in 14 countries': 'Система отчётности для финансовых регуляторов в 14 странах',
     "Luka's own app for building-site safety, live on the App Store":
-      'Своё приложение Луки для безопасности на стройке — уже в App Store',
+      'Собственное приложение Луки для строительных площадок — уже в App Store',
     'Marketplace for Georgian handmade goods': 'Маркетплейс грузинских изделий ручной работы',
-    'Hiring platform; its design system made design 5× faster': 'Платформа найма: дизайн-система ускорила дизайн в 5 раз',
+    'Hiring platform; its design system made design 5× faster':
+      'Единая система компонентов ускорила работу дизайнеров в 5 раз',
     'Cybersecurity monitoring platform': 'Платформа мониторинга кибербезопасности',
 
     // the team
-    "Senior people who've done it for <em>big names.</em>": 'Опытная команда. <em>Крупные бренды.</em>',
+    "Senior people who've done it for <em>big names.</em>": 'За плечами команды — <em>крупные бренды.</em>',
     Specialists: 'Специалисты',
-    'Worked for': 'Работали с',
+    'Worked for': 'Опыт работы',
     '+{n} developers': '+{n} разработчиков',
     '+{n} designers': '+{n} дизайнеров',
-    'From our network in Tbilisi': 'Из нашей сети в Тбилиси',
+    'From our network in Tbilisi': 'Из нашего круга в Тбилиси',
 
     // how the team is built
+    // Plain words for a reader who is not from our trade: "руководитель команды", not "тимлид";
+    // "подрядчики", not "аутсорс"; "блогер", not "инфлюенсер".
     'How the team <em>is built.</em>': 'Как устроена <em>команда.</em>',
     'Head of Digital': 'Руководитель цифрового направления',
     CTO: 'Технический директор',
-    'Team lead': 'Тимлид',
-    '2–3 team leads, each with a team': '2–3 тимлида, у каждого своя команда',
-    Outsource: 'Аутсорс',
-    'Partner teams for extra hands': 'Команды-партнёры, когда нужно больше рук',
+    'Team lead': 'Руководитель команды',
+    '2–3 team leads, each with a team': '2–3 руководителя, у каждого своя команда',
+    Outsource: 'Подрядчики',
+    'Partner teams for extra hands': 'Команды-партнёры — когда нужно больше рук',
     'Sales & marketing': 'Продажи и маркетинг',
     'Sales manager': 'Менеджер по продажам',
     Marketer: 'Маркетолог',
-    'Marketer & influencer': 'Маркетолог и инфлюенсер',
+    'Marketer & influencer': 'Маркетолог и блогер',
 
     // how a project runs
-    'How a project <em>runs.</em>': 'Как идёт <em>проект.</em>',
+    'How a project <em>runs.</em>': 'Как мы ведём <em>проект.</em>',
     Brief: 'Задача',
     'Sales brings the client; a team lead sets the scope, timeline and price.':
-      'Продажи приводят клиента, тимлид определяет объём, сроки и цену.',
+      'Продажи приводят клиента, руководитель команды определяет объём работ, сроки и цену.',
     Design: 'Дизайн',
     'Design teams shape the product, brand and motion before anything is built.':
       'Дизайнеры продумывают продукт, бренд и анимацию до начала разработки.',
     Build: 'Разработка',
     'Engineering teams build it; outsource partners add hands at peaks.':
-      'Разработчики делают продукт, партнёры на аутсорсе помогают в пиковые моменты.',
+      'Разработчики создают продукт; в пиковые периоды подключаем подрядчиков.',
     Launch: 'Запуск',
-    'Release, measure, fix.': 'Выпускаем, измеряем, исправляем.',
+    'Release, measure, fix.': 'Запускаем, измеряем результат, дорабатываем.',
     Support: 'Поддержка',
     'Monthly updates, ads and content keep the client with us.':
       'Ежемесячные обновления, реклама и контент — клиент остаётся с нами.',
@@ -155,15 +162,15 @@ export const RU = {
     // what we sell, the market, how we make money
     'What we sell': 'Что мы продаём',
     'Every business pays for digital. <em>More every year.</em>':
-      'Каждый бизнес тратит на цифру. <em>И каждый год — больше.</em>',
+      'Каждый бизнес платит за цифровые услуги. <em>С каждым годом — всё больше.</em>',
     '$3.9 trillion': '$3,9 трлн',
     'what companies worldwide will spend on going digital in 2027':
-      'потратят компании мира на цифровизацию в 2027 году',
+      'потратят компании всего мира на цифровизацию в 2027 году',
     '+16% a year': '+16% в год',
     'how fast that spending grows': 'темп роста этих расходов',
     '0% profit tax': '0% налога на прибыль',
     'on IT that Georgian companies with Virtual Zone status build and sell abroad':
-      'с продаж своих IT-разработок за рубеж — для грузинских компаний со статусом Virtual Zone',
+      'от продажи собственных IT-разработок за рубеж — для грузинских компаний со статусом Virtual Zone',
     'How we make money': 'Как мы зарабатываем',
     'Sites, apps and brands, paid per project.': 'Сайты, приложения и бренды — оплата за каждый проект.',
     'Monthly support': 'Ежемесячная поддержка',
@@ -175,32 +182,33 @@ export const RU = {
     'An audience that brings in clients and students.': 'Аудитория, которая приводит клиентов и студентов.',
 
     // the plan: agency now, scale next, the academy after scale
-    'Agency first. <em>Academy after scale.</em>': 'Сначала агентство. <em>После роста — академия.</em>',
+    'Agency first. <em>Academy after scale.</em>': 'Сначала агентство. <em>Академия — после роста.</em>',
     Now: 'Сейчас',
     Next: 'Дальше',
     'After scale': 'После роста',
     Agency: 'Агентство',
     Scale: 'Рост',
     'Sites, apps and brands for companies, paid per project and every month.':
-      'Сайты, приложения и бренды для компаний — оплата за проект и каждый месяц.',
+      'Сайты, приложения и бренды для компаний. Оплата — за проект и ежемесячно.',
     'More team leads and outsource partners; sales and marketing keep clients coming.':
-      'Больше тимлидов и партнёров на аутсорсе; продажи и маркетинг приводят клиентов.',
-    'Our own academy grows our own people, so the margin goes up.': 'Своя академия растит своих людей — и маржа растёт.',
+      'Больше руководителей команд и подрядчиков; продажи и маркетинг постоянно приводят новых клиентов.',
+    'Our own academy grows our own people, so the margin goes up.':
+      'Собственная академия готовит кадры для агентства — и маржа растёт.',
     'After scale: the academy': 'После роста: академия',
     'Seniors will lead, academy graduates will do the volume: more projects with the same team, and a higher margin.':
-      'Проекты будут вести опытные специалисты, основную работу — выпускники академии. Больше проектов той же командой — и выше маржа.',
+      'Опытные специалисты ведут проекты, а основной объём работы берут на себя выпускники академии. Та же команда делает больше проектов — и маржа выше.',
     'Academy co-founded by Giorgi Kheladze': 'Сооснователь академии — Гиорги Хеладзе',
     '90 days': '90 дней',
-    'from junior to mid-level designer': 'от младшего дизайнера до дизайнера среднего уровня',
+    'from junior to mid-level designer': 'от начинающего дизайнера до специалиста среднего уровня',
     Interns: 'Стажёры',
     Revenue: 'Выручка',
     'Higher margin': 'Выше маржа',
 
     // next step
-    "Next step: <em>let's talk.</em>": 'Следующий шаг — <em>поговорим.</em>',
-    '{a} and {b} will answer any question.': '{a} и {b} ответят на любой вопрос.',
+    "Next step: <em>let's talk.</em>": 'Следующий шаг: <em>давайте поговорим.</em>',
+    '{a} and {b} will answer any question.': '{a} и {b} ответят на любые вопросы.',
     'Co-founder': 'Сооснователь',
-    'Reply to the message this link came in.': 'Ответьте на сообщение, в котором пришла эта ссылка.',
+    'Reply to the message this link came in.': 'Просто ответьте на сообщение с этой ссылкой.',
   } as Record<string, string>,
 
   /** Words that follow a number: one, a few (2 to 4), many. */
@@ -214,8 +222,8 @@ export const RU = {
 
   /** src/data/site.ts */
   site: {
-    tagline: 'Цифровое агентство · Тбилиси',
-    description: 'Цифровое агентство из Тбилиси. Наши люди работали с Yamaha Motor Europe, Bank of Georgia и Kärcher. Вот план роста.',
+    tagline: 'Digital-агентство · Тбилиси',
+    description: 'Digital-агентство из Тбилиси. Команда работала с Yamaha Motor Europe, Bank of Georgia и Kärcher. Вот план роста.',
     city: 'Тбилиси, Грузия',
   },
 
@@ -274,7 +282,7 @@ export const RU = {
     },
     edit: {
       title: 'Монтаж и цветокоррекция',
-      text: 'Собираем из отснятого материала готовый фильм и доводим цвет.',
+      text: 'Превращаем отснятый материал в готовый ролик или фильм и доводим цвет.',
       examples: {
         Showreel: 'Объясняющие ролики и видео для соцсетей: монтаж и анимация.',
         Nichiyomu: 'Рекламный ролик для соцсетей: приложение для чтения на японском.',
@@ -300,7 +308,7 @@ export const RU = {
     },
     design: {
       title: 'Дизайн интерфейсов',
-      text: 'Как сайт или приложение выглядит и работает. Проверяем до начала разработки.',
+      text: 'Продумываем, как выглядит и работает сайт или приложение, и проверяем это до начала разработки.',
       examples: {
         'Ads Manager': 'Рекламный кабинет для бизнес-клиентов Bank of Georgia.',
         Cyngular: 'Экраны платформы мониторинга кибербезопасности.',
@@ -326,7 +334,7 @@ export const RU = {
     },
     app: {
       title: 'Мобильные приложения',
-      text: 'Приложение для телефона: от первой идеи до дня, когда оно появляется в App Store.',
+      text: 'Приложение для телефона: от первой идеи до выхода в App Store.',
       examples: {
         'B2B safety app': 'Наше приложение для специалистов по охране труда на стройке. Уже в App Store.',
         Seensme: 'Дизайн приложения, в котором авторы зарабатывают на подписках.',

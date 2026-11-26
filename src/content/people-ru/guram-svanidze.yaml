@@ -1,10 +1,10 @@
 # Russian for src/content/people/guram-svanidze.yaml. Projects are matched by their English name.
 name: Гурам Сванидзе
-title: Фулстек-разработчик в Bank of Georgia
+title: Веб-разработчик в Bank of Georgia
 location: Тбилиси, Грузия
 bio: >-
-  Фулстек-разработчик, 5+ лет в корпоративных приложениях и SaaS-платформах (TypeScript, React,
-  Lit, Node.js, AWS). С 2024 года — веб-разработчик уровня Expert в Bank of Georgia; до этого —
+  Веб-разработчик: 5+ лет в корпоративных приложениях и SaaS-платформах (TypeScript, React,
+  Lit, Node.js, AWS). С 2024 года работает в Bank of Georgia (уровень Expert); до этого —
   SaaS для грузоперевозок в OMOFOX и корпоративные веб-приложения в Sweeft Digital.
 facts:
   building enterprise apps and SaaS:
