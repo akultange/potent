@@ -174,15 +174,17 @@ const stages = PHASES.map((_, i) => {
 </style>
 
 <script>
-  // The phase being read is the last one whose top has passed 62% of the screen height; the
-  // picture shows its stage.
+  // The phase being read is the last one whose top has passed a line on the screen: 62% of its
+  // height on phones (below the picture stuck at the top), 42% from 900px (the picture is beside
+  // the phases). The picture shows that phase's stage.
   const build = document.querySelector<HTMLElement>('[data-build]');
   if (build) {
     const phases = [...build.querySelectorAll<HTMLElement>('[data-phase]')];
+    const beside = window.matchMedia('(min-width: 900px)');
     let waiting = false;
     const place = () => {
       waiting = false;
-      const line = window.innerHeight * 0.62;
+      const line = window.innerHeight * (beside.matches ? 0.42 : 0.62);
       let at = 1;
       for (const p of phases) if (p.getBoundingClientRect().top < line) at = Number(p.dataset.phase);
       if (build.dataset.at !== String(at)) {
