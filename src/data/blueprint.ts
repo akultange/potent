@@ -11,7 +11,6 @@ export interface Source {
 
 const IDC =
   'https://www.idc.com/resource-center/press-releases/worldwide-digital-transformation-spending-forecast-to-continue-its-double-digit-growth-trajectory-according-to-idc-spending-guide/';
-const PWC = 'https://taxsummaries.pwc.com/georgia/corporate/tax-credits-and-incentives';
 const BOG_APP = 'https://apps.apple.com/ge/app/bank-of-georgia/id1159368231';
 
 /** Big numbers under the headline: what our people have already done. The first is orange. */
@@ -38,20 +37,12 @@ export const PROOF: { value: string; label: string; source?: Source }[] = [
   },
 ];
 
-/** Why digital: how big the market is and why Georgia is a good place to sell it from. */
+/** Why now, under the prices: the money in this field keeps growing. */
 export const MARKET: { value: string; label: string; source: Source }[] = [
   {
     value: '+16% a year',
-    label: 'how fast what companies spend on going digital grows',
+    label: 'how fast company spending on going digital grows',
     source: { name: 'IDC, 2023', url: IDC },
-  },
-  {
-    // PwC: 0% only on profit from IT the company itself builds and sells outside Georgia, and
-    // only with Virtual Zone status. Nothing here says Potent has the status: the founders have
-    // not confirmed it, and local clients, the academy and the podcast would not qualify.
-    value: '0% profit tax',
-    label: 'on IT that Georgian companies with Virtual Zone status build and sell abroad',
-    source: { name: 'PwC', url: PWC },
   },
 ];
 

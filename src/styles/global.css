@@ -1082,8 +1082,8 @@ html[lang='ru'] h2 em {
 
 /* ---------- the team: founders as profiles, specialists as a directory ---------- */
 
-/* Round black-and-white portraits, like the profiles on Awwwards. The founders' files are black
-   and white already; everyone else's photo is turned grey here. */
+/* Round portraits, like the profiles on Awwwards. The founders' files are black and white; the
+   specialists keep their colour. */
 .avatar {
   flex: none;
   border-radius: 50%;
@@ -1099,10 +1099,6 @@ html[lang='ru'] h2 em {
 .avatar--md {
   width: 56px;
   height: 56px;
-}
-
-.member img.avatar {
-  filter: grayscale(1) contrast(1.06);
 }
 
 .avatar--initials {
@@ -1540,10 +1536,9 @@ html[lang='ru'] h2 em {
   color: var(--faint);
 }
 
-/* Why now, and why from Georgia: two facts in a framed row, the same frame as the founders'
-   numbers, quiet next to the prices. */
+/* Why now: one fact in a frame, the same frame as the founders' numbers, quiet next to the
+   prices. From 760px the number stands left of its words. */
 .whynow {
-  display: grid;
   margin-bottom: clamp(48px, 6vw, 88px);
   border: 1px solid var(--line);
   border-radius: 14px;
@@ -1557,15 +1552,12 @@ html[lang='ru'] h2 em {
   padding: 20px;
 }
 
-.whynow__cell + .whynow__cell {
-  border-top: 1px solid var(--line);
-}
-
 .whynow dd {
   font-size: clamp(30px, 8vw, 48px);
   font-weight: 700;
   line-height: 1;
   letter-spacing: -0.045em;
+  white-space: nowrap;
 }
 
 .whynow dt {
@@ -1576,16 +1568,11 @@ html[lang='ru'] h2 em {
 }
 
 @media (min-width: 760px) {
-  .whynow {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .whynow__cell + .whynow__cell {
-    border-top: 0;
-    border-left: 1px solid var(--line);
-  }
-
   .whynow__cell {
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    align-items: center;
+    gap: clamp(24px, 4vw, 56px);
     padding: 28px;
   }
 }
