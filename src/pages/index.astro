@@ -430,6 +430,8 @@ const REEL = asset('/hero/reel.mp4');
 </Base>
 
 <script>
+  import { pauseLoop, playLoop } from '../lib/loop';
+
   // The header gets a backdrop once the page scrolls.
   const header = document.querySelector<HTMLElement>('[data-header]');
   const onScroll = () => header?.toggleAttribute('data-solid', window.scrollY > 40);
@@ -497,14 +499,15 @@ const REEL = asset('/hero/reel.mp4');
   }
 
   // The loop is fetched only once a phone is held upright, and rests while it is off screen. A
-  // phone that will not start a video by itself (Low Power Mode) starts it at the first touch;
-  // until then the picture stays, and the button appears only once there is something to stop.
+  // phone that will not start a video by itself (Low Power Mode) shows the same film as a moving
+  // picture instead (src/lib/loop.ts), or starts it at the first touch; until then the picture
+  // stays, and the button appears only once there is something to stop.
   if (loop && toggle && !calm && !saver) {
     const hero = loop.closest('.hero');
     let ready = false;
     let onScreen = true;
     const play = () => {
-      if (ready && !stopped && onScreen && upright.matches) loop.play().catch(() => {});
+      if (ready && !stopped && onScreen && upright.matches) playLoop(loop);
     };
     const wake = () => {
       if (loop.paused) play();
@@ -514,26 +517,24 @@ const REEL = asset('/hero/reel.mp4');
       ready = true;
       loop.muted = true;
       loop.src = loop.dataset.loop!;
-      loop.addEventListener(
-        'playing',
-        () => {
-          hero?.setAttribute('data-loop-on', '');
-          toggle.hidden = false;
-          window.removeEventListener('touchend', wake);
-          window.removeEventListener('click', wake);
-        },
-        { once: true },
-      );
+      const moving = () => {
+        hero?.setAttribute('data-loop-on', '');
+        toggle.hidden = false;
+        window.removeEventListener('touchend', wake);
+        window.removeEventListener('click', wake);
+      };
+      loop.addEventListener('playing', moving, { once: true });
+      loop.addEventListener('loopimage', moving, { once: true });
       window.addEventListener('touchend', wake, { passive: true });
       window.addEventListener('click', wake);
       films.push(() => {
-        if (stopped) loop.pause();
+        if (stopped) pauseLoop(loop);
         else play();
       });
       new IntersectionObserver(([e]) => {
         onScreen = Boolean(e?.isIntersecting);
         if (onScreen) play();
-        else loop.pause();
+        else pauseLoop(loop);
       }).observe(loop);
       play();
     };
@@ -543,7 +544,7 @@ const REEL = asset('/hero/reel.mp4');
     upright.addEventListener('change', () => {
       setUp();
       if (upright.matches) play();
-      else loop.pause();
+      else pauseLoop(loop);
       // A phone on its side shows neither film, so it has nothing to stop.
       if (!roomy) toggle.hidden = !(upright.matches && hero?.hasAttribute('data-loop-on'));
     });

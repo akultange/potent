@@ -148,6 +148,8 @@ const filmSm = inArt(`${name}-sm.mp4`) ? asset(`/art/${name}-sm.mp4`) : null;
 </style>
 
 <script>
+  import { pauseLoop, playLoop } from '../lib/loop';
+
   const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const saver = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData;
   const arts = [...document.querySelectorAll<HTMLElement>('[data-art]')];
@@ -157,14 +159,14 @@ const filmSm = inArt(`${name}-sm.mp4`) ? asset(`/art/${name}-sm.mp4`) : null;
     const phone = window.matchMedia('(max-width: 699px)').matches;
     const start = (film: HTMLVideoElement) => {
       if (!film.src) film.src = (phone && film.dataset.srcSm) || film.dataset.src!;
-      film.play().catch(() => {});
+      playLoop(film);
     };
     const watcher = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
           const film = entry.target as HTMLVideoElement;
           seen.set(film, entry.isIntersecting);
-          if (!entry.isIntersecting) film.pause();
+          if (!entry.isIntersecting) pauseLoop(film);
           else if (!stopped.has(film)) start(film);
         }
       },
@@ -182,7 +184,7 @@ const filmSm = inArt(`${name}-sm.mp4`) ? asset(`/art/${name}-sm.mp4`) : null;
         const stop = !stopped.has(film);
         if (stop) {
           stopped.add(film);
-          film.pause();
+          pauseLoop(film);
         } else {
           stopped.delete(film);
           if (seen.get(film)) start(film);

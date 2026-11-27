@@ -928,6 +928,8 @@ const external = { target: '_blank', rel: 'noopener noreferrer' };
 </style>
 
 <script>
+  import { pauseLoop, playLoop } from '../lib/loop';
+
   const section = document.querySelector<HTMLElement>('.journey');
   const track = document.querySelector<HTMLElement>('[data-journey]');
   const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -996,7 +998,7 @@ const external = { target: '_blank', rel: 'noopener noreferrer' };
     const phone = window.matchMedia('(max-width: 699px)').matches;
     const start = (film: HTMLVideoElement) => {
       if (!film.src) film.src = (phone && film.dataset.srcSm) || film.dataset.src!;
-      film.play().catch(() => {});
+      playLoop(film);
     };
     const watcher = new IntersectionObserver(
       (entries) => {
@@ -1005,7 +1007,7 @@ const external = { target: '_blank', rel: 'noopener noreferrer' };
           const film = entry.target as HTMLVideoElement;
           if (!entry.isIntersecting) {
             onScreen.delete(film);
-            film.pause();
+            pauseLoop(film);
             continue;
           }
           onScreen.add(film);
@@ -1031,7 +1033,7 @@ const external = { target: '_blank', rel: 'noopener noreferrer' };
         pause.textContent = (stopped ? pause.dataset.play : pause.dataset.pause) ?? '';
         section.classList.toggle('is-paused', stopped);
         for (const film of onScreen) {
-          if (stopped) film.pause();
+          if (stopped) pauseLoop(film);
           else start(film);
         }
       });

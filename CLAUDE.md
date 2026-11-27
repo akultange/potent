@@ -37,7 +37,8 @@
   sharp still and played back and forth (`scripts/loop.py`, `--stabilize` when the generated camera
   drifts); phones play the smaller copies from `scripts/loop-small.sh` (run it after changing any
   loop). Loops play only on screen, never with reduced motion or data saver, and each can be
-  stopped. The desktop hero reel is a cut of Luka's reel in `public/hero/reel.mp4`.
+  stopped. Start and rest them with `playLoop`/`pauseLoop` (`src/lib/loop.ts`): an iPhone in Low
+  Power Mode refuses every video, and Safari then runs the same MP4 as a moving picture in <img>. The desktop hero reel is a cut of Luka's reel in `public/hero/reel.mp4`.
 - Two founders push to `main` in parallel. Commit small and often, always `git pull --rebase`
   before `git push`, resolve conflicts by keeping both sides' intent, never force-push or rewrite
   pushed history. No branches or PRs.
