@@ -21,8 +21,9 @@
   where we did it; `src/data/journey.ts`, `src/components/Journey.astro`), every project as a
   compact grid (`src/data/showcase.ts`; `Work.astro` without `compact` brings back the huge
   pictures from `public/hd/`), the team as Awwwards-style profiles with round portraits (the
-  founders' files are black and white on near-black, framed alike; specialists stay in colour;
-  never invented people), founders with three numbers in a framed row, specialists as compact
+  founders' files are black and white, framed alike, their background set to the page colour
+  `--bg` #0b0b0c so the circle melts into the page: redo them if `--bg` changes; specialists stay
+  in colour; never invented people), founders with three numbers in a framed row, specialists as compact
   rows, and a network row,
   team structure (Luka and Giorgi take every job, hand it out and check every result), the process
   (one paper shop from drawing to opening, with the founders' quality check before launch), what
