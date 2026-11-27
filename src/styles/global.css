@@ -1080,186 +1080,282 @@ html[lang='ru'] h2 em {
   color: var(--muted);
 }
 
-/* ---------- the team: portraits ---------- */
+/* ---------- the team: founders as profiles, specialists as a directory ---------- */
 
-.founders {
-  display: grid;
-  gap: clamp(28px, 3vw, 40px) clamp(14px, 1.6vw, 24px);
-}
-
-@media (min-width: 760px) {
-  .founders {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-.members {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: clamp(28px, 3vw, 44px) clamp(14px, 1.6vw, 24px);
-}
-
-@media (min-width: 1000px) {
-  .members {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-}
-
-/* An odd last card in the two-column grid takes the whole row: photo left, words right. */
-@media (max-width: 999px) {
-  .members > .person:last-child:nth-child(odd) {
-    grid-column: 1 / -1;
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0 clamp(14px, 1.6vw, 24px);
-    align-items: end;
-  }
-}
-
-.person {
-  min-width: 0;
-  scroll-margin-top: 90px;
-}
-
-.person__face {
-  position: relative;
-  overflow: hidden;
-  aspect-ratio: 4 / 5;
-  border-radius: var(--radius);
-  background: var(--surface);
-}
-
-/* The founders' photos are square: shown whole, face and name fit one screen. */
-.person--founder .person__face {
-  aspect-ratio: 1 / 1;
-}
-
-.person__face img {
-  width: 100%;
-  height: 100%;
+/* Round black-and-white portraits, like the profiles on Awwwards. The founders' files are black
+   and white already; everyone else's photo is turned grey here. */
+.avatar {
+  flex: none;
+  border-radius: 50%;
   object-fit: cover;
-  transition: transform 1.1s var(--ease);
+  background: var(--surface-2);
 }
 
-.person:hover .person__face img,
-.person:target .person__face img {
-  transform: scale(1.025);
+.avatar--lg {
+  width: 96px;
+  height: 96px;
 }
 
-/* No photo yet: the initials, large, in the accent serif. */
-.person__initials {
-  position: absolute;
-  inset: 0;
+.avatar--md {
+  width: 56px;
+  height: 56px;
+}
+
+.member img.avatar {
+  filter: grayscale(1) contrast(1.06);
+}
+
+.avatar--initials {
   display: grid;
   place-items: center;
-  font-family: var(--font-serif);
-  font-size: clamp(64px, 9vw, 140px);
-  font-style: italic;
-  color: var(--accent);
-}
-
-.person__body {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding-top: 18px;
-}
-
-.person__name {
-  font-size: clamp(20px, 1.8vw, 26px);
-  letter-spacing: -0.035em;
-}
-
-.person--founder .person__name {
-  font-size: clamp(30px, 3.4vw, 52px);
-  letter-spacing: -0.05em;
-}
-
-.person__title {
-  font-size: 14px;
-  line-height: 1.4;
+  font-size: 17px;
+  font-weight: 600;
   color: var(--muted);
-  text-wrap: balance;
 }
 
-.person--founder .person__title {
-  font-size: 16px;
+/* A founder: portrait, name and role; one plain line; three numbers in a framed row; the brands
+   and the round link buttons. From 900px the numbers stand on the right. */
+.founders {
+  display: grid;
 }
 
-.facts {
+.profile {
+  display: grid;
+  gap: 20px;
+  padding: 28px 0;
+  border-top: 1px solid var(--line);
+}
+
+.profile__head {
   display: flex;
-  flex-wrap: wrap;
-  gap: 14px 40px;
-  margin-top: 8px;
+  align-items: center;
+  gap: 18px;
 }
 
-.fact {
+.profile__name {
+  font-size: clamp(27px, 7.2vw, 44px);
+  line-height: 1;
+  letter-spacing: -0.045em;
+}
+
+.profile__role {
+  margin-top: 8px;
+  font-size: 15px;
+  line-height: 1.35;
+  color: var(--muted);
+}
+
+.profile__where {
+  margin-top: 3px;
+  font-size: 14px;
+  color: var(--faint);
+}
+
+.profile__line {
+  max-width: 50ch;
+  font-size: 17px;
+  line-height: 1.5;
+}
+
+.profile__stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border: 1px solid var(--line);
+  border-radius: 14px;
+}
+
+.profile__stats div {
   display: flex;
   flex-direction: column-reverse;
   justify-content: flex-end;
-  gap: 6px;
+  gap: 8px;
+  padding: 16px 12px;
 }
 
-.fact dd {
-  font-size: clamp(30px, 3vw, 46px);
+.profile__stats div + div {
+  border-left: 1px solid var(--line);
+}
+
+.profile__stats dd {
+  font-size: clamp(21px, 5.8vw, 34px);
   font-weight: 700;
-  line-height: 0.95;
-  letter-spacing: -0.05em;
-  white-space: nowrap;
+  line-height: 1;
+  letter-spacing: -0.04em;
 }
 
-.fact dt {
-  max-width: 17ch;
+.profile__stats dt {
+  font-size: 12.5px;
+  line-height: 1.3;
+  color: var(--muted);
+}
+
+.profile__foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px 24px;
+}
+
+.profile__brands {
+  font-size: 14.5px;
+  line-height: 1.45;
+}
+
+.profile__brands span {
+  margin-right: 4px;
+  color: var(--faint);
+}
+
+@media (min-width: 900px) {
+  .profile {
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    grid-template-areas:
+      'head stats'
+      'line stats'
+      'foot stats';
+    gap: 22px clamp(40px, 6vw, 110px);
+    align-items: start;
+    padding: 40px 0;
+  }
+
+  .profile__head {
+    grid-area: head;
+    gap: 24px;
+  }
+
+  .profile__line {
+    grid-area: line;
+  }
+
+  .profile__foot {
+    grid-area: foot;
+  }
+
+  .profile__stats {
+    grid-area: stats;
+    align-self: center;
+  }
+
+  .profile__stats div {
+    padding: 22px 18px;
+  }
+
+  .avatar--lg {
+    width: 120px;
+    height: 120px;
+  }
+}
+
+/* Round link buttons. */
+.icons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.icons a {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid color-mix(in srgb, var(--ink) 24%, transparent);
+  border-radius: 50%;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  text-decoration: none;
+  transition:
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.icons a:hover,
+.icons a:focus-visible {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.icons--sm a {
+  width: 38px;
+  height: 38px;
+  font-size: 13px;
+}
+
+/* A specialist: a compact row. On phones the link buttons sit under the words. */
+.members {
+  display: grid;
+  gap: 10px;
+}
+
+.member {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  column-gap: 14px;
+  align-items: start;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--surface);
+}
+
+.member .icons {
+  grid-column: 2;
+  margin-top: 12px;
+}
+
+.member__name {
+  font-size: 18px;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.member__name span {
+  display: block;
+}
+
+.member__role {
+  margin-top: 4px;
   font-size: 14px;
   line-height: 1.35;
   color: var(--muted);
 }
 
-.brands {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px 6px;
+.member__fact {
+  margin-top: 6px;
+  font-size: 13.5px;
+  line-height: 1.35;
+  color: var(--faint);
 }
 
-.brands li {
-  padding: 3px 10px;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  font-size: 13px;
-  color: var(--muted);
-}
-
-.links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 14px;
-  margin-top: 4px;
-}
-
-.links a {
-  position: relative;
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--muted);
-}
-
-.links a::after {
-  content: '';
-  position: absolute;
-  inset: -12px -6px;
-}
-
-.links a:hover {
+.member__fact b {
+  font-weight: 600;
   color: var(--ink);
 }
 
-.person--member .links li + li {
-  display: none;
+.member:target,
+.profile:target .avatar {
+  outline: 1px solid var(--accent);
+  outline-offset: 3px;
 }
 
-/* The network card after the specialists: Tbilisi at night, lit desks joined by light, and the counts. */
-.person--network .person__name span {
-  display: block;
+@media (min-width: 560px) {
+  .member {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+  }
+
+  .member .icons {
+    grid-column: 3;
+    margin-top: 0;
+  }
+}
+
+@media (min-width: 900px) {
+  .members {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 /* ---------- how a project runs ---------- */
@@ -1387,42 +1483,6 @@ html[lang='ru'] h2 em {
   }
 }
 
-.money {
-  display: grid;
-}
-
-.money__row {
-  display: grid;
-  gap: 10px 40px;
-  align-items: end;
-  padding: clamp(22px, 3vw, 36px) 0;
-  border-top: 1px solid var(--line);
-}
-
-@media (min-width: 900px) {
-  .money__row {
-    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
-  }
-}
-
-.money__value {
-  font-size: clamp(54px, calc(8.6 * var(--u)), 150px);
-  font-weight: 700;
-  line-height: 0.88;
-  letter-spacing: -0.06em;
-}
-
-.money__row:first-child .money__value {
-  color: var(--accent);
-}
-
-.money__label {
-  max-width: 34ch;
-  font-size: 17px;
-  line-height: 1.45;
-  color: var(--muted);
-}
-
 /* What one project costs a business, cheapest first: a picture from the same paper world, the
    thing, its price. Phones: rows; from 900px: five columns. */
 .prices {
@@ -1475,9 +1535,59 @@ html[lang='ru'] h2 em {
 }
 
 .prices__about {
-  margin: 14px 0 clamp(48px, 6vw, 88px);
+  margin: 14px 0 clamp(40px, 5vw, 72px);
   font-size: 13.5px;
   color: var(--faint);
+}
+
+/* Why now, and why from Georgia: two facts in a framed row, the same frame as the founders'
+   numbers, quiet next to the prices. */
+.whynow {
+  display: grid;
+  margin-bottom: clamp(48px, 6vw, 88px);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+}
+
+.whynow__cell {
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 20px;
+}
+
+.whynow__cell + .whynow__cell {
+  border-top: 1px solid var(--line);
+}
+
+.whynow dd {
+  font-size: clamp(30px, 8vw, 48px);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.045em;
+}
+
+.whynow dt {
+  max-width: 44ch;
+  font-size: 15px;
+  line-height: 1.45;
+  color: var(--muted);
+}
+
+@media (min-width: 760px) {
+  .whynow {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .whynow__cell + .whynow__cell {
+    border-top: 0;
+    border-left: 1px solid var(--line);
+  }
+
+  .whynow__cell {
+    padding: 28px;
+  }
 }
 
 @media (min-width: 900px) {
@@ -1864,8 +1974,7 @@ html[lang='ru'] h2 em {
     line-height: 1.1;
   }
 
-  .proof__value,
-  .money__value {
+  .proof__value {
     letter-spacing: -0.045em;
   }
 }
@@ -1881,7 +1990,6 @@ html[lang='ru'] h2 em {
 @media (prefers-reduced-motion: reduce) {
   .case__media img,
   .more__pic img,
-  .person__face img,
   .academy img,
   .case__view {
     transition: none;
@@ -1889,8 +1997,6 @@ html[lang='ru'] h2 em {
 
   .case__media:hover img,
   .more__item:hover .more__pic img,
-  .person:hover .person__face img,
-  .person:target .person__face img,
   .academy:hover img {
     transform: none;
   }

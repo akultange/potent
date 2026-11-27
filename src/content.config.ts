@@ -43,6 +43,8 @@ const people = defineCollection({
     location: z.string().optional(),
     /** Square portrait under /public, e.g. /people/jane-doe.jpg; initials are shown without one. */
     photo: z.string().optional(),
+    /** One plain line under a founder's name on the team cards. */
+    line: z.string().optional(),
     /** Kept for reference; the page itself shows no bios. */
     bio: z.string().optional(),
     /** Two or three headline numbers, shown on the card (founders three, network two). */
@@ -74,6 +76,7 @@ const peopleRu = defineCollection({
     name: z.string().optional(),
     title: z.string().optional(),
     location: z.string().optional(),
+    line: z.string().optional(),
     bio: z.string().optional(),
     /** Russian for the facts, keyed by the English label. */
     facts: z

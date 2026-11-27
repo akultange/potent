@@ -204,15 +204,13 @@ const REEL = asset('/hero/reel.mp4');
         <h3 class="kicker">{t('Specialists')} <span>{specialists.length}</span></h3>
         <div class="members">
           {specialists.map((p) => <PersonCard person={p} lang={lang} />)}
-          <article class="person person--member person--network" data-reveal>
-            <div class="person__face">
-              <img src={asset(NETWORK.photo)} alt="" loading="lazy" decoding="async" />
-            </div>
-            <div class="person__body">
-              <h4 class="person__name">
+          <article class="member" data-reveal>
+            <img class="avatar avatar--md" src={asset(NETWORK.photo)} alt="" width="56" height="56" loading="lazy" decoding="async" />
+            <div class="member__who">
+              <h4 class="member__name">
                 {NETWORK.groups.map((g) => <span>{t(g, { n: NETWORK.n })}</span>)}
               </h4>
-              <p class="person__title">{t('From our network in Tbilisi')}</p>
+              <p class="member__role">{t('From our network in Tbilisi')}</p>
             </div>
           </article>
         </div>
@@ -277,22 +275,6 @@ const REEL = asset('/hero/reel.mp4');
           sizes="(min-width: 1440px) 1360px, (min-width: 700px) 94vw, 100vw"
           class="market__art"
         />
-        <ul class="money" role="list">
-          {
-            MARKET.map((m) => (
-              <li class="money__row" data-reveal>
-                <span class="money__value">{t(m.value)}</span>
-                <span class="money__label">
-                  {keep(t(m.label))}{' '}
-                  <a class="source" href={m.source.url} {...external}>
-                    {t('Source')}: {m.source.name}
-                  </a>
-                </span>
-              </li>
-            ))
-          }
-        </ul>
-
         <h3 class="kicker">{t('What one project costs a business')}</h3>
         <ol class="prices" role="list">
           {
@@ -315,6 +297,23 @@ const REEL = asset('/hero/reel.mp4');
           }
         </ol>
         <p class="prices__about">{t('Prices of projects clients reviewed on Clutch, worldwide, 2026.')}</p>
+
+        <h3 class="kicker">{t('Why now, and why from Georgia')}</h3>
+        <dl class="whynow">
+          {
+            MARKET.map((m) => (
+              <div class="whynow__cell" data-reveal>
+                <dt>
+                  {keep(t(m.label))}{' '}
+                  <a class="source" href={m.source.url} {...external}>
+                    {t('Source')}: {m.source.name}
+                  </a>
+                </dt>
+                <dd>{t(m.value)}</dd>
+              </div>
+            ))
+          }
+        </dl>
 
         <h3 class="kicker">{t('How we make money')}</h3>
         <ol class="streams" role="list">

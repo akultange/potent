@@ -41,13 +41,8 @@ export const PROOF: { value: string; label: string; source?: Source }[] = [
 /** Why digital: how big the market is and why Georgia is a good place to sell it from. */
 export const MARKET: { value: string; label: string; source: Source }[] = [
   {
-    value: '$3.9 trillion',
-    label: 'what companies worldwide will spend on going digital in 2027',
-    source: { name: 'IDC, 2023', url: IDC },
-  },
-  {
     value: '+16% a year',
-    label: 'how fast that spending grows',
+    label: 'how fast what companies spend on going digital grows',
     source: { name: 'IDC, 2023', url: IDC },
   },
   {

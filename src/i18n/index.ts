@@ -112,6 +112,7 @@ export function localPerson(person: Person, ru?: PersonRu) {
       name: ru?.name ?? d.name,
       title: line(ru?.title, d.title)!,
       location: line(ru?.location, d.location),
+      line: line(ru?.line, d.line),
       bio: line(ru?.bio, d.bio),
       facts: d.facts.map((f) => {
         const r = ru?.facts[f.label];
