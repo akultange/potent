@@ -26,8 +26,8 @@
   rows, and a network row,
   team structure (Luka and Giorgi take every job, hand it out and check every result), the process
   (one paper shop from drawing to opening, with the founders' quality check before launch), what
-  one project costs a business, then one calm fact on why now (+16% a year), all with sources
-  (`src/data/blueprint.ts`), the
+  one project costs a business, after the big market numbers ($3.9 trillion, +16% a year), all
+  with sources (`src/data/blueprint.ts`), the
   plan as one picture of our studio that builds itself as you read
   (agency now, scale next, academy after scale; `Build.astro`), next step over Tbilisi at dusk. Big
   pictures, few words.

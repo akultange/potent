@@ -37,11 +37,16 @@ export const PROOF: { value: string; label: string; source?: Source }[] = [
   },
 ];
 
-/** Why now, under the prices: the money in this field keeps growing. */
+/** Why digital: how much money moves in it, and how fast that grows. */
 export const MARKET: { value: string; label: string; source: Source }[] = [
   {
+    value: '$3.9 trillion',
+    label: 'what companies worldwide will spend on going digital in 2027',
+    source: { name: 'IDC, 2023', url: IDC },
+  },
+  {
     value: '+16% a year',
-    label: 'how fast company spending on going digital grows',
+    label: 'how fast that spending grows',
     source: { name: 'IDC, 2023', url: IDC },
   },
 ];

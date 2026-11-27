@@ -1330,6 +1330,58 @@ html[lang='ru'] h2 em {
   color: var(--ink);
 }
 
+/* The network: bigger than any specialist's row, the lit houses of Tbilisi behind the numbers. On
+   wide screens it fills the right column for the last rows (index.astro works out which). */
+.netcard {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  min-height: 250px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--surface);
+  isolation: isolate;
+}
+
+.netcard__art {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 56%;
+}
+
+.netcard::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(to top, rgb(10 10 10 / 0.9) 0%, rgb(10 10 10 / 0.5) 42%, rgb(10 10 10 / 0) 78%);
+}
+
+.netcard__who {
+  padding: 20px 22px;
+}
+
+.netcard__name {
+  font-size: clamp(24px, 7vw, 40px);
+  line-height: 1.02;
+  letter-spacing: -0.045em;
+}
+
+.netcard__name span {
+  display: block;
+}
+
+.netcard__where {
+  margin-top: 8px;
+  font-size: 15px;
+  color: color-mix(in srgb, var(--ink) 75%, transparent);
+}
+
 .member:target,
 .profile:target .avatar {
   outline: 1px solid var(--accent);
@@ -1351,6 +1403,16 @@ html[lang='ru'] h2 em {
 @media (min-width: 900px) {
   .members {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .netcard[style] {
+    grid-column: 2;
+    grid-row: var(--net-row) / span var(--net-span);
+    min-height: 0;
+  }
+
+  .netcard__who {
+    padding: 26px 28px;
   }
 }
 
@@ -1479,6 +1541,42 @@ html[lang='ru'] h2 em {
   }
 }
 
+.money {
+  display: grid;
+}
+
+.money__row {
+  display: grid;
+  gap: 10px 40px;
+  align-items: end;
+  padding: clamp(22px, 3vw, 36px) 0;
+  border-top: 1px solid var(--line);
+}
+
+@media (min-width: 900px) {
+  .money__row {
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  }
+}
+
+.money__value {
+  font-size: clamp(54px, calc(8.6 * var(--u)), 150px);
+  font-weight: 700;
+  line-height: 0.88;
+  letter-spacing: -0.06em;
+}
+
+.money__row:first-child .money__value {
+  color: var(--accent);
+}
+
+.money__label {
+  max-width: 34ch;
+  font-size: 17px;
+  line-height: 1.45;
+  color: var(--muted);
+}
+
 /* What one project costs a business, cheapest first: a picture from the same paper world, the
    thing, its price. Phones: rows; from 900px: five columns. */
 .prices {
@@ -1531,50 +1629,9 @@ html[lang='ru'] h2 em {
 }
 
 .prices__about {
-  margin: 14px 0 clamp(40px, 5vw, 72px);
+  margin: 14px 0 clamp(48px, 6vw, 88px);
   font-size: 13.5px;
   color: var(--faint);
-}
-
-/* Why now: one fact in a frame, the same frame as the founders' numbers, quiet next to the
-   prices. From 760px the number stands left of its words. */
-.whynow {
-  margin-bottom: clamp(48px, 6vw, 88px);
-  border: 1px solid var(--line);
-  border-radius: 14px;
-}
-
-.whynow__cell {
-  display: flex;
-  flex-direction: column-reverse;
-  justify-content: flex-end;
-  gap: 10px;
-  padding: 20px;
-}
-
-.whynow dd {
-  font-size: clamp(30px, 8vw, 48px);
-  font-weight: 700;
-  line-height: 1;
-  letter-spacing: -0.045em;
-  white-space: nowrap;
-}
-
-.whynow dt {
-  max-width: 44ch;
-  font-size: 15px;
-  line-height: 1.45;
-  color: var(--muted);
-}
-
-@media (min-width: 760px) {
-  .whynow__cell {
-    flex-direction: row-reverse;
-    justify-content: flex-end;
-    align-items: center;
-    gap: clamp(24px, 4vw, 56px);
-    padding: 28px;
-  }
 }
 
 @media (min-width: 900px) {
@@ -1961,7 +2018,8 @@ html[lang='ru'] h2 em {
     line-height: 1.1;
   }
 
-  .proof__value {
+  .proof__value,
+  .money__value {
     letter-spacing: -0.045em;
   }
 }

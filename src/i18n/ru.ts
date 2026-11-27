@@ -222,10 +222,12 @@ export const RU = {
     // what we sell, the market, how we make money
     'Every business pays for digital. <em>More every year.</em>':
       'Каждый бизнес платит за цифровые услуги. <em>С каждым годом — всё больше.</em>',
+    '$3.9 trillion': '$3,9 трлн',
+    'what companies worldwide will spend on going digital in 2027':
+      'потратят компании всего мира на цифровизацию в 2027 году',
     '+16% a year': '+16% в год',
+    'how fast that spending grows': 'темп роста этих расходов',
     'What one project costs a business': 'Сколько бизнес платит за один проект',
-    'Why now': 'Почему сейчас',
-    'how fast company spending on going digital grows': 'так быстро растут траты компаний на цифровые услуги',
     'Prices of projects clients reviewed on Clutch, worldwide, 2026.':
       'Цены проектов по отзывам клиентов на Clutch, по всему миру, 2026 год.',
     Website: 'Сайт',

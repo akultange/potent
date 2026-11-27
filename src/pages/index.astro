@@ -55,6 +55,11 @@ const areaRank = (p: LocalPerson) => {
 const specialists = people
   .filter((p) => p.data.group === 'network')
   .sort((a, b) => Number(!a.data.photo) - Number(!b.data.photo) || areaRank(a) - areaRank(b));
+// The network card is the biggest in the list: on wide screens it fills the right column for the
+// last three rows (two when the number of specialists is even), so the grid always comes out even.
+const netSpan = specialists.length % 2 ? 3 : 2;
+const netPlace =
+  specialists.length >= 4 ? `--net-row: ${(specialists.length + netSpan) / 2 - netSpan + 1}; --net-span: ${netSpan}` : undefined;
 
 // The big names on the first screen must be real clients in someone's file.
 const clients = new Set(people.flatMap((p) => p.data.projects.map((pr) => pr.en.client).filter(Boolean)));
@@ -204,13 +209,13 @@ const REEL = asset('/hero/reel.mp4');
         <h3 class="kicker">{t('Specialists')} <span>{specialists.length}</span></h3>
         <div class="members">
           {specialists.map((p) => <PersonCard person={p} lang={lang} />)}
-          <article class="member" data-reveal>
-            <img class="avatar avatar--md" src={asset(NETWORK.photo)} alt="" width="56" height="56" loading="lazy" decoding="async" />
-            <div class="member__who">
-              <h4 class="member__name">
+          <article class="netcard" style={netPlace} data-reveal>
+            <img class="netcard__art" src={asset(NETWORK.photo)} alt="" width="800" height="1000" loading="lazy" decoding="async" />
+            <div class="netcard__who">
+              <h4 class="netcard__name">
                 {NETWORK.groups.map((g) => <span>{t(g, { n: NETWORK.n })}</span>)}
               </h4>
-              <p class="member__role">{t('From our network in Tbilisi')}</p>
+              <p class="netcard__where">{t('From our network in Tbilisi')}</p>
             </div>
           </article>
         </div>
@@ -275,6 +280,22 @@ const REEL = asset('/hero/reel.mp4');
           sizes="(min-width: 1440px) 1360px, (min-width: 700px) 94vw, 100vw"
           class="market__art"
         />
+        <ul class="money" role="list">
+          {
+            MARKET.map((m) => (
+              <li class="money__row" data-reveal>
+                <span class="money__value">{t(m.value)}</span>
+                <span class="money__label">
+                  {keep(t(m.label))}{' '}
+                  <a class="source" href={m.source.url} {...external}>
+                    {t('Source')}: {m.source.name}
+                  </a>
+                </span>
+              </li>
+            ))
+          }
+        </ul>
+
         <h3 class="kicker">{t('What one project costs a business')}</h3>
         <ol class="prices" role="list">
           {
@@ -297,23 +318,6 @@ const REEL = asset('/hero/reel.mp4');
           }
         </ol>
         <p class="prices__about">{t('Prices of projects clients reviewed on Clutch, worldwide, 2026.')}</p>
-
-        <h3 class="kicker">{t('Why now')}</h3>
-        <dl class="whynow">
-          {
-            MARKET.map((m) => (
-              <div class="whynow__cell" data-reveal>
-                <dt>
-                  {keep(t(m.label))}{' '}
-                  <a class="source" href={m.source.url} {...external}>
-                    {t('Source')}: {m.source.name}
-                  </a>
-                </dt>
-                <dd>{t(m.value)}</dd>
-              </div>
-            ))
-          }
-        </dl>
 
         <h3 class="kicker">{t('How we make money')}</h3>
         <ol class="streams" role="list">
